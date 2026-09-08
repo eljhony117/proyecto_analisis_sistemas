@@ -1,0 +1,514 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Comités Evaluadores</title>
+
+    <link rel="stylesheet" href="{% static 'css/comites.css' %}">
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+
+            <div class="brand-icon">✓</div>
+
+            <div>
+                <h2>404: Club no encontrado</h2>
+                <p>Gestión de Becas</p>
+            </div>
+
+        </div>
+
+        <div class="mineduc">
+            MINISTERIO DE EDUCACIÓN ·<br>
+            GUATEMALA
+        </div>
+
+
+        <nav class="sidebar-menu">
+
+            <a href="{% url 'panel' %}" class="menu-item">
+                <span class="menu-icon">⌂</span>
+                <span>Inicio</span>
+            </a>
+
+            <a href="{% url 'convocatorias' %}" class="menu-item">
+                <span class="menu-icon">⚑</span>
+                <span>Convocatorias</span>
+            </a>
+
+            <a href="{% url 'solicitudes' %}" class="menu-item">
+                <span class="menu-icon">▤</span>
+                <span>Solicitudes</span>
+            </a>
+
+            <a href="{% url 'evaluaciones' %}" class="menu-item">
+                <span class="menu-icon">☑</span>
+                <span>Evaluaciones</span>
+                <span class="badge">317</span>
+            </a>
+
+            <a href="{% url 'comites' %}" class="menu-item active">
+                <span class="menu-icon">♙</span>
+                <span>Comités</span>
+            </a>
+
+            <a href="{% url 'reportes' %}" class="menu-item">
+                <span class="menu-icon">▥</span>
+                <span>Reportes</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-user">
+
+            <div class="avatar">
+                DH
+            </div>
+
+            <div>
+                <strong>dhernandezl34</strong>
+
+                <a href="{% url 'login' %}">
+                    Cerrar sesión
+                </a>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================
+         CONTENIDO PRINCIPAL
+    ========================== -->
+    <main class="main-area">
+
+        <!-- HEADER -->
+        <header class="top-header">
+
+            <div>
+                <h1>Comités Evaluadores</h1>
+                <p>Domingo, 16 de agosto de 2026</p>
+            </div>
+
+
+            <div class="header-actions">
+
+                <div class="header-search">
+
+                    <input
+                        type="text"
+                        id="committeeSearch"
+                        placeholder="Buscar solicitud, estudiante..."
+                    >
+
+                    <span>⌕</span>
+
+                </div>
+
+
+                <button
+                    class="notification-button"
+                    type="button"
+                >
+                    ♧
+                    <span class="notification-dot"></span>
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- =========================
+             CONTENIDO
+        ========================== -->
+        <section class="content">
+
+            <div class="page-title-row">
+
+                <div>
+
+                    <h2>
+                        Comités Evaluadores
+                    </h2>
+
+                    <p>
+                        Gestión de comités y asignación de evaluadores
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="new-button"
+                    type="button"
+                >
+                    <span>＋</span>
+                    Nuevo comité
+                </button>
+
+            </div>
+
+
+            <!-- =========================
+                 GRID DE COMITÉS
+            ========================== -->
+            <div class="committee-grid">
+
+
+                <!-- COMITÉ 1 -->
+                <article class="committee-card">
+
+                    <div class="committee-top">
+
+                        <div class="committee-icon">
+                            ♙
+                        </div>
+
+                        <span class="status active">
+                            Activo
+                        </span>
+
+                    </div>
+
+
+                    <div class="committee-info">
+
+                        <h3>
+                            Comité de Ciencias e Ingeniería
+                        </h3>
+
+                        <p>
+                            Coordinador:
+                            <strong>
+                                Dr. Roberto Castillo
+                            </strong>
+                        </p>
+
+                    </div>
+
+
+                    <hr>
+
+
+                    <div class="committee-stats">
+
+                        <div class="stat-block">
+                            <strong>5</strong>
+                            <span>miembros</span>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div class="stat-block">
+                            <strong>142</strong>
+                            <span>evaluaciones</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="committee-actions">
+
+                        <button
+                            class="secondary-button"
+                            type="button"
+                        >
+                            Ver miembros
+                        </button>
+
+                        <button
+                            class="primary-button"
+                            type="button"
+                        >
+                            Gestionar
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- COMITÉ 2 -->
+                <article class="committee-card">
+
+                    <div class="committee-top">
+
+                        <div class="committee-icon">
+                            ♙
+                        </div>
+
+                        <span class="status active">
+                            Activo
+                        </span>
+
+                    </div>
+
+
+                    <div class="committee-info">
+
+                        <h3>
+                            Comité de Humanidades y Sociales
+                        </h3>
+
+                        <p>
+                            Coordinador:
+                            <strong>
+                                Lic. Carmen Pineda
+                            </strong>
+                        </p>
+
+                    </div>
+
+
+                    <hr>
+
+
+                    <div class="committee-stats">
+
+                        <div class="stat-block">
+                            <strong>4</strong>
+                            <span>miembros</span>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div class="stat-block">
+                            <strong>98</strong>
+                            <span>evaluaciones</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="committee-actions">
+
+                        <button
+                            class="secondary-button"
+                            type="button"
+                        >
+                            Ver miembros
+                        </button>
+
+                        <button
+                            class="primary-button"
+                            type="button"
+                        >
+                            Gestionar
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- COMITÉ 3 -->
+                <article class="committee-card">
+
+                    <div class="committee-top">
+
+                        <div class="committee-icon">
+                            ♙
+                        </div>
+
+                        <span class="status active">
+                            Activo
+                        </span>
+
+                    </div>
+
+
+                    <div class="committee-info">
+
+                        <h3>
+                            Comité Técnico Vocacional
+                        </h3>
+
+                        <p>
+                            Coordinador:
+                            <strong>
+                                Ing. Mario Estrada
+                            </strong>
+                        </p>
+
+                    </div>
+
+
+                    <hr>
+
+
+                    <div class="committee-stats">
+
+                        <div class="stat-block">
+                            <strong>6</strong>
+                            <span>miembros</span>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div class="stat-block">
+                            <strong>210</strong>
+                            <span>evaluaciones</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="committee-actions">
+
+                        <button
+                            class="secondary-button"
+                            type="button"
+                        >
+                            Ver miembros
+                        </button>
+
+                        <button
+                            class="primary-button"
+                            type="button"
+                        >
+                            Gestionar
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- COMITÉ 4 -->
+                <article class="committee-card">
+
+                    <div class="committee-top">
+
+                        <div class="committee-icon">
+                            ♙
+                        </div>
+
+                        <span class="status active">
+                            Activo
+                        </span>
+
+                    </div>
+
+
+                    <div class="committee-info">
+
+                        <h3>
+                            Comité de Posgrados Internacionales
+                        </h3>
+
+                        <p>
+                            Coordinador:
+                            <strong>
+                                Dra. Lucía Vásquez
+                            </strong>
+                        </p>
+
+                    </div>
+
+
+                    <hr>
+
+
+                    <div class="committee-stats">
+
+                        <div class="stat-block">
+                            <strong>3</strong>
+                            <span>miembros</span>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div class="stat-block">
+                            <strong>45</strong>
+                            <span>evaluaciones</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="committee-actions">
+
+                        <button
+                            class="secondary-button"
+                            type="button"
+                        >
+                            Ver miembros
+                        </button>
+
+                        <button
+                            class="primary-button"
+                            type="button"
+                        >
+                            Gestionar
+                        </button>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    const searchInput =
+        document.getElementById("committeeSearch");
+
+    const committeeCards =
+        document.querySelectorAll(".committee-card");
+
+
+    searchInput.addEventListener("input", function() {
+
+        const text =
+            this.value
+                .toLowerCase()
+                .trim();
+
+
+        committeeCards.forEach(card => {
+
+            const content =
+                card.textContent.toLowerCase();
+
+
+            if (content.includes(text)) {
+
+                card.style.display = "block";
+
+            } else {
+
+                card.style.display = "none";
+
+            }
+
+        });
+
+    });
+
+</script>
+
+</body>
+</html>
