@@ -1,3 +1,9 @@
-venv/ 
-__pycache__/ 
-*.pyc 
+# Proyecto Django de Daniel
+Plataformas beca/Plataformas becas/venv/
+Plataformas beca/Plataformas becas/**/__pycache__/
+Plataformas beca/Plataformas becas/*.pyc
+Plataformas beca/Plataformas becas/db.sqlite3
+Plataformas beca/Plataformas becas/.env
+
+# JDK local - no subir a GitHub
+Plataformas beca/Plataformas becas/oracleJdk-26/

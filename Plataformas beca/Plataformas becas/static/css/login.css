@@ -1,0 +1,308 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(
+        120deg,
+        #17355d 0%,
+        #1e4771 58%,
+        #157c79 100%
+    );
+    color: #0d2d58;
+}
+
+/* =========================
+   ENCABEZADO
+========================= */
+
+.topbar {
+    width: 100%;
+    min-height: 95px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 22px 35px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.brand-icon {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    background: #e4ae00;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.brand-text h1 {
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 3px;
+}
+
+.brand-text p {
+    color: #96a9c5;
+    font-size: 15px;
+}
+
+/* =========================
+   CONTENIDO CENTRAL
+========================= */
+
+.page-content {
+    min-height: calc(100vh - 95px);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 58px 20px 30px;
+}
+
+/* =========================
+   TARJETA LOGIN
+========================= */
+
+.login-card {
+    width: 525px;
+    background: #ffffff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+    padding: 38px 38px 28px;
+    border-bottom: 1px solid #e8edf4;
+}
+
+.card-header h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    color: #102f57;
+    font-size: 31px;
+    line-height: 1.1;
+    margin-bottom: 8px;
+}
+
+.card-header p {
+    color: #91a1bb;
+    font-size: 16px;
+    margin-bottom: 26px;
+}
+
+/* =========================
+   PESTAÑAS
+========================= */
+
+.tabs {
+    width: 100%;
+    background: #f2f4f8;
+    border-radius: 12px;
+    padding: 4px;
+    display: flex;
+}
+
+.tab {
+    flex: 1;
+    height: 46px;
+    border: none;
+    background: transparent;
+    border-radius: 9px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #8d9ab4;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.tab.active {
+    background: #ffffff;
+    color: #123364;
+    box-shadow: 0 2px 8px rgba(34, 52, 78, 0.12);
+}
+
+/* =========================
+   FORMULARIO
+========================= */
+
+.card-body {
+    padding: 28px 38px 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    color: #0c3567;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.form-group input {
+    width: 100%;
+    height: 51px;
+    border: 1px solid #c8d5e7;
+    border-radius: 10px;
+    padding: 0 15px;
+    font-size: 16px;
+    color: #17365f;
+    outline: none;
+    background: #ffffff;
+    transition: 0.2s ease;
+}
+
+.form-group input::placeholder {
+    color: #bdc9d9;
+}
+
+.form-group input:focus {
+    border-color: #4e76a8;
+    box-shadow: 0 0 0 3px rgba(69, 107, 154, 0.08);
+}
+
+/* =========================
+   CONTRASEÑA
+========================= */
+
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input {
+    padding-right: 50px;
+}
+
+.eye-button {
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: #8aa0bd;
+    cursor: pointer;
+    font-size: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* =========================
+   BOTÓN PRINCIPAL
+========================= */
+
+.login-button {
+    width: 100%;
+    height: 53px;
+    border: none;
+    border-radius: 9px;
+    background: #21477d;
+    color: white;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: 0.2s ease;
+}
+
+.login-button:hover {
+    background: #193b6c;
+}
+
+/* =========================
+   TEXTOS INFERIORES
+========================= */
+
+.forgot-password {
+    display: block;
+    text-align: center;
+    margin-top: 26px;
+    color: #1e4f91;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+.restricted-text {
+    margin: 33px auto 0;
+    max-width: 390px;
+    color: #95a5bd;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.45;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 650px) {
+
+    .topbar {
+        padding: 18px;
+    }
+
+    .brand-text h1 {
+        font-size: 17px;
+    }
+
+    .brand-text p {
+        font-size: 12px;
+    }
+
+    .page-content {
+        padding: 30px 15px;
+    }
+
+    .login-card {
+        width: 100%;
+    }
+
+    .card-header,
+    .card-body {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+.form-group select {
+    width: 100%;
+    height: 49px;
+    border: 1px solid #c8d5e7;
+    border-radius: 9px;
+    padding: 0 14px;
+    font-size: 15px;
+    color: #17365f;
+    background: #ffffff;
+    outline: none;
+    cursor: pointer;
+}
+
+.form-group select:focus {
+    border-color: #5f84af;
+    box-shadow: 0 0 0 3px rgba(69, 107, 154, 0.07);
+}

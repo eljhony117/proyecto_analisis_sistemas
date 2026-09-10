@@ -1,0 +1,583 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convocatorias</title>
+
+    <link rel="stylesheet" href="{% static 'css/convocatorias.css' %}">
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+            <div class="brand-icon">✓</div>
+
+            <div>
+                <h2>404: Club no encontrado</h2>
+                <p>Gestión de Becas</p>
+            </div>
+        </div>
+
+        <div class="mineduc">
+            MINISTERIO DE EDUCACIÓN ·<br>
+            GUATEMALA
+        </div>
+
+        <nav class="sidebar-menu">
+
+            <a href="{% url 'panel' %}" class="menu-item">
+                <span class="menu-icon">⌂</span>
+                <span>Inicio</span>
+            </a>
+
+            <a href="{% url 'convocatorias' %}" class="menu-item active">
+                <span class="menu-icon">⚑</span>
+                <span>Convocatorias</span>
+            </a>
+
+            <a href="{% url 'solicitudes' %}" class="menu-item">
+                <span class="menu-icon">▤</span>
+                <span>Solicitudes</span>
+            </a>
+
+            <a href="{% url 'evaluaciones' %}" class="menu-item">
+                <span class="menu-icon">☑</span>
+                <span>Evaluaciones</span>
+                <span class="badge">317</span>
+            </a>
+
+            <a href="{% url 'comites' %}" class="menu-item">
+                <span class="menu-icon">♙</span>
+                <span>Comités</span>
+            </a>
+
+            <a href="{% url 'reportes' %}" class="menu-item">
+                <span class="menu-icon">▥</span>
+                <span>Reportes</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-user">
+
+            <div class="avatar">
+                DH
+            </div>
+
+            <div>
+                <strong>dhernandezl34</strong>
+
+                <a href="{% url 'login' %}">
+                    Cerrar sesión
+                </a>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main-area">
+
+        <!-- HEADER SUPERIOR -->
+        <header class="top-header">
+
+            <div>
+                <h1>Convocatorias</h1>
+                <p>Domingo, 16 de agosto de 2026</p>
+            </div>
+
+            <div class="header-actions">
+
+                <div class="search-box">
+                    <input
+                        type="text"
+                        placeholder="Buscar solicitud, estudiante..."
+                    >
+                    <span>⌕</span>
+                </div>
+
+                <button class="notification-button" type="button">
+                    ♧
+                    <span class="notification-dot"></span>
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENIDO -->
+        <section class="content">
+
+            <!-- TÍTULO -->
+            <div class="page-title-row">
+
+                <div>
+                    <h2>Convocatorias</h2>
+                    <p>
+                        Administrá y publicá llamados a becas del ciclo 2026
+                    </p>
+                </div>
+
+                <button class="new-button" type="button">
+                    <span>＋</span>
+                    Nueva convocatoria
+                </button>
+
+            </div>
+
+
+            <!-- FILTROS -->
+            <div class="filters">
+
+                <button
+                    class="filter-button active"
+                    data-filter="todas"
+                >
+                    Todas
+                </button>
+
+                <button
+                    class="filter-button"
+                    data-filter="abierta"
+                >
+                    Abierta
+                </button>
+
+                <button
+                    class="filter-button"
+                    data-filter="proxima"
+                >
+                    Próxima
+                </button>
+
+            </div>
+
+
+            <!-- LISTA DE CONVOCATORIAS -->
+            <div class="convocatorias-list">
+
+
+                <!-- CONVOCATORIA 1 -->
+                <article
+                    class="convocatoria-card"
+                    data-status="abierta"
+                >
+
+                    <div class="card-top">
+
+                        <div class="card-information">
+
+                            <div class="meta">
+
+                                <span class="status abierta">
+                                    Abierta
+                                </span>
+
+                                <span class="level">
+                                    UNIVERSITARIO
+                                </span>
+
+                            </div>
+
+                            <h3>
+                                Beca Nacional de Excelencia Académica 2026
+                            </h3>
+
+                            <p>
+                                Dirigida a estudiantes universitarios con
+                                promedio mínimo de 85 puntos.
+                            </p>
+
+                        </div>
+
+
+                        <div class="card-actions">
+
+                            <p class="closing-date">
+                                Cierre:
+                                <strong>30 ago 2026</strong>
+                            </p>
+
+                            <div class="buttons">
+
+                                <button
+                                    class="detail-button"
+                                    type="button"
+                                >
+                                    Ver detalle
+                                </button>
+
+                                <button
+                                    class="manage-button"
+                                    type="button"
+                                >
+                                    Gestionar
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="progress-section">
+
+                        <div class="progress-info">
+                            <span>
+                                412 solicitudes de 150 cupos
+                            </span>
+
+                            <strong>
+                                100%
+                            </strong>
+                        </div>
+
+                        <div class="progress-track">
+                            <div
+                                class="progress-fill full"
+                                style="width:100%">
+                            </div>
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- CONVOCATORIA 2 -->
+                <article
+                    class="convocatoria-card"
+                    data-status="abierta"
+                >
+
+                    <div class="card-top">
+
+                        <div class="card-information">
+
+                            <div class="meta">
+
+                                <span class="status abierta">
+                                    Abierta
+                                </span>
+
+                                <span class="level">
+                                    POSGRADO
+                                </span>
+
+                            </div>
+
+                            <h3>
+                                Beca de Posgrado Internacional — CONCYT
+                            </h3>
+
+                            <p>
+                                Becas para estudios de maestría y doctorado
+                                en el extranjero.
+                            </p>
+
+                        </div>
+
+
+                        <div class="card-actions">
+
+                            <p class="closing-date">
+                                Cierre:
+                                <strong>15 sep 2026</strong>
+                            </p>
+
+                            <div class="buttons">
+
+                                <button
+                                    class="detail-button"
+                                    type="button"
+                                >
+                                    Ver detalle
+                                </button>
+
+                                <button
+                                    class="manage-button"
+                                    type="button"
+                                >
+                                    Gestionar
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="progress-section">
+
+                        <div class="progress-info">
+                            <span>
+                                88 solicitudes de 30 cupos
+                            </span>
+
+                            <strong>
+                                100%
+                            </strong>
+                        </div>
+
+                        <div class="progress-track">
+                            <div
+                                class="progress-fill full"
+                                style="width:100%">
+                            </div>
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- CONVOCATORIA 3 -->
+                <article
+                    class="convocatoria-card"
+                    data-status="abierta"
+                >
+
+                    <div class="card-top">
+
+                        <div class="card-information">
+
+                            <div class="meta">
+
+                                <span class="status abierta">
+                                    Abierta
+                                </span>
+
+                                <span class="level">
+                                    NIVEL MEDIO
+                                </span>
+
+                            </div>
+
+                            <h3>
+                                Programa de Becas Técnicas y Vocacionales
+                            </h3>
+
+                            <p>
+                                Apoyo económico para estudios técnicos y
+                                vocacionales a nivel medio.
+                            </p>
+
+                        </div>
+
+
+                        <div class="card-actions">
+
+                            <p class="closing-date">
+                                Cierre:
+                                <strong>05 sep 2026</strong>
+                            </p>
+
+                            <div class="buttons">
+
+                                <button
+                                    class="detail-button"
+                                    type="button"
+                                >
+                                    Ver detalle
+                                </button>
+
+                                <button
+                                    class="manage-button"
+                                    type="button"
+                                >
+                                    Gestionar
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="progress-section">
+
+                        <div class="progress-info">
+
+                            <span>
+                                634 solicitudes de 300 cupos
+                            </span>
+
+                            <strong>
+                                100%
+                            </strong>
+
+                        </div>
+
+                        <div class="progress-track">
+                            <div
+                                class="progress-fill full"
+                                style="width:100%">
+                            </div>
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- CONVOCATORIA 4 -->
+                <article
+                    class="convocatoria-card"
+                    data-status="proxima"
+                >
+
+                    <div class="card-top">
+
+                        <div class="card-information">
+
+                            <div class="meta">
+
+                                <span class="status proxima">
+                                    Próxima
+                                </span>
+
+                                <span class="level">
+                                    UNIVERSITARIO
+                                </span>
+
+                            </div>
+
+                            <h3>
+                                Beca Mujer en Ciencia y Tecnología
+                            </h3>
+
+                            <p>
+                                Programa dirigido a estudiantes de carreras
+                                científicas y tecnológicas.
+                            </p>
+
+                        </div>
+
+
+                        <div class="card-actions">
+
+                            <p class="closing-date">
+                                Cierre:
+                                <strong>20 oct 2026</strong>
+                            </p>
+
+                            <div class="buttons">
+
+                                <button
+                                    class="detail-button"
+                                    type="button"
+                                >
+                                    Ver detalle
+                                </button>
+
+                                <button
+                                    class="manage-button"
+                                    type="button"
+                                >
+                                    Gestionar
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="progress-section">
+
+                        <div class="progress-info">
+
+                            <span>
+                                57 solicitudes de 80 cupos
+                            </span>
+
+                            <strong class="normal-percentage">
+                                71%
+                            </strong>
+
+                        </div>
+
+                        <div class="progress-track">
+
+                            <div
+                                class="progress-fill normal"
+                                style="width:71%">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    const filterButtons =
+        document.querySelectorAll(".filter-button");
+
+    const cards =
+        document.querySelectorAll(".convocatoria-card");
+
+
+    filterButtons.forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            filterButtons.forEach(btn => {
+                btn.classList.remove("active");
+            });
+
+            button.classList.add("active");
+
+            const filter =
+                button.dataset.filter;
+
+
+            cards.forEach(card => {
+
+                if (
+                    filter === "todas" ||
+                    card.dataset.status === filter
+                ) {
+
+                    card.style.display = "block";
+
+                } else {
+
+                    card.style.display = "none";
+
+                }
+
+            });
+
+        });
+
+    });
+
+</script>
+
+</body>
+</html>
