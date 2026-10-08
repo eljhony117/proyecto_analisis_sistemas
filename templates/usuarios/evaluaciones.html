@@ -1,0 +1,687 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Evaluaciones</title>
+
+    <link rel="stylesheet" href="{% static 'css/evaluaciones.css' %}">
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+
+            <div class="brand-icon">✓</div>
+
+            <div>
+                <h2>404: Club no encontrado</h2>
+                <p>Gestión de Becas</p>
+            </div>
+
+        </div>
+
+        <div class="mineduc">
+            MINISTERIO DE EDUCACIÓN ·<br>
+            GUATEMALA
+        </div>
+
+
+        <nav class="sidebar-menu">
+
+            <a href="{% url 'panel' %}" class="menu-item">
+                <span class="menu-icon">⌂</span>
+                <span>Inicio</span>
+            </a>
+
+            <a href="{% url 'convocatorias' %}" class="menu-item">
+                <span class="menu-icon">⚑</span>
+                <span>Convocatorias</span>
+            </a>
+
+            <a href="{% url 'solicitudes' %}" class="menu-item">
+                <span class="menu-icon">▤</span>
+                <span>Solicitudes</span>
+            </a>
+
+            <a href="{% url 'evaluaciones' %}" class="menu-item active">
+                <span class="menu-icon">☑</span>
+                <span>Evaluaciones</span>
+
+                <span class="badge">
+                    317
+                </span>
+            </a>
+
+            <a href="{% url 'comites' %}" class="menu-item">
+                <span class="menu-icon">♙</span>
+                <span>Comités</span>
+            </a>
+
+            <a href="{% url 'reportes' %}" class="menu-item">
+                <span class="menu-icon">▥</span>
+                <span>Reportes</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-user">
+
+            <div class="avatar">
+                DH
+            </div>
+
+            <div>
+                <strong>dhernandezl34</strong>
+
+                <a href="{% url 'login' %}">
+                    Cerrar sesión
+                </a>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================
+         CONTENIDO PRINCIPAL
+    ========================== -->
+    <main class="main-area">
+
+        <!-- HEADER -->
+        <header class="top-header">
+
+            <div>
+                <h1>Evaluaciones</h1>
+
+                <p>
+                    Domingo, 16 de agosto de 2026
+                </p>
+            </div>
+
+
+            <div class="header-actions">
+
+                <div class="header-search">
+
+                    <input
+                        type="text"
+                        id="headerSearch"
+                        placeholder="Buscar solicitud, estudiante..."
+                    >
+
+                    <span>⌕</span>
+
+                </div>
+
+
+                <button
+                    class="notification-button"
+                    type="button"
+                >
+                    ♧
+
+                    <span class="notification-dot"></span>
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- =========================
+             CONTENIDO
+        ========================== -->
+        <section class="content">
+
+            <!-- TÍTULO -->
+            <div class="page-title-row">
+
+                <div>
+                    <h2>
+                        Evaluaciones
+                    </h2>
+
+                    <p>
+                        Gestión de evaluaciones y puntajes por solicitud
+                    </p>
+                </div>
+
+
+                <div class="page-actions">
+
+                    <span class="pending-counter">
+                        317 pendientes
+                    </span>
+
+                    <button
+                        class="filter-main-button"
+                        type="button"
+                    >
+                        ☰
+                        <span>Filtrar</span>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- FILTROS -->
+            <div class="filters">
+
+                <button
+                    class="filter-button active"
+                    data-filter="todos"
+                >
+                    Todos
+                </button>
+
+                <button
+                    class="filter-button"
+                    data-filter="pendiente"
+                >
+                    Pendiente
+                </button>
+
+                <button
+                    class="filter-button"
+                    data-filter="progreso"
+                >
+                    En progreso
+                </button>
+
+                <button
+                    class="filter-button"
+                    data-filter="completada"
+                >
+                    Completada
+                </button>
+
+            </div>
+
+
+            <!-- =========================
+                 LISTA DE EVALUACIONES
+            ========================== -->
+            <div class="evaluaciones-list">
+
+
+                <!-- EVALUACIÓN 1 -->
+                <article
+                    class="evaluacion-card"
+                    data-status="progreso"
+                >
+
+                    <div class="evaluation-info">
+
+                        <div class="evaluation-meta">
+
+                            <span class="evaluation-id">
+                                #4820
+                            </span>
+
+                            <span class="status progreso">
+                                En progreso
+                            </span>
+
+                            <span class="priority high">
+                                ● Prioridad Alta
+                            </span>
+
+                        </div>
+
+
+                        <h3>
+                            María López Sánchez
+                        </h3>
+
+                        <p class="scholarship">
+                            Posgrado Internacional CONCYT
+                        </p>
+
+                        <p class="evaluator">
+                            Evaluador:
+                            <strong>
+                                Dr. Roberto Castillo
+                            </strong>
+                        </p>
+
+                    </div>
+
+
+                    <div class="evaluation-result">
+
+                        <div class="score">
+
+                            <strong>
+                                78
+                            </strong>
+
+                            <span>
+                                puntos
+                            </span>
+
+                        </div>
+
+                        <button
+                            class="evaluate-button"
+                            type="button"
+                        >
+                            Evaluar
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- EVALUACIÓN 2 -->
+                <article
+                    class="evaluacion-card"
+                    data-status="pendiente"
+                >
+
+                    <div class="evaluation-info">
+
+                        <div class="evaluation-meta">
+
+                            <span class="evaluation-id">
+                                #4819
+                            </span>
+
+                            <span class="status pendiente">
+                                Pendiente
+                            </span>
+
+                            <span class="priority medium">
+                                ● Prioridad Media
+                            </span>
+
+                        </div>
+
+
+                        <h3>
+                            Luis Fernando Pérez Gómez
+                        </h3>
+
+                        <p class="scholarship">
+                            Becas Técnicas y Vocacionales
+                        </p>
+
+                        <p class="evaluator">
+                            Evaluador:
+                            <strong class="not-assigned">
+                                Sin asignar
+                            </strong>
+                        </p>
+
+                    </div>
+
+
+                    <div class="evaluation-result">
+
+                        <div class="score empty-score">
+
+                            <strong>
+                                —
+                            </strong>
+
+                            <span>
+                                sin puntaje
+                            </span>
+
+                        </div>
+
+
+                        <div class="evaluation-buttons">
+
+                            <button
+                                class="evaluate-button"
+                                type="button"
+                            >
+                                Evaluar
+                            </button>
+
+                            <button
+                                class="assign-button"
+                                type="button"
+                            >
+                                Asignar
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- EVALUACIÓN 3 -->
+                <article
+                    class="evaluacion-card"
+                    data-status="progreso"
+                >
+
+                    <div class="evaluation-info">
+
+                        <div class="evaluation-meta">
+
+                            <span class="evaluation-id">
+                                #4816
+                            </span>
+
+                            <span class="status progreso">
+                                En progreso
+                            </span>
+
+                            <span class="priority medium">
+                                ● Prioridad Media
+                            </span>
+
+                        </div>
+
+
+                        <h3>
+                            Gabriela Torres Chávez
+                        </h3>
+
+                        <p class="scholarship">
+                            Becas Técnicas y Vocacionales
+                        </p>
+
+                        <p class="evaluator">
+                            Evaluador:
+                            <strong>
+                                Lic. Carmen Pineda
+                            </strong>
+                        </p>
+
+                    </div>
+
+
+                    <div class="evaluation-result">
+
+                        <div class="score">
+
+                            <strong>
+                                65
+                            </strong>
+
+                            <span>
+                                puntos
+                            </span>
+
+                        </div>
+
+                        <button
+                            class="evaluate-button"
+                            type="button"
+                        >
+                            Evaluar
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- EVALUACIÓN 4 -->
+                <article
+                    class="evaluacion-card"
+                    data-status="pendiente"
+                >
+
+                    <div class="evaluation-info">
+
+                        <div class="evaluation-meta">
+
+                            <span class="evaluation-id">
+                                #4815
+                            </span>
+
+                            <span class="status pendiente">
+                                Pendiente
+                            </span>
+
+                            <span class="priority high">
+                                ● Prioridad Alta
+                            </span>
+
+                        </div>
+
+
+                        <h3>
+                            José Miguel Castillo Rux
+                        </h3>
+
+                        <p class="scholarship">
+                            Posgrado Internacional CONCYT
+                        </p>
+
+                        <p class="evaluator">
+                            Evaluador:
+                            <strong class="not-assigned">
+                                Sin asignar
+                            </strong>
+                        </p>
+
+                    </div>
+
+
+                    <div class="evaluation-result">
+
+                        <div class="score empty-score">
+
+                            <strong>
+                                —
+                            </strong>
+
+                            <span>
+                                sin puntaje
+                            </span>
+
+                        </div>
+
+
+                        <div class="evaluation-buttons">
+
+                            <button
+                                class="evaluate-button"
+                                type="button"
+                            >
+                                Evaluar
+                            </button>
+
+                            <button
+                                class="assign-button"
+                                type="button"
+                            >
+                                Asignar
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- EVALUACIÓN 5 -->
+                <article
+                    class="evaluacion-card"
+                    data-status="completada"
+                >
+
+                    <div class="evaluation-info">
+
+                        <div class="evaluation-meta">
+
+                            <span class="evaluation-id">
+                                #4814
+                            </span>
+
+                            <span class="status completada">
+                                Completada
+                            </span>
+
+                            <span class="priority low">
+                                ● Prioridad Baja
+                            </span>
+
+                        </div>
+
+
+                        <h3>
+                            Rosa Elena Fuentes López
+                        </h3>
+
+                        <p class="scholarship">
+                            Excelencia Académica 2026
+                        </p>
+
+                        <p class="evaluator">
+                            Evaluador:
+                            <strong>
+                                Lic. Andrea Morales
+                            </strong>
+                        </p>
+
+                    </div>
+
+
+                    <div class="evaluation-result">
+
+                        <div class="score completed-score">
+
+                            <strong>
+                                92
+                            </strong>
+
+                            <span>
+                                puntos
+                            </span>
+
+                        </div>
+
+                        <button
+                            class="evaluate-button"
+                            type="button"
+                        >
+                            Ver
+                        </button>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================== -->
+<script>
+
+    const filterButtons =
+        document.querySelectorAll(".filter-button");
+
+    const evaluationCards =
+        document.querySelectorAll(".evaluacion-card");
+
+    const headerSearch =
+        document.getElementById("headerSearch");
+
+    let currentFilter = "todos";
+
+
+    function filterEvaluations() {
+
+        const text =
+            headerSearch.value
+                .toLowerCase()
+                .trim();
+
+
+        evaluationCards.forEach(card => {
+
+            const status =
+                card.dataset.status;
+
+            const content =
+                card.textContent.toLowerCase();
+
+
+            const matchesFilter =
+                currentFilter === "todos" ||
+                status === currentFilter;
+
+
+            const matchesSearch =
+                content.includes(text);
+
+
+            if (matchesFilter && matchesSearch) {
+
+                card.style.display = "flex";
+
+            } else {
+
+                card.style.display = "none";
+
+            }
+
+        });
+
+    }
+
+
+    filterButtons.forEach(button => {
+
+        button.addEventListener("click", function() {
+
+            filterButtons.forEach(btn => {
+                btn.classList.remove("active");
+            });
+
+
+            this.classList.add("active");
+
+            currentFilter =
+                this.dataset.filter;
+
+
+            filterEvaluations();
+
+        });
+
+    });
+
+
+    headerSearch.addEventListener(
+        "input",
+        filterEvaluations
+    );
+
+</script>
+
+</body>
+</html>

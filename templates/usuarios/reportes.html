@@ -1,0 +1,442 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reportes y Estadísticas</title>
+
+    <link rel="stylesheet" href="{% static 'css/reportes.css' %}">
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+            <div class="brand-icon">✓</div>
+
+            <div>
+                <h2>404: Club no encontrado</h2>
+                <p>Gestión de Becas</p>
+            </div>
+        </div>
+
+        <div class="mineduc">
+            MINISTERIO DE EDUCACIÓN ·<br>
+            GUATEMALA
+        </div>
+
+        <nav class="sidebar-menu">
+
+            <a href="{% url 'panel' %}" class="menu-item">
+                <span class="menu-icon">⌂</span>
+                <span>Inicio</span>
+            </a>
+
+            <a href="{% url 'convocatorias' %}" class="menu-item">
+                <span class="menu-icon">⚑</span>
+                <span>Convocatorias</span>
+            </a>
+
+            <a href="{% url 'solicitudes' %}" class="menu-item">
+                <span class="menu-icon">▤</span>
+                <span>Solicitudes</span>
+            </a>
+
+            <a href="{% url 'evaluaciones' %}" class="menu-item">
+                <span class="menu-icon">☑</span>
+                <span>Evaluaciones</span>
+                <span class="badge">317</span>
+            </a>
+
+            <a href="{% url 'comites' %}" class="menu-item">
+                <span class="menu-icon">♙</span>
+                <span>Comités</span>
+            </a>
+
+            <a href="{% url 'reportes' %}" class="menu-item active">
+                <span class="menu-icon">▥</span>
+                <span>Reportes</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-user">
+            <div class="avatar">DH</div>
+
+            <div>
+                <strong>dhernandezl34</strong>
+                <a href="{% url 'login' %}">Cerrar sesión</a>
+            </div>
+        </div>
+
+    </aside>
+
+
+    <!-- CONTENIDO -->
+    <main class="main-area">
+
+        <!-- HEADER -->
+        <header class="top-header">
+
+            <div>
+                <h1>Reportes y Estadísticas</h1>
+                <p>Domingo, 16 de agosto de 2026</p>
+            </div>
+
+            <div class="header-actions">
+
+                <div class="header-search">
+                    <input
+                        type="text"
+                        placeholder="Buscar solicitud, estudiante..."
+                    >
+                    <span>⌕</span>
+                </div>
+
+                <button class="notification-button" type="button">
+                    ♧
+                    <span class="notification-dot"></span>
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <section class="content">
+
+            <!-- TÍTULO -->
+            <div class="page-title-row">
+
+                <div>
+                    <h2>Reportes y Estadísticas</h2>
+                    <p>Métricas del ciclo 2026 en tiempo real</p>
+                </div>
+
+                <button class="export-button" type="button">
+                    ⇩
+                    Exportar PDF
+                </button>
+
+            </div>
+
+
+            <!-- TARJETAS RESUMEN -->
+            <div class="summary-grid">
+
+                <div class="summary-card">
+                    <span class="summary-dot blue"></span>
+
+                    <strong>1,248</strong>
+
+                    <p>Total solicitudes</p>
+                </div>
+
+                <div class="summary-card">
+                    <span class="summary-dot green"></span>
+
+                    <strong>71.5%</strong>
+
+                    <p>Tasa de aprobación</p>
+                </div>
+
+                <div class="summary-card">
+                    <span class="summary-dot yellow"></span>
+
+                    <strong>4.2 días</strong>
+
+                    <p>Tiempo prom. evaluación</p>
+                </div>
+
+                <div class="summary-card">
+                    <span class="summary-dot purple"></span>
+
+                    <strong>892</strong>
+
+                    <p>Becas activas</p>
+                </div>
+
+            </div>
+
+
+            <!-- GRÁFICOS -->
+            <div class="charts-grid">
+
+                <!-- SOLICITUDES POR MES -->
+                <section class="report-card monthly-card">
+
+                    <h3>Solicitudes por mes</h3>
+                    <p class="subtitle">Mar – Ago 2026</p>
+
+                    <div class="monthly-chart">
+
+                        <div class="month-item">
+                            <strong>180</strong>
+                            <div class="month-bar">
+                                <div style="height:42%;"></div>
+                            </div>
+                            <span>Mar</span>
+                        </div>
+
+                        <div class="month-item">
+                            <strong>240</strong>
+                            <div class="month-bar">
+                                <div style="height:57%;"></div>
+                            </div>
+                            <span>Abr</span>
+                        </div>
+
+                        <div class="month-item">
+                            <strong>310</strong>
+                            <div class="month-bar">
+                                <div style="height:74%;"></div>
+                            </div>
+                            <span>May</span>
+                        </div>
+
+                        <div class="month-item">
+                            <strong>275</strong>
+                            <div class="month-bar">
+                                <div style="height:65%;"></div>
+                            </div>
+                            <span>Jun</span>
+                        </div>
+
+                        <div class="month-item">
+                            <strong>420</strong>
+                            <div class="month-bar">
+                                <div style="height:100%;"></div>
+                            </div>
+                            <span>Jul</span>
+                        </div>
+
+                        <div class="month-item">
+                            <strong>390</strong>
+                            <div class="month-bar">
+                                <div style="height:93%;"></div>
+                            </div>
+                            <span>Ago</span>
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- DISTRIBUCIÓN -->
+                <section class="report-card distribution-card">
+
+                    <h3>Distribución por nivel educativo</h3>
+                    <p class="subtitle">Ciclo 2026</p>
+
+                    <div class="distribution-item">
+
+                        <div class="distribution-header">
+                            <span>Nivel Medio</span>
+
+                            <strong>
+                                634
+                                <small>(51%)</small>
+                            </strong>
+                        </div>
+
+                        <div class="distribution-track">
+                            <div class="distribution-fill blue-fill" style="width:51%;"></div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="distribution-item">
+
+                        <div class="distribution-header">
+                            <span>Universitario</span>
+
+                            <strong>
+                                469
+                                <small>(38%)</small>
+                            </strong>
+                        </div>
+
+                        <div class="distribution-track">
+                            <div class="distribution-fill green-fill" style="width:38%;"></div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="distribution-item">
+
+                        <div class="distribution-header">
+                            <span>Posgrado</span>
+
+                            <strong>
+                                145
+                                <small>(12%)</small>
+                            </strong>
+                        </div>
+
+                        <div class="distribution-track">
+                            <div class="distribution-fill yellow-fill" style="width:12%;"></div>
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
+            <!-- TABLA -->
+            <section class="report-card table-card">
+
+                <h3>Resumen por convocatoria</h3>
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>CONVOCATORIA</th>
+                                <th>SOLICITUDES</th>
+                                <th>APROBADAS</th>
+                                <th>RECHAZADAS</th>
+                                <th>PENDIENTES</th>
+                                <th>APROBACIÓN</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+                                <td class="conv-name">
+                                    Excelencia Académica
+                                </td>
+
+                                <td>
+                                    412
+                                </td>
+
+                                <td class="approved">
+                                    210
+                                </td>
+
+                                <td class="rejected">
+                                    80
+                                </td>
+
+                                <td class="pending">
+                                    122
+                                </td>
+
+                                <td class="approval">
+                                    72%
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <td class="conv-name">
+                                    Posgrado Internacional CONCYT
+                                </td>
+
+                                <td>
+                                    88
+                                </td>
+
+                                <td class="approved">
+                                    62
+                                </td>
+
+                                <td class="rejected">
+                                    11
+                                </td>
+
+                                <td class="pending">
+                                    15
+                                </td>
+
+                                <td class="approval">
+                                    70%
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <td class="conv-name">
+                                    Becas Técnicas y Vocacionales
+                                </td>
+
+                                <td>
+                                    634
+                                </td>
+
+                                <td class="approved">
+                                    512
+                                </td>
+
+                                <td class="rejected">
+                                    47
+                                </td>
+
+                                <td class="pending">
+                                    75
+                                </td>
+
+                                <td class="approval">
+                                    81%
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <td class="conv-name">
+                                    Mujer en Ciencia y Tecnología
+                                </td>
+
+                                <td>
+                                    114
+                                </td>
+
+                                <td class="approved">
+                                    108
+                                </td>
+
+                                <td class="rejected">
+                                    6
+                                </td>
+
+                                <td class="pending">
+                                    0
+                                </td>
+
+                                <td class="approval">
+                                    95%
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

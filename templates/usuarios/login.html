@@ -1,0 +1,266 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma Nacional de Becas</title>
+
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+
+<header class="topbar">
+    <div class="brand-icon">
+        <span>✓</span>
+    </div>
+
+    <div class="brand-text">
+        <h1>404: Club no encontrado</h1>
+        <p>Plataforma Nacional para la Gestión Integral de Becas · Ministerio de Educación</p>
+    </div>
+</header>
+
+<main class="page-content">
+
+    <section class="login-card">
+
+        <!-- ENCABEZADO -->
+        <div class="card-header">
+
+            <h2 id="cardTitle">Iniciar sesión</h2>
+
+            <p id="cardSubtitle">
+                Ingresá tus credenciales para acceder al sistema.
+            </p>
+
+            <div class="tabs">
+                <button
+                    id="tabLogin"
+                    class="tab active"
+                    type="button"
+                >
+                    Ingresar
+                </button>
+
+                <button
+                    id="tabRegister"
+                    class="tab"
+                    type="button"
+                >
+                    Registrarse
+                </button>
+            </div>
+
+        </div>
+
+        <div class="card-body">
+
+            <!-- ========================
+                 LOGIN
+            ========================= -->
+
+            <div id="loginSection">
+
+                <form id="loginForm">
+
+                    <div class="form-group">
+                        <label for="loginEmail">
+                            CORREO ELECTRÓNICO
+                        </label>
+
+                        <input
+                            type="email"
+                            id="loginEmail"
+                            placeholder="usuario@mineduc.gob.gt"
+                        >
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="loginPassword">
+                            CONTRASEÑA
+                        </label>
+
+                        <div class="password-wrapper">
+
+                            <input
+                                type="password"
+                                id="loginPassword"
+                                placeholder="Mínimo 6 caracteres"
+                            >
+
+                            <button
+                                type="button"
+                                class="eye-button"
+                                data-password="loginPassword"
+                            >
+                                👁
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="login-button"
+                    >
+                        Ingresar al sistema
+                    </button>
+
+                </form>
+
+                <a href="#" class="forgot-password">
+                    ¿Olvidaste tu contraseña?
+                </a>
+
+            </div>
+
+
+            <!-- ========================
+                 REGISTRO
+            ========================= -->
+
+            <div id="registerSection" class="hidden">
+
+                <form id="registerForm">
+
+                    <div class="form-group">
+                        <label for="fullName">
+                            NOMBRE COMPLETO
+                        </label>
+
+                        <input
+                            type="text"
+                            id="fullName"
+                            placeholder="Ej. Ana Lucía García Méndez"
+                        >
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="registerEmail">
+                            CORREO ELECTRÓNICO
+                        </label>
+
+                        <input
+                            type="email"
+                            id="registerEmail"
+                            placeholder="usuario@mineduc.gob.gt"
+                        >
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="role">
+                            ROL
+                        </label>
+
+                        <select id="role">
+
+                            <option value="">
+                                Seleccioná un rol
+                            </option>
+
+                            <option value="administrador">
+                                Administrador
+                            </option>
+
+                            <option value="evaluador">
+                                Evaluador
+                            </option>
+
+                            <option value="estudiante">
+                                Estudiante
+                            </option>
+
+                            <option value="personal">
+                                Personal administrativo
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="registerPassword">
+                            CONTRASEÑA
+                        </label>
+
+                        <div class="password-wrapper">
+
+                            <input
+                                type="password"
+                                id="registerPassword"
+                                placeholder="Mínimo 6 caracteres"
+                            >
+
+                            <button
+                                type="button"
+                                class="eye-button"
+                                data-password="registerPassword"
+                            >
+                                👁
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="confirmPassword">
+                            CONFIRMAR CONTRASEÑA
+                        </label>
+
+                        <div class="password-wrapper">
+
+                            <input
+                                type="password"
+                                id="confirmPassword"
+                                placeholder="Repetí tu contraseña"
+                            >
+
+                            <button
+                                type="button"
+                                class="eye-button"
+                                data-password="confirmPassword"
+                            >
+                                👁
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="login-button"
+                    >
+                        Crear cuenta
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <p class="restricted-text">
+                Acceso restringido a personal autorizado del Ministerio de Educación de Guatemala.
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+<script src="{% static 'js/login.js' %}"></script>
+</body>
+</html>

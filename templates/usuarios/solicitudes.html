@@ -1,0 +1,809 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Solicitudes</title>
+
+    <link rel="stylesheet" href="{% static 'css/solicitudes.css' %}">
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+
+            <div class="brand-icon">✓</div>
+
+            <div>
+                <h2>404: Club no encontrado</h2>
+                <p>Gestión de Becas</p>
+            </div>
+
+        </div>
+
+        <div class="mineduc">
+            MINISTERIO DE EDUCACIÓN ·<br>
+            GUATEMALA
+        </div>
+
+
+        <nav class="sidebar-menu">
+
+            <a href="{% url 'panel' %}" class="menu-item">
+                <span class="menu-icon">⌂</span>
+                <span>Inicio</span>
+            </a>
+
+            <a href="{% url 'convocatorias' %}" class="menu-item">
+                <span class="menu-icon">⚑</span>
+                <span>Convocatorias</span>
+            </a>
+
+            <a href="{% url 'solicitudes' %}" class="menu-item active">
+                <span class="menu-icon">▤</span>
+                <span>Solicitudes</span>
+            </a>
+
+            <a href="{% url 'evaluaciones' %}" class="menu-item">
+                <span class="menu-icon">☑</span>
+                <span>Evaluaciones</span>
+
+                <span class="badge">
+                    317
+                </span>
+            </a>
+
+            <a href="{% url 'comites' %}" class="menu-item">
+                <span class="menu-icon">♙</span>
+                <span>Comités</span>
+            </a>
+
+            <a href="{% url 'reportes' %}" class="menu-item">
+                <span class="menu-icon">▥</span>
+                <span>Reportes</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-user">
+
+            <div class="avatar">
+                DH
+            </div>
+
+            <div>
+                <strong>dhernandezl34</strong>
+
+                <a href="{% url 'login' %}">
+                    Cerrar sesión
+                </a>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================
+         CONTENIDO PRINCIPAL
+    ========================== -->
+    <main class="main-area">
+
+
+        <!-- HEADER -->
+        <header class="top-header">
+
+            <div>
+
+                <h1>
+                    Solicitudes
+                </h1>
+
+                <p>
+                    Domingo, 16 de agosto de 2026
+                </p>
+
+            </div>
+
+
+            <div class="header-actions">
+
+                <div class="header-search">
+
+                    <input
+                        type="text"
+                        placeholder="Buscar solicitud, estudiante..."
+                    >
+
+                    <span>
+                        ⌕
+                    </span>
+
+                </div>
+
+
+                <button
+                    class="notification-button"
+                    type="button"
+                >
+                    ♧
+
+                    <span class="notification-dot"></span>
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- =========================
+             CONTENIDO
+        ========================== -->
+        <section class="content">
+
+
+            <!-- TÍTULO -->
+            <div class="page-title-row">
+
+                <div>
+
+                    <h2>
+                        Solicitudes
+                    </h2>
+
+                    <p>
+                        Registro y seguimiento de solicitudes de becas
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="new-button"
+                    type="button"
+                >
+                    <span>＋</span>
+
+                    Nueva solicitud
+                </button>
+
+            </div>
+
+
+            <!-- =========================
+                 FILTROS
+            ========================== -->
+            <div class="filter-row">
+
+
+                <div class="table-search">
+
+                    <span>
+                        ⌕
+                    </span>
+
+                    <input
+                        type="text"
+                        id="solicitudSearch"
+                        placeholder="Buscar por nombre o ID..."
+                    >
+
+                </div>
+
+
+                <div class="filters">
+
+                    <button
+                        class="filter-button active"
+                        data-filter="todos"
+                    >
+                        Todos
+                    </button>
+
+                    <button
+                        class="filter-button"
+                        data-filter="aprobada"
+                    >
+                        Aprobada
+                    </button>
+
+                    <button
+                        class="filter-button"
+                        data-filter="revision"
+                    >
+                        En revisión
+                    </button>
+
+                    <button
+                        class="filter-button"
+                        data-filter="pendiente"
+                    >
+                        Pendiente
+                    </button>
+
+                    <button
+                        class="filter-button"
+                        data-filter="rechazada"
+                    >
+                        Rechazada
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 TABLA
+            ========================== -->
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+
+                            <th>
+                                ESTUDIANTE
+                            </th>
+
+                            <th>
+                                NIVEL
+                            </th>
+
+                            <th>
+                                CONVOCATORIA
+                            </th>
+
+                            <th>
+                                FECHA
+                            </th>
+
+                            <th>
+                                ESTADO
+                            </th>
+
+                            <th>
+                                ACCIÓN
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="solicitudesBody">
+
+
+                        <!-- SOLICITUD 1 -->
+                        <tr
+                            class="solicitud-row"
+                            data-status="aprobada"
+                        >
+
+                            <td class="id">
+                                #4821
+                            </td>
+
+                            <td class="student">
+                                Carlos Enrique Méndez Ajú
+                            </td>
+
+                            <td>
+                                Universitario
+                            </td>
+
+                            <td>
+                                Excelencia Académica 2026
+                            </td>
+
+                            <td>
+                                12 ago 2026
+                            </td>
+
+                            <td>
+
+                                <span class="status aprobada">
+                                    Aprobada
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <button
+                                    class="action-eye"
+                                    type="button"
+                                    title="Ver solicitud"
+                                >
+                                    ◉
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <!-- SOLICITUD 2 -->
+                        <tr
+                            class="solicitud-row"
+                            data-status="revision"
+                        >
+
+                            <td class="id">
+                                #4820
+                            </td>
+
+                            <td class="student">
+                                María López Sánchez
+                            </td>
+
+                            <td>
+                                Posgrado
+                            </td>
+
+                            <td>
+                                Posgrado Internacional CONCYT
+                            </td>
+
+                            <td>
+                                11 ago 2026
+                            </td>
+
+                            <td>
+
+                                <span class="status revision">
+                                    En revisión
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <button
+                                    class="action-eye"
+                                    type="button"
+                                >
+                                    ◉
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <!-- SOLICITUD 3 -->
+                        <tr
+                            class="solicitud-row"
+                            data-status="pendiente"
+                        >
+
+                            <td class="id">
+                                #4819
+                            </td>
+
+                            <td class="student">
+                                Luis Fernando Pérez Gómez
+                            </td>
+
+                            <td>
+                                Nivel Medio
+                            </td>
+
+                            <td>
+                                Becas Técnicas y Vocacionales
+                            </td>
+
+                            <td>
+                                11 ago 2026
+                            </td>
+
+                            <td>
+
+                                <span class="status pendiente">
+                                    Pendiente
+                                </span>
+
+                            </td>
+
+                            <td class="actions-cell">
+
+                                <button
+                                    class="action-eye"
+                                    type="button"
+                                >
+                                    ◉
+                                </button>
+
+                                <button
+                                    class="action-approve"
+                                    type="button"
+                                    title="Aprobar"
+                                >
+                                    ✓
+                                </button>
+
+                                <button
+                                    class="action-reject"
+                                    type="button"
+                                    title="Rechazar"
+                                >
+                                    ×
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <!-- SOLICITUD 4 -->
+                        <tr
+                            class="solicitud-row"
+                            data-status="aprobada"
+                        >
+
+                            <td class="id">
+                                #4818
+                            </td>
+
+                            <td class="student">
+                                Ana Sofía Ramos Ixchel
+                            </td>
+
+                            <td>
+                                Universitario
+                            </td>
+
+                            <td>
+                                Mujer en Ciencia y Tecnología
+                            </td>
+
+                            <td>
+                                10 ago 2026
+                            </td>
+
+                            <td>
+
+                                <span class="status aprobada">
+                                    Aprobada
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <button
+                                    class="action-eye"
+                                    type="button"
+                                >
+                                    ◉
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <!-- SOLICITUD 5 -->
+                        <tr
+                            class="solicitud-row"
+                            data-status="rechazada"
+                        >
+
+                            <td class="id">
+                                #4817
+                            </td>
+
+                            <td class="student">
+                                Pedro Alvarado Recinos
+                            </td>
+
+                            <td>
+                                Universitario
+                            </td>
+
+                            <td>
+                                Excelencia Académica 2026
+                            </td>
+
+                            <td>
+                                10 ago 2026
+                            </td>
+
+                            <td>
+
+                                <span class="status rechazada">
+                                    Rechazada
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <button
+                                    class="action-eye"
+                                    type="button"
+                                >
+                                    ◉
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <!-- SOLICITUD 6 -->
+                        <tr
+                            class="solicitud-row"
+                            data-status="revision"
+                        >
+
+                            <td class="id">
+                                #4816
+                            </td>
+
+                            <td class="student">
+                                Gabriela Torres Chávez
+                            </td>
+
+                            <td>
+                                Nivel Medio
+                            </td>
+
+                            <td>
+                                Becas Técnicas y Vocacionales
+                            </td>
+
+                            <td>
+                                09 ago 2026
+                            </td>
+
+                            <td>
+
+                                <span class="status revision">
+                                    En revisión
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <button
+                                    class="action-eye"
+                                    type="button"
+                                >
+                                    ◉
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <!-- SOLICITUD 7 -->
+                        <tr
+                            class="solicitud-row"
+                            data-status="pendiente"
+                        >
+
+                            <td class="id">
+                                #4815
+                            </td>
+
+                            <td class="student">
+                                José Miguel Castillo Rux
+                            </td>
+
+                            <td>
+                                Posgrado
+                            </td>
+
+                            <td>
+                                Posgrado Internacional CONCYT
+                            </td>
+
+                            <td>
+                                09 ago 2026
+                            </td>
+
+                            <td>
+
+                                <span class="status pendiente">
+                                    Pendiente
+                                </span>
+
+                            </td>
+
+                            <td class="actions-cell">
+
+                                <button
+                                    class="action-eye"
+                                    type="button"
+                                >
+                                    ◉
+                                </button>
+
+                                <button
+                                    class="action-approve"
+                                    type="button"
+                                >
+                                    ✓
+                                </button>
+
+                                <button
+                                    class="action-reject"
+                                    type="button"
+                                >
+                                    ×
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <!-- SOLICITUD 8 -->
+                        <tr
+                            class="solicitud-row"
+                            data-status="aprobada"
+                        >
+
+                            <td class="id">
+                                #4814
+                            </td>
+
+                            <td class="student">
+                                Rosa Elena Fuentes López
+                            </td>
+
+                            <td>
+                                Universitario
+                            </td>
+
+                            <td>
+                                Excelencia Académica 2026
+                            </td>
+
+                            <td>
+                                08 ago 2026
+                            </td>
+
+                            <td>
+
+                                <span class="status aprobada">
+                                    Aprobada
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <button
+                                    class="action-eye"
+                                    type="button"
+                                >
+                                    ◉
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================== -->
+<script>
+
+    const filterButtons =
+        document.querySelectorAll(".filter-button");
+
+    const solicitudRows =
+        document.querySelectorAll(".solicitud-row");
+
+    const solicitudSearch =
+        document.getElementById("solicitudSearch");
+
+
+    let currentFilter = "todos";
+
+
+    function filterSolicitudes() {
+
+        const text =
+            solicitudSearch.value
+                .toLowerCase()
+                .trim();
+
+
+        solicitudRows.forEach(row => {
+
+            const status =
+                row.dataset.status;
+
+            const rowText =
+                row.textContent.toLowerCase();
+
+
+            const matchesFilter =
+                currentFilter === "todos" ||
+                status === currentFilter;
+
+
+            const matchesSearch =
+                rowText.includes(text);
+
+
+            if (matchesFilter && matchesSearch) {
+
+                row.style.display = "";
+
+            } else {
+
+                row.style.display = "none";
+
+            }
+
+        });
+
+    }
+
+
+    filterButtons.forEach(button => {
+
+        button.addEventListener("click", function() {
+
+            filterButtons.forEach(btn => {
+                btn.classList.remove("active");
+            });
+
+
+            this.classList.add("active");
+
+            currentFilter =
+                this.dataset.filter;
+
+
+            filterSolicitudes();
+
+        });
+
+    });
+
+
+    solicitudSearch.addEventListener(
+        "input",
+        filterSolicitudes
+    );
+
+</script>
+
+</body>
+
+</html>
