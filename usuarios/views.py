@@ -1,7 +1,10 @@
-from django.db.models import Count
-from django.shortcuts import render
+import secrets
+from functools import wraps
 
-from .models import Convocatoria, Evaluacion, HistorialEstado, SolicitudBecas
+from django.db.models import Count
+from django.shortcuts import redirect, render
+
+from .models import Convocatoria, Evaluacion, HistorialEstado, SolicitudBecas, Usuario
 
 # (valor en la base, etiqueta en pantalla, clase CSS de la barra)
 NIVELES = [
@@ -19,11 +22,50 @@ DOT_POR_ESTADO = {
 }
 
 
+# ---------------------------------------------------------------------------
+# Sesion
+# ---------------------------------------------------------------------------
+def login_requerido(vista):
+    """Si no hay sesion iniciada, manda al login."""
+    @wraps(vista)
+    def envoltura(request, *args, **kwargs):
+        if not request.session.get("usuario_id"):
+            return redirect("login")
+        return vista(request, *args, **kwargs)
+    return envoltura
+
+
 def login_view(request):
+    if request.method == "POST":
+        correo = (request.POST.get("correo") or request.POST.get("email") or "").strip()
+        contrasena = request.POST.get("contrasena") or request.POST.get("password") or ""
+
+        usuario = Usuario.objects.filter(correo__iexact=correo).first()
+        if usuario and secrets.compare_digest(
+            usuario.contrasena.encode(), contrasena.encode()
+        ):
+            request.session["usuario_id"] = int(usuario.id_usuario)
+            request.session["usuario_nombre"] = usuario.nombre
+            return redirect("panel")
+
+        return render(request, "usuarios/login.html",
+                      {"error": "Correo o contraseña incorrectos."})
+
     return render(request, "usuarios/login.html")
 
 
+def logout_view(request):
+    request.session.flush()
+    return redirect("login")
+
+
+# ---------------------------------------------------------------------------
+# Panel
+# ---------------------------------------------------------------------------
+@login_requerido
 def panel_view(request):
+    nombre = request.session.get("usuario_nombre", "")
+
     # ---- Totales de solicitudes ----
     total = SolicitudBecas.objects.count()
     aprobadas = SolicitudBecas.objects.filter(
@@ -98,6 +140,8 @@ def panel_view(request):
     ).count()
 
     contexto = {
+        "usuario_nombre": nombre,
+        "iniciales": nombre[:2].upper(),
         "total": total,
         "aprobadas": aprobadas,
         "tasa": tasa,
@@ -109,21 +153,29 @@ def panel_view(request):
     return render(request, "usuarios/panel.html", contexto)
 
 
+# ---------------------------------------------------------------------------
+# Otras paginas (todavia sin datos de Oracle POR EL MOMENTO)
+# ---------------------------------------------------------------------------
+@login_requerido
 def convocatorias_view(request):
     return render(request, "usuarios/convocatorias.html")
 
 
+@login_requerido
 def solicitudes_view(request):
     return render(request, "usuarios/solicitudes.html")
 
 
+@login_requerido
 def evaluaciones_view(request):
     return render(request, "usuarios/evaluaciones.html")
 
 
+@login_requerido
 def comites_view(request):
     return render(request, "usuarios/comites.html")
 
 
+@login_requerido
 def reportes_view(request):
     return render(request, "usuarios/reportes.html")

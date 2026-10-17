@@ -7,6 +7,8 @@ urlpatterns = [
 
     path("panel/", views.panel_view, name="panel"),
 
+    path("salir/", views.logout_view, name="logout"),
+
     path(
         "convocatorias/",
         views.convocatorias_view,

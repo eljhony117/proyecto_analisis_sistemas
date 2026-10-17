@@ -61,27 +61,27 @@ eyeButtons.forEach(function (button) {
 
 });
 
+
 /* =========================================
-   IR AL PANEL PRINCIPAL
+   FORMULARIOS
 ========================================= */
 
-const loginForm = document.getElementById("loginForm");
+/*
+   El formulario de inicio de sesión (loginForm) ya NO se intercepta aquí:
+   el navegador lo envía a Django (POST), y Django valida el correo y la
+   contraseña contra la tabla USUARIO de Oracle.
+*/
+
+/*
+   El registro todavía no está conectado a la base de datos. Se bloquea el
+   envío para que no se salte la validación y se avisa al usuario.
+*/
 const registerForm = document.getElementById("registerForm");
 
-
-loginForm.addEventListener("submit", function(event) {
-
-    event.preventDefault();
-
-    window.location.href = "/panel/";
-
-});
-
-
-registerForm.addEventListener("submit", function(event) {
+registerForm.addEventListener("submit", function (event) {
 
     event.preventDefault();
 
-    window.location.href = "/panel/";
+    alert("El registro de cuentas todavía no está disponible.");
 
 });
