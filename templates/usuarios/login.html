@@ -1,266 +1,442 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plataforma Nacional de Becas</title>
 
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <title>Panel Principal</title>
+
+    <link rel="stylesheet" href="{% static 'css/panel.css' %}">
 </head>
+
 <body>
 
-<header class="topbar">
-    <div class="brand-icon">
-        <span>✓</span>
-    </div>
+<div class="app-layout">
 
-    <div class="brand-text">
-        <h1>404: Club no encontrado</h1>
-        <p>Plataforma Nacional para la Gestión Integral de Becas · Ministerio de Educación</p>
-    </div>
-</header>
+    <!-- =========================
+         MENÚ LATERAL
+    ========================== -->
+    <aside class="sidebar">
 
-<main class="page-content">
+        <div class="sidebar-brand">
 
-    <section class="login-card">
+            <div class="brand-icon">✓</div>
 
-        <!-- ENCABEZADO -->
-        <div class="card-header">
-
-            <h2 id="cardTitle">Iniciar sesión</h2>
-
-            <p id="cardSubtitle">
-                Ingresá tus credenciales para acceder al sistema.
-            </p>
-
-            <div class="tabs">
-                <button
-                    id="tabLogin"
-                    class="tab active"
-                    type="button"
-                >
-                    Ingresar
-                </button>
-
-                <button
-                    id="tabRegister"
-                    class="tab"
-                    type="button"
-                >
-                    Registrarse
-                </button>
+            <div>
+                <h2>404: Club no encontrado</h2>
+                <p>Gestión de Becas</p>
             </div>
 
         </div>
 
-        <div class="card-body">
+        <div class="mineduc">
+            MINISTERIO DE EDUCACIÓN ·<br>
+            GUATEMALA
+        </div>
 
-            <!-- ========================
-                 LOGIN
-            ========================= -->
 
-            <div id="loginSection">
+        <!-- MENÚ -->
+        <nav class="sidebar-menu">
 
-                <form id="loginForm">
+            <a href="{% url 'panel' %}" class="menu-item active">
+                ⌂
+                <span>Inicio</span>
+            </a>
 
-                    <div class="form-group">
-                        <label for="loginEmail">
-                            CORREO ELECTRÓNICO
-                        </label>
+            <a href="{% url 'convocatorias' %}" class="menu-item">
+                📣
+                <span>Convocatorias</span>
+            </a>
 
-                        <input
-                            type="email"
-                            id="loginEmail"
-                            placeholder="usuario@mineduc.gob.gt"
-                        >
-                    </div>
+            <a href="{% url 'solicitudes' %}" class="menu-item">
+                ▤
+                <span>Solicitudes</span>
+            </a>
 
-                    <div class="form-group">
+            <a href="{% url 'evaluaciones' %}" class="menu-item">
+                ☑
+                <span>Evaluaciones</span>
+                <span class="badge">{{ evaluaciones_pendientes }}</span>
+            </a>
 
-                        <label for="loginPassword">
-                            CONTRASEÑA
-                        </label>
+            <a href="{% url 'comites' %}" class="menu-item">
+                ♙
+                <span>Comités</span>
+            </a>
 
-                        <div class="password-wrapper">
+            <a href="{% url 'reportes' %}" class="menu-item">
+                ▥
+                <span>Reportes</span>
+            </a>
 
-                            <input
-                                type="password"
-                                id="loginPassword"
-                                placeholder="Mínimo 6 caracteres"
-                            >
+        </nav>
 
-                            <button
-                                type="button"
-                                class="eye-button"
-                                data-password="loginPassword"
-                            >
-                                👁
-                            </button>
 
-                        </div>
+        <!-- USUARIO CON SESIÓN INICIADA -->
+        <div class="sidebar-user">
 
-                    </div>
+            <div class="avatar">
+                {{ iniciales }}
+            </div>
 
-                    <button
-                        type="submit"
-                        class="login-button"
-                    >
-                        Ingresar al sistema
-                    </button>
+            <div>
+                <strong>{{ usuario_nombre }}</strong>
 
-                </form>
-
-                <a href="#" class="forgot-password">
-                    ¿Olvidaste tu contraseña?
+                <a href="{% url 'logout' %}">
+                    Cerrar sesión
                 </a>
-
             </div>
-
-
-            <!-- ========================
-                 REGISTRO
-            ========================= -->
-
-            <div id="registerSection" class="hidden">
-
-                <form id="registerForm">
-
-                    <div class="form-group">
-                        <label for="fullName">
-                            NOMBRE COMPLETO
-                        </label>
-
-                        <input
-                            type="text"
-                            id="fullName"
-                            placeholder="Ej. Ana Lucía García Méndez"
-                        >
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="registerEmail">
-                            CORREO ELECTRÓNICO
-                        </label>
-
-                        <input
-                            type="email"
-                            id="registerEmail"
-                            placeholder="usuario@mineduc.gob.gt"
-                        >
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label for="role">
-                            ROL
-                        </label>
-
-                        <select id="role">
-
-                            <option value="">
-                                Seleccioná un rol
-                            </option>
-
-                            <option value="administrador">
-                                Administrador
-                            </option>
-
-                            <option value="evaluador">
-                                Evaluador
-                            </option>
-
-                            <option value="estudiante">
-                                Estudiante
-                            </option>
-
-                            <option value="personal">
-                                Personal administrativo
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label for="registerPassword">
-                            CONTRASEÑA
-                        </label>
-
-                        <div class="password-wrapper">
-
-                            <input
-                                type="password"
-                                id="registerPassword"
-                                placeholder="Mínimo 6 caracteres"
-                            >
-
-                            <button
-                                type="button"
-                                class="eye-button"
-                                data-password="registerPassword"
-                            >
-                                👁
-                            </button>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label for="confirmPassword">
-                            CONFIRMAR CONTRASEÑA
-                        </label>
-
-                        <div class="password-wrapper">
-
-                            <input
-                                type="password"
-                                id="confirmPassword"
-                                placeholder="Repetí tu contraseña"
-                            >
-
-                            <button
-                                type="button"
-                                class="eye-button"
-                                data-password="confirmPassword"
-                            >
-                                👁
-                            </button>
-
-                        </div>
-
-                    </div>
-
-
-                    <button
-                        type="submit"
-                        class="login-button"
-                    >
-                        Crear cuenta
-                    </button>
-
-                </form>
-
-            </div>
-
-
-            <p class="restricted-text">
-                Acceso restringido a personal autorizado del Ministerio de Educación de Guatemala.
-            </p>
 
         </div>
 
-    </section>
+    </aside>
 
-</main>
 
-<script src="{% static 'js/login.js' %}"></script>
+    <!-- =========================
+         CONTENIDO PRINCIPAL
+    ========================== -->
+    <main class="main-area">
+
+
+        <!-- HEADER -->
+        <header class="top-header">
+
+            <div>
+                <h1>Panel Principal</h1>
+                {% now "l, j \d\e F \d\e Y" as hoy %}
+                <p>{{ hoy|capfirst }}</p>
+            </div>
+
+
+            <div class="header-actions">
+
+                <!-- BUSCADOR -->
+                <div class="search-box">
+
+                    <input
+                        type="text"
+                        placeholder="Buscar solicitud, estudiante..."
+                    >
+
+                    <span>⌕</span>
+
+                </div>
+
+
+                <!-- NOTIFICACIONES -->
+                <button
+                    class="notification-button"
+                    type="button"
+                    title="Notificaciones"
+                >
+                    ♧
+                    <span class="notification-dot"></span>
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- =========================
+             DASHBOARD
+        ========================== -->
+        <section class="dashboard">
+
+
+            <!-- COLUMNA IZQUIERDA -->
+            <div class="left-column">
+
+
+                <!-- CONVOCATORIAS ABIERTAS (datos de Oracle) -->
+                <section class="card convocatorias-card">
+
+                    {% for c in convocatorias %}
+                    <div class="convocatoria-row">
+
+                        <div class="conv-info">
+
+                            <div class="conv-meta">
+
+                                <span class="status open">
+                                    Abierta
+                                </span>
+
+                                <span>
+                                    {{ c.nivel }}
+                                </span>
+
+                            </div>
+
+                            <h3>
+                                {{ c.nombre }}
+                            </h3>
+
+                            <p>
+                                Cierre: {{ c.cierre|date:"d M Y" }}
+                            </p>
+
+                        </div>
+
+
+                        <div class="conv-progress">
+
+                            <div class="progress-info">
+
+                                <span>
+                                    {{ c.solicitudes }} sol.
+                                </span>
+
+                                <span>
+                                    {{ c.pct }}%
+                                </span>
+
+                                <a href="{% url 'convocatorias' %}">
+                                    Ver →
+                                </a>
+
+                            </div>
+
+
+                            <div class="progress-track">
+
+                                <div
+                                    class="progress-bar green-bar"
+                                    style="width:{{ c.pct }}%">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    {% empty %}
+                    <div class="convocatoria-row">
+                        <div class="conv-info">
+                            <p>No hay convocatorias abiertas.</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </section>
+
+
+                <!-- =========================
+                     ACTIVIDAD RECIENTE
+                ========================== -->
+                <section class="card activity-card">
+
+                    <div class="card-title-row">
+
+                        <div>
+                            <h2>
+                                Actividad Reciente
+                            </h2>
+
+                            <p>
+                                Últimas acciones en el sistema
+                            </p>
+                        </div>
+
+
+                        <a href="{% url 'solicitudes' %}">
+                            Ver historial →
+                        </a>
+
+                    </div>
+
+
+                    <div class="activity-list">
+
+                        {% for a in actividad %}
+                        <div class="activity-item">
+
+                            <span class="dot {{ a.dot }}"></span>
+
+                            <div>
+                                <p>
+                                    {{ a.texto }}
+                                </p>
+
+                                <small>
+                                    {{ a.fecha|date:"d/m/Y" }}
+                                </small>
+                            </div>
+
+                        </div>
+                        {% empty %}
+                        <div class="activity-item">
+                            <div>
+                                <p>Todavía no hay actividad registrada.</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
+            <!-- =========================
+                 COLUMNA DERECHA
+            ========================== -->
+            <div class="right-column">
+
+
+                <!-- ACCIONES RÁPIDAS -->
+                <section class="card quick-actions">
+
+
+                    <!-- ASIGNAR COMITÉ -->
+                    <a
+                        href="{% url 'comites' %}"
+                        class="quick-action"
+                    >
+
+                        <div class="action-icon purple">
+                            ♙
+                        </div>
+
+                        <div>
+                            <h3>
+                                Asignar Comité
+                            </h3>
+
+                            <p>
+                                Configurar evaluadores
+                            </p>
+                        </div>
+
+                    </a>
+
+
+                    <!-- GENERAR REPORTE -->
+                    <a
+                        href="{% url 'reportes' %}"
+                        class="quick-action"
+                    >
+
+                        <div class="action-icon gold">
+                            ⇩
+                        </div>
+
+                        <div>
+                            <h3>
+                                Generar Reporte
+                            </h3>
+
+                            <p>
+                                Exportar estadísticas
+                            </p>
+                        </div>
+
+                    </a>
+
+                </section>
+
+
+                <!-- =========================
+                     ESTADÍSTICAS (datos de Oracle)
+                ========================== -->
+                <section class="card stats-card">
+
+                    <h2>
+                        Solicitudes por Nivel
+                    </h2>
+
+                    <p class="subtitle">
+                        Distribución actual
+                    </p>
+
+
+                    {% for n in niveles %}
+                    <div class="stat-item">
+
+                        <div class="stat-header">
+
+                            <span>
+                                {{ n.etiqueta }}
+                            </span>
+
+                            <strong>
+                                {{ n.total }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="stat-track">
+
+                            <div
+                                class="stat-fill {{ n.color }}"
+                                style="width:{{ n.pct }}%">
+                            </div>
+
+                        </div>
+
+                        <small>
+                            {{ n.pct }}% del total
+                        </small>
+
+                    </div>
+                    {% endfor %}
+
+
+                    <hr>
+
+
+                    <!-- RESUMEN -->
+                    <div class="summary-row">
+
+                        <span>
+                            Total registradas
+                        </span>
+
+                        <strong>
+                            {{ total }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-row">
+
+                        <span>
+                            Aprobadas
+                        </span>
+
+                        <strong class="green-text">
+                            {{ aprobadas }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-row">
+
+                        <span>
+                            Tasa de aprobación
+                        </span>
+
+                        <strong>
+                            {{ tasa|floatformat:1 }}%
+                        </strong>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
 </body>
 </html>

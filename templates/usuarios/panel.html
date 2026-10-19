@@ -74,17 +74,17 @@
         </nav>
 
 
-        <!-- USUARIO (pendiente: se conectara con el login) -->
+        <!-- USUARIO CON SESIÓN INICIADA -->
         <div class="sidebar-user">
 
             <div class="avatar">
-                DA
+                {{ iniciales }}
             </div>
 
             <div>
-                <strong>Daniel Hernandez</strong>
+                <strong>{{ usuario_nombre }}</strong>
 
-                <a href="{% url 'login' %}">
+                <a href="{% url 'logout' %}">
                     Cerrar sesión
                 </a>
             </div>
@@ -426,17 +426,6 @@
                             {{ tasa|floatformat:1 }}%
                         </strong>
 
-                    </div>
-
-                    <div class="avatar">
-                        {{ iniciales }}
-                    </div>
-
-                    <div>
-                        <strong>{{ usuario_nombre }}</strong>
-                        <a href="{% url 'logout' %}">
-                            Cerrar sesión
-                        </a>
                     </div>
 
                 </section>
