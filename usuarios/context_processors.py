@@ -8,7 +8,6 @@ ETIQUETAS_ROL = {
     "ADMINISTRADOR": "Administrador",
     "EVALUADOR": "Evaluador",
     "ESTUDIANTE": "Estudiante",
-    "PERSONAL": "Personal administrativo",
 }
 
 

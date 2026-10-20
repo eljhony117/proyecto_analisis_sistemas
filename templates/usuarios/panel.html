@@ -45,10 +45,12 @@
                 <span>Inicio</span>
             </a>
 
+            {% if rol == 'ADMINISTRADOR' or rol == 'ESTUDIANTE' %}
             <a href="{% url 'convocatorias' %}" class="menu-item">
                 📣
                 <span>Convocatorias</span>
             </a>
+            {% endif %}
 
             <a href="{% url 'solicitudes' %}" class="menu-item">
                 ▤
@@ -63,7 +65,7 @@
             </a>
             {% endif %}
 
-            {% if rol == 'ADMINISTRADOR' or rol == 'PERSONAL' %}
+            {% if rol == 'ADMINISTRADOR' or rol == 'EVALUADOR' %}
             <a href="{% url 'comites' %}" class="menu-item">
                 ♙
                 <span>Comités</span>
@@ -212,9 +214,11 @@
                                     {{ c.pct }}%
                                 </span>
 
+                                {% if rol == 'ADMINISTRADOR' or rol == 'ESTUDIANTE' %}
                                 <a href="{% url 'convocatorias' %}">
                                     Ver →
                                 </a>
+                                {% endif %}
 
                             </div>
 
@@ -306,8 +310,8 @@
             <div class="right-column">
 
 
-                <!-- ACCIONES RÁPIDAS (administración y personal administrativo) -->
-                {% if rol == 'ADMINISTRADOR' or rol == 'PERSONAL' %}
+                <!-- ACCIONES RÁPIDAS (solo administrador) -->
+                {% if rol == 'ADMINISTRADOR' %}
                 <section class="card quick-actions">
 
 
