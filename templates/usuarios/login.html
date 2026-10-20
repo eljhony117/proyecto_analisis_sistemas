@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plataforma Nacional de Becas</title>
 
-    <link rel="stylesheet" href="{% static 'css/login.css' %}?v=3">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}?v=5">
 </head>
 <body data-tab="{{ tab|default:'login' }}">
 
@@ -203,6 +203,39 @@
 
                     <div class="form-group">
 
+                        <label for="role">
+                            ROL
+                        </label>
+
+                        <select id="role" name="rol" required>
+
+                            <option value="">
+                                Seleccioná un rol
+                            </option>
+
+                            <option value="ADMINISTRADOR" {% if form_rol == 'ADMINISTRADOR' %}selected{% endif %}>
+                                Administrador
+                            </option>
+
+                            <option value="EVALUADOR" {% if form_rol == 'EVALUADOR' %}selected{% endif %}>
+                                Evaluador
+                            </option>
+
+                            <option value="ESTUDIANTE" {% if form_rol == 'ESTUDIANTE' %}selected{% endif %}>
+                                Estudiante
+                            </option>
+
+                            <option value="PERSONAL" {% if form_rol == 'PERSONAL' %}selected{% endif %}>
+                                Personal administrativo
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
                         <label for="registerPassword">
                             CONTRASEÑA
                         </label>
@@ -287,6 +320,6 @@
 
 </main>
 
-<script src="{% static 'js/login.js' %}?v=3"></script>
+<script src="{% static 'js/login.js' %}?v=5"></script>
 </body>
 </html>

@@ -37,7 +37,7 @@
         </div>
 
 
-        <!-- MENÚ -->
+        <!-- MENÚ (según el rol de la sesión) -->
         <nav class="sidebar-menu">
 
             <a href="{% url 'panel' %}" class="menu-item active">
@@ -55,12 +55,15 @@
                 <span>Solicitudes</span>
             </a>
 
+            {% if rol == 'ADMINISTRADOR' or rol == 'EVALUADOR' %}
             <a href="{% url 'evaluaciones' %}" class="menu-item">
                 ☑
                 <span>Evaluaciones</span>
                 <span class="badge">{{ evaluaciones_pendientes }}</span>
             </a>
+            {% endif %}
 
+            {% if rol == 'ADMINISTRADOR' or rol == 'PERSONAL' %}
             <a href="{% url 'comites' %}" class="menu-item">
                 ♙
                 <span>Comités</span>
@@ -70,6 +73,7 @@
                 ▥
                 <span>Reportes</span>
             </a>
+            {% endif %}
 
         </nav>
 
@@ -83,6 +87,10 @@
 
             <div>
                 <strong>{{ usuario_nombre }}</strong>
+
+                <span style="display:block; font-size:12px; opacity:.75;">
+                    {{ rol_etiqueta }}
+                </span>
 
                 <a href="{% url 'logout' %}">
                     Cerrar sesión
@@ -138,6 +146,17 @@
             </div>
 
         </header>
+
+
+        <!-- AVISOS (por ejemplo, "no tenés permiso para esa sección") -->
+        {% for m in messages %}
+        <p
+            role="alert"
+            style="color:#b42318; background:#fef3f2; border:1px solid #fecdca; border-radius:8px; padding:10px 14px; margin:16px 24px 0; font-size:14px;"
+        >
+            {{ m }}
+        </p>
+        {% endfor %}
 
 
         <!-- =========================
@@ -287,7 +306,8 @@
             <div class="right-column">
 
 
-                <!-- ACCIONES RÁPIDAS -->
+                <!-- ACCIONES RÁPIDAS (administración y personal administrativo) -->
+                {% if rol == 'ADMINISTRADOR' or rol == 'PERSONAL' %}
                 <section class="card quick-actions">
 
 
@@ -337,6 +357,7 @@
                     </a>
 
                 </section>
+                {% endif %}
 
 
                 <!-- =========================
