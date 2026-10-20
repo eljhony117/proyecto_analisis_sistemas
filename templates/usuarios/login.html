@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plataforma Nacional de Becas</title>
 
-    <link rel="stylesheet" href="{% static 'css/login.css' %}?v=2">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}?v=3">
 </head>
-<body>
+<body data-tab="{{ tab|default:'login' }}">
 
 <header class="topbar">
     <div class="brand-icon">
@@ -65,6 +65,16 @@
                 <!-- Envía los datos a Django (vista login_view) -->
                 <form id="loginForm" method="post" action="{% url 'login' %}">
                     {% csrf_token %}
+
+                    {% for m in messages %}
+                    <p
+                        class="login-ok"
+                        role="status"
+                        style="color:#067647; background:#ecfdf3; border:1px solid #abefc6; border-radius:8px; padding:10px 12px; margin:0 0 14px; font-size:14px;"
+                    >
+                        {{ m }}
+                    </p>
+                    {% endfor %}
 
                     {% if error %}
                     <p
@@ -137,12 +147,23 @@
 
 
             <!-- ========================
-                 REGISTRO (pendiente de conectar a Oracle)
+                 REGISTRO (guarda en la tabla USUARIO de Oracle)
             ========================= -->
 
             <div id="registerSection" class="hidden">
 
-                <form id="registerForm">
+                <form id="registerForm" method="post" action="{% url 'registro' %}">
+                    {% csrf_token %}
+
+                    {% if error_registro %}
+                    <p
+                        class="login-error"
+                        role="alert"
+                        style="color:#b42318; background:#fef3f2; border:1px solid #fecdca; border-radius:8px; padding:10px 12px; margin:0 0 14px; font-size:14px;"
+                    >
+                        {{ error_registro }}
+                    </p>
+                    {% endif %}
 
                     <div class="form-group">
                         <label for="fullName">
@@ -152,7 +173,12 @@
                         <input
                             type="text"
                             id="fullName"
+                            name="nombre"
+                            value="{{ form_nombre|default:'' }}"
                             placeholder="Ej. Ana Lucía García Méndez"
+                            maxlength="50"
+                            autocomplete="name"
+                            required
                         >
                     </div>
 
@@ -165,41 +191,13 @@
                         <input
                             type="email"
                             id="registerEmail"
+                            name="correo"
+                            value="{{ form_correo|default:'' }}"
                             placeholder="usuario@mineduc.gob.gt"
+                            maxlength="100"
+                            autocomplete="email"
+                            required
                         >
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label for="role">
-                            ROL
-                        </label>
-
-                        <select id="role">
-
-                            <option value="">
-                                Seleccioná un rol
-                            </option>
-
-                            <option value="administrador">
-                                Administrador
-                            </option>
-
-                            <option value="evaluador">
-                                Evaluador
-                            </option>
-
-                            <option value="estudiante">
-                                Estudiante
-                            </option>
-
-                            <option value="personal">
-                                Personal administrativo
-                            </option>
-
-                        </select>
-
                     </div>
 
 
@@ -214,7 +212,12 @@
                             <input
                                 type="password"
                                 id="registerPassword"
+                                name="contrasena"
                                 placeholder="8 a 18 caracteres, con mayúscula, número y símbolo"
+                                minlength="8"
+                                maxlength="18"
+                                autocomplete="new-password"
+                                required
                             >
 
                             <button
@@ -241,7 +244,12 @@
                             <input
                                 type="password"
                                 id="confirmPassword"
+                                name="confirmar"
                                 placeholder="Repetí tu contraseña"
+                                minlength="8"
+                                maxlength="18"
+                                autocomplete="new-password"
+                                required
                             >
 
                             <button
@@ -279,6 +287,6 @@
 
 </main>
 
-<script src="{% static 'js/login.js' %}?v=2"></script>
+<script src="{% static 'js/login.js' %}?v=3"></script>
 </body>
 </html>

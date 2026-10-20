@@ -1,8 +1,15 @@
+import re
 import secrets
+
 from functools import wraps
 
+from django.contrib import messages
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
+from django.db import DatabaseError, IntegrityError
 from django.db.models import Count
 from django.shortcuts import redirect, render
+from django.db import DatabaseError
 
 from .models import (
     Convocatoria,
@@ -48,7 +55,6 @@ def login_requerido(vista):
 def login_view(request):
     if request.method == "POST":
         correo = request.POST.get("correo", "").strip()
-        # No aplicar strip() a la contraseña.
         contrasena = request.POST.get("contrasena", "")
 
         if not correo or not contrasena:
@@ -57,44 +63,24 @@ def login_view(request):
             })
 
         try:
-            usuario = Usuario.objects.filter(
-                correo__iexact=correo
-            ).first()
-
-            # Diagnóstico temporal: no imprimir contraseñas.
-            print("¿Usuario encontrado?:", usuario is not None)
-
-            if usuario is not None:
-                coincide = secrets.compare_digest(
-                    usuario.contrasena.encode("utf-8"),
-                    contrasena.encode("utf-8"),
-                )
-
-                print("¿Contraseña coincide?:", coincide)
-
-                if coincide:
-                    request.session["usuario_id"] = usuario.id_usuario
-                    request.session["usuario_nombre"] = usuario.nombre
-
-                    return redirect("panel")
-
+            usuario = Usuario.objects.filter(correo__iexact=correo).first()
+        except DatabaseError:
             return render(request, "usuarios/login.html", {
-                "error": "Correo o contraseña incorrectos."
+                "error": "No se pudo conectar con la base de datos. Intentá de nuevo."
             })
 
-        except Exception as e:
-            # Diagnóstico temporal para desarrollo.
-            print("Error al intentar iniciar sesión:", repr(e))
+        if usuario and secrets.compare_digest(
+            usuario.contrasena.encode(), contrasena.encode()
+        ):
+            request.session["usuario_id"] = int(usuario.id_usuario)
+            request.session["usuario_nombre"] = usuario.nombre
+            return redirect("panel")
 
-            return render(request, "usuarios/login.html", {
-                "error": (
-                    "Ocurrió un error al intentar iniciar sesión. "
-                    "Revisa la terminal para conocer el detalle."
-                )
-            })
+        return render(request, "usuarios/login.html", {
+            "error": "Correo o contraseña incorrectos."
+        })
 
     return render(request, "usuarios/login.html")
-
 # ---------------------------------------------------------------------------
 # Cerrar sesión
 # ---------------------------------------------------------------------------
@@ -102,6 +88,80 @@ def logout_view(request):
     request.session.flush()
     return redirect("login")
 
+# ---------------------------------------------------------------------------
+# Crear cuenta
+# -------------------------------------------------------------------------
+PATRON_NOMBRE = re.compile(r"^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$")
+
+def validar_contrasena(contrasena):
+    """Mismas reglas que el trigger TRG_VALIDA_PASWORD_USUARIO."""
+    if not 8 <= len(contrasena) <= 18:
+        return "La contraseña debe tener entre 8 y 18 caracteres."
+    if not re.search(r"[A-Z]", contrasena):
+        return "La contraseña debe tener al menos una letra mayúscula."
+    if not re.search(r"[a-z]", contrasena):
+        return "La contraseña debe tener al menos una letra minúscula."
+    if not re.search(r"[0-9]", contrasena):
+        return "La contraseña debe tener al menos un número."
+    if not re.search(r"[^A-Za-z0-9]", contrasena):
+        return "La contraseña debe tener al menos un carácter especial."
+    return None
+
+
+def mensaje_oracle(error):
+    """Saca el texto de un error ORA-200xx lanzado por un trigger."""
+    m = re.search(r"ORA-200\d\d:\s*(.+)", str(error))
+    return m.group(1).strip() if m else None
+
+
+def registro_view(request):
+    if request.method != "POST":
+        return redirect("login")
+
+    nombre = " ".join(request.POST.get("nombre", "").split())
+    correo = request.POST.get("correo", "").strip()
+    contrasena = request.POST.get("contrasena", "")
+    confirmar = request.POST.get("confirmar", "")
+
+    def volver(error):
+        return render(request, "usuarios/login.html", {
+            "error_registro": error,
+            "tab": "registro",
+            "form_nombre": nombre,
+            "form_correo": correo,
+        })
+
+    if not nombre or not correo or not contrasena:
+        return volver("Completá todos los campos.")
+
+    if len(nombre) > 50 or not PATRON_NOMBRE.match(nombre):
+        return volver("El nombre solo puede tener letras y espacios (máximo 50 caracteres).")
+
+    try:
+        validate_email(correo)
+    except ValidationError:
+        return volver("El correo no es válido.")
+    if len(correo) > 100:
+        return volver("El correo es demasiado largo (máximo 100 caracteres).")
+
+    if contrasena != confirmar:
+        return volver("Las contraseñas no coinciden.")
+
+    error = validar_contrasena(contrasena)
+    if error:
+        return volver(error)
+
+    try:
+        if Usuario.objects.filter(correo__iexact=correo).exists():
+            return volver("Ya existe una cuenta con ese correo.")
+        Usuario.objects.create(nombre=nombre, contrasena=contrasena, correo=correo)
+    except IntegrityError:
+        return volver("No se pudo crear la cuenta: el correo ya está registrado o un dato no cumple las reglas.")
+    except DatabaseError as e:
+        return volver(mensaje_oracle(e) or "No se pudo conectar con la base de datos. Intentá de nuevo.")
+
+    messages.success(request, "Cuenta creada. Ya podés iniciar sesión.")
+    return redirect("login")
 # ---------------------------------------------------------------------------
 # Panel principal
 # ---------------------------------------------------------------------------

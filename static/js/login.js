@@ -67,21 +67,28 @@ eyeButtons.forEach(function (button) {
 ========================================= */
 
 /*
-   El formulario de inicio de sesión (loginForm) ya NO se intercepta aquí:
-   el navegador lo envía a Django (POST), y Django valida el correo y la
-   contraseña contra la tabla USUARIO de Oracle.
+   Los dos formularios (ingreso y registro) se envían a Django por POST.
+   Django valida contra la tabla USUARIO de Oracle, así que aquí no se
+   intercepta ningún envío.
 */
 
-/*
-   El registro todavía no está conectado a la base de datos. Se bloquea el
-   envío para que no se salte la validación y se avisa al usuario.
-*/
+/* Si el registro falló en el servidor, volver a abrir esa pestaña. */
+if (document.body.dataset.tab === "registro") {
+    tabRegister.click();
+}
+
+
+/* Aviso inmediato si las contraseñas del registro no coinciden. */
 const registerForm = document.getElementById("registerForm");
 
 registerForm.addEventListener("submit", function (event) {
 
-    event.preventDefault();
+    const clave = document.getElementById("registerPassword").value;
+    const confirmar = document.getElementById("confirmPassword").value;
 
-    alert("El registro de cuentas todavía no está disponible.");
+    if (clave !== confirmar) {
+        event.preventDefault();
+        alert("Las contraseñas no coinciden.");
+    }
 
 });
