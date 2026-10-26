@@ -697,3 +697,4 @@ SELECT table_name, column_name, generation_type FROM user_tab_identity_cols ORDE
 
 SELECT COUNT(*) FROM ESTUDIANTE;
 SELECT COUNT(*) FROM INSTITUCION;
+

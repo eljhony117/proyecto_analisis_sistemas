@@ -1,6 +1,5 @@
 import re
 import secrets
-
 from functools import wraps
 
 from django.contrib import messages
@@ -9,24 +8,22 @@ from django.core.validators import validate_email
 from django.db import DatabaseError, IntegrityError
 from django.db.models import Count
 from django.shortcuts import redirect, render
-from django.db import DatabaseError
 
-from .models import (
-    Convocatoria,
-    Evaluacion,
-    HistorialEstado,
-    SolicitudBecas,
-    Usuario,
-)
+from .models import Convocatoria, Evaluacion, HistorialEstado, SolicitudBecas, Usuario
 
-# Valor en la base de datos, etiqueta en pantalla y clase CSS
+# Roles que se pueden elegir al registrarse (deben coincidir con CK_USU_ROL en Oracle)
+ROLES_REGISTRABLES = ("ADMINISTRADOR", "EVALUADOR", "ESTUDIANTE")
+
+PATRON_NOMBRE = re.compile(r"^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$")
+
+# (valor en la base, etiqueta en pantalla, clase CSS de la barra)
 NIVELES = [
     ("MEDIO", "Nivel Medio", "blue-fill"),
     ("UNIVERSIDAD", "Universitario", "green-fill"),
     ("POSGRADO", "Posgrado", "yellow-fill"),
 ]
 
-# Color del punto en "Actividad reciente" según el estado nuevo
+# Color del punto en "Actividad reciente" segun el estado nuevo
 DOT_POR_ESTADO = {
     "APROBADA": "dot-green",
     "RECHAZADA": "dot-red",
@@ -34,23 +31,37 @@ DOT_POR_ESTADO = {
     "PENDIENTE": "dot-yellow",
 }
 
+
 # ---------------------------------------------------------------------------
-# Sesión
+# Control de acceso
 # ---------------------------------------------------------------------------
 def login_requerido(vista):
-    """Si no hay sesión iniciada, manda al login."""
-
+    """Si no hay sesion iniciada, manda al login."""
     @wraps(vista)
     def envoltura(request, *args, **kwargs):
         if not request.session.get("usuario_id"):
             return redirect("login")
-
         return vista(request, *args, **kwargs)
-
     return envoltura
 
+
+def rol_requerido(*roles):
+    """Exige sesion iniciada y que el rol del usuario este en `roles`."""
+    def decorador(vista):
+        @wraps(vista)
+        def envoltura(request, *args, **kwargs):
+            if not request.session.get("usuario_id"):
+                return redirect("login")
+            if request.session.get("usuario_rol") not in roles:
+                messages.error(request, "No tenés permiso para entrar a esa sección.")
+                return redirect("panel")
+            return vista(request, *args, **kwargs)
+        return envoltura
+    return decorador
+
+
 # ---------------------------------------------------------------------------
-# Inicio de sesión
+# Inicio de sesion
 # ---------------------------------------------------------------------------
 def login_view(request):
     if request.method == "POST":
@@ -74,6 +85,7 @@ def login_view(request):
         ):
             request.session["usuario_id"] = int(usuario.id_usuario)
             request.session["usuario_nombre"] = usuario.nombre
+            request.session["usuario_rol"] = (usuario.rol or "").upper()
             return redirect("panel")
 
         return render(request, "usuarios/login.html", {
@@ -81,18 +93,16 @@ def login_view(request):
         })
 
     return render(request, "usuarios/login.html")
-# ---------------------------------------------------------------------------
-# Cerrar sesión
-# ---------------------------------------------------------------------------
+
+
 def logout_view(request):
     request.session.flush()
     return redirect("login")
 
-# ---------------------------------------------------------------------------
-# Crear cuenta
-# -------------------------------------------------------------------------
-PATRON_NOMBRE = re.compile(r"^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$")
 
+# ---------------------------------------------------------------------------
+# Registro de cuentas (guarda en la tabla USUARIO)
+# ---------------------------------------------------------------------------
 def validar_contrasena(contrasena):
     """Mismas reglas que el trigger TRG_VALIDA_PASWORD_USUARIO."""
     if not 8 <= len(contrasena) <= 18:
@@ -120,6 +130,7 @@ def registro_view(request):
 
     nombre = " ".join(request.POST.get("nombre", "").split())
     correo = request.POST.get("correo", "").strip()
+    rol = request.POST.get("rol", "")
     contrasena = request.POST.get("contrasena", "")
     confirmar = request.POST.get("confirmar", "")
 
@@ -129,6 +140,7 @@ def registro_view(request):
             "tab": "registro",
             "form_nombre": nombre,
             "form_correo": correo,
+            "form_rol": rol,
         })
 
     if not nombre or not correo or not contrasena:
@@ -144,6 +156,9 @@ def registro_view(request):
     if len(correo) > 100:
         return volver("El correo es demasiado largo (máximo 100 caracteres).")
 
+    if rol not in ROLES_REGISTRABLES:
+        return volver("Elegí un rol válido.")
+
     if contrasena != confirmar:
         return volver("Las contraseñas no coinciden.")
 
@@ -154,7 +169,9 @@ def registro_view(request):
     try:
         if Usuario.objects.filter(correo__iexact=correo).exists():
             return volver("Ya existe una cuenta con ese correo.")
-        Usuario.objects.create(nombre=nombre, contrasena=contrasena, correo=correo)
+        Usuario.objects.create(
+            nombre=nombre, contrasena=contrasena, correo=correo, rol=rol
+        )
     except IntegrityError:
         return volver("No se pudo crear la cuenta: el correo ya está registrado o un dato no cumple las reglas.")
     except DatabaseError as e:
@@ -162,8 +179,10 @@ def registro_view(request):
 
     messages.success(request, "Cuenta creada. Ya podés iniciar sesión.")
     return redirect("login")
+
+
 # ---------------------------------------------------------------------------
-# Panel principal
+# Panel
 # ---------------------------------------------------------------------------
 @login_requerido
 def panel_view(request):
@@ -171,32 +190,26 @@ def panel_view(request):
 
     # ---- Totales de solicitudes ----
     total = SolicitudBecas.objects.count()
-
     aprobadas = SolicitudBecas.objects.filter(
         estado_solicitud__iexact="APROBADA"
     ).count()
-
     tasa = round(aprobadas * 100 / total, 1) if total else 0
 
-    # ---- Solicitudes por nivel educativo ----
+    # ---- Solicitudes por nivel (segun el nivel del estudiante) ----
     conteo = (
         SolicitudBecas.objects
         .values_list("id_estudainte__nivel_educativo")
         .annotate(n=Count("pk"))
         .order_by()
     )
-
     por_nivel = {}
-
     for nivel, n in conteo:
         clave = (nivel or "").upper()
         por_nivel[clave] = por_nivel.get(clave, 0) + n
 
     niveles = []
-
     for clave, etiqueta, color in NIVELES:
         n = por_nivel.get(clave, 0)
-
         niveles.append({
             "etiqueta": etiqueta,
             "total": n,
@@ -204,7 +217,7 @@ def panel_view(request):
             "pct": round(n * 100 / total) if total else 0,
         })
 
-    # ---- Convocatorias abiertas: las cinco que cierran primero ----
+    # ---- Convocatorias abiertas (las 5 que cierran primero) ----
     abiertas = (
         Convocatoria.objects
         .filter(estado__iexact="ABIERTO")
@@ -212,62 +225,42 @@ def panel_view(request):
         .annotate(n_solicitudes=Count("solicitudbecas"))
         .order_by("fecha_finalizacion")[:5]
     )
-
     convocatorias = []
-
     for c in abiertas:
         inst = c.id_institucion
-
         if inst is None:
             nivel = "GENERAL"
         elif inst.id_universidad_id:
             nivel = "UNIVERSITARIO"
         else:
             nivel = "NIVEL MEDIO"
-
         convocatorias.append({
             "nombre": c.nombre,
             "nivel": nivel,
             "cierre": c.fecha_finalizacion,
             "solicitudes": c.n_solicitudes,
-            "pct": (
-                round(c.n_solicitudes * 100 / total)
-                if total else 0
-            ),
+            # No hay campo de cupo en la base: el porcentaje es la parte
+            # de todas las solicitudes que recibio esta convocatoria.
+            "pct": round(c.n_solicitudes * 100 / total) if total else 0,
         })
 
-    # ---- Actividad reciente: últimos cambios de estado ----
+    # ---- Actividad reciente (ultimos cambios de estado) ----
     actividad = []
-
-    ultimos = (
-        HistorialEstado.objects
-        .order_by("-fecha_cambio", "-id_historial")[:6]
-    )
-
+    ultimos = HistorialEstado.objects.order_by("-fecha_cambio", "-id_historial")[:6]
     for h in ultimos:
         anterior = h.estado_anterior.replace("_", " ").lower()
         nuevo = h.estado_nuevo.replace("_", " ").lower()
-
         actividad.append({
-            "texto": (
-                f"Solicitud #{h.id_solicitud_id}: "
-                f"de {anterior} a {nuevo}"
-            ),
+            "texto": f"Solicitud #{h.id_solicitud_id}: de {anterior} a {nuevo}",
             "fecha": h.fecha_cambio,
-            "dot": DOT_POR_ESTADO.get(
-                h.estado_nuevo.upper(),
-                "dot-blue-dark",
-            ),
+            "dot": DOT_POR_ESTADO.get(h.estado_nuevo.upper(), "dot-blue-dark"),
         })
 
-    # ---- Evaluaciones que aún no terminan ----
-    evaluaciones_pendientes = (
-        Evaluacion.objects
-        .exclude(estado__iexact="COMPLETADA")
-        .count()
-    )
+    # ---- Evaluaciones que aun no terminan (para el badge del menu) ----
+    evaluaciones_pendientes = Evaluacion.objects.exclude(
+        estado__iexact="COMPLETADA"
+    ).count()
 
-    # ---- Datos enviados a la plantilla ----
     contexto = {
         "usuario_nombre": nombre,
         "iniciales": nombre[:2].upper(),
@@ -279,28 +272,32 @@ def panel_view(request):
         "actividad": actividad,
         "evaluaciones_pendientes": evaluaciones_pendientes,
     }
-
-    # IMPORTANTE: el panel debe cargar panel.html.
     return render(request, "usuarios/panel.html", contexto)
+
+
 # ---------------------------------------------------------------------------
-# Otras páginas
+# Otras paginas (todavia sin datos de Oracle), con el permiso de cada rol
 # ---------------------------------------------------------------------------
-@login_requerido
+@rol_requerido("ADMINISTRADOR", "ESTUDIANTE")
 def convocatorias_view(request):
     return render(request, "usuarios/convocatorias.html")
+
 
 @login_requerido
 def solicitudes_view(request):
     return render(request, "usuarios/solicitudes.html")
 
-@login_requerido
+
+@rol_requerido("ADMINISTRADOR", "EVALUADOR")
 def evaluaciones_view(request):
     return render(request, "usuarios/evaluaciones.html")
 
-@login_requerido
+
+@rol_requerido("ADMINISTRADOR", "EVALUADOR")
 def comites_view(request):
     return render(request, "usuarios/comites.html")
 
-@login_requerido
+
+@rol_requerido("ADMINISTRADOR", "EVALUADOR")
 def reportes_view(request):
     return render(request, "usuarios/reportes.html")
