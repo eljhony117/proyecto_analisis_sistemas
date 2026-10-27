@@ -698,3 +698,7 @@ SELECT table_name, column_name, generation_type FROM user_tab_identity_cols ORDE
 SELECT COUNT(*) FROM ESTUDIANTE;
 SELECT COUNT(*) FROM INSTITUCION;
 
+--- Nuevos requisitos
+--- Las solicitudes de beca que superan un monto de 10,000 se debera contar con una segunda aprobacion antes de ser autorizadas.
+--- Cunado una solicitud cambie de estado, el sistema deberá  registrar el evento y generar una notificación para el estudiante.
+--- Cada aprobación, rechazo o modificación relevante de una solicitud deberá registrar quien realizo la accion, cuando ocurrio, que operación se ejecutó y cual fue el resultado.
