@@ -39,6 +39,7 @@ class Usuario(models.Model):
     nombre = models.CharField(max_length=50)
     contrasena = models.CharField(max_length=100)
     correo = models.CharField(unique=True, max_length=100)
+    rol = models.CharField(max_length=20)
 
     class Meta:
         managed = False

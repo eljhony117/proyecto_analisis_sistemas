@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plataforma Nacional de Becas</title>
 
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}?v=6">
 </head>
-<body>
+<body data-tab="{{ tab|default:'login' }}">
 
 <header class="topbar">
     <div class="brand-icon">
@@ -62,7 +62,29 @@
 
             <div id="loginSection">
 
-                <form id="loginForm">
+                <!-- Envía los datos a Django (vista login_view) -->
+                <form id="loginForm" method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+
+                    {% for m in messages %}
+                    <p
+                        class="login-ok"
+                        role="status"
+                        style="color:#067647; background:#ecfdf3; border:1px solid #abefc6; border-radius:8px; padding:10px 12px; margin:0 0 14px; font-size:14px;"
+                    >
+                        {{ m }}
+                    </p>
+                    {% endfor %}
+
+                    {% if error %}
+                    <p
+                        class="login-error"
+                        role="alert"
+                        style="color:#b42318; background:#fef3f2; border:1px solid #fecdca; border-radius:8px; padding:10px 12px; margin:0 0 14px; font-size:14px;"
+                    >
+                        {{ error }}
+                    </p>
+                    {% endif %}
 
                     <div class="form-group">
                         <label for="loginEmail">
@@ -72,7 +94,10 @@
                         <input
                             type="email"
                             id="loginEmail"
+                            name="correo"
                             placeholder="usuario@mineduc.gob.gt"
+                            autocomplete="username"
+                            required
                         >
                     </div>
 
@@ -87,7 +112,10 @@
                             <input
                                 type="password"
                                 id="loginPassword"
-                                placeholder="Mínimo 6 caracteres"
+                                name="contrasena"
+                                placeholder="Tu contraseña"
+                                autocomplete="current-password"
+                                required
                             >
 
                             <button
@@ -119,12 +147,23 @@
 
 
             <!-- ========================
-                 REGISTRO
+                 REGISTRO (guarda en la tabla USUARIO de Oracle)
             ========================= -->
 
             <div id="registerSection" class="hidden">
 
-                <form id="registerForm">
+                <form id="registerForm" method="post" action="{% url 'registro' %}">
+                    {% csrf_token %}
+
+                    {% if error_registro %}
+                    <p
+                        class="login-error"
+                        role="alert"
+                        style="color:#b42318; background:#fef3f2; border:1px solid #fecdca; border-radius:8px; padding:10px 12px; margin:0 0 14px; font-size:14px;"
+                    >
+                        {{ error_registro }}
+                    </p>
+                    {% endif %}
 
                     <div class="form-group">
                         <label for="fullName">
@@ -134,7 +173,12 @@
                         <input
                             type="text"
                             id="fullName"
+                            name="nombre"
+                            value="{{ form_nombre|default:'' }}"
                             placeholder="Ej. Ana Lucía García Méndez"
+                            maxlength="50"
+                            autocomplete="name"
+                            required
                         >
                     </div>
 
@@ -147,7 +191,12 @@
                         <input
                             type="email"
                             id="registerEmail"
+                            name="correo"
+                            value="{{ form_correo|default:'' }}"
                             placeholder="usuario@mineduc.gob.gt"
+                            maxlength="100"
+                            autocomplete="email"
+                            required
                         >
                     </div>
 
@@ -158,26 +207,22 @@
                             ROL
                         </label>
 
-                        <select id="role">
+                        <select id="role" name="rol" required>
 
                             <option value="">
                                 Seleccioná un rol
                             </option>
 
-                            <option value="administrador">
+                            <option value="ADMINISTRADOR" {% if form_rol == 'ADMINISTRADOR' %}selected{% endif %}>
                                 Administrador
                             </option>
 
-                            <option value="evaluador">
+                            <option value="EVALUADOR" {% if form_rol == 'EVALUADOR' %}selected{% endif %}>
                                 Evaluador
                             </option>
 
-                            <option value="estudiante">
+                            <option value="ESTUDIANTE" {% if form_rol == 'ESTUDIANTE' %}selected{% endif %}>
                                 Estudiante
-                            </option>
-
-                            <option value="personal">
-                                Personal administrativo
                             </option>
 
                         </select>
@@ -196,7 +241,12 @@
                             <input
                                 type="password"
                                 id="registerPassword"
-                                placeholder="Mínimo 6 caracteres"
+                                name="contrasena"
+                                placeholder="8 a 18 caracteres, con mayúscula, número y símbolo"
+                                minlength="8"
+                                maxlength="18"
+                                autocomplete="new-password"
+                                required
                             >
 
                             <button
@@ -223,7 +273,12 @@
                             <input
                                 type="password"
                                 id="confirmPassword"
+                                name="confirmar"
                                 placeholder="Repetí tu contraseña"
+                                minlength="8"
+                                maxlength="18"
+                                autocomplete="new-password"
+                                required
                             >
 
                             <button
@@ -261,6 +316,6 @@
 
 </main>
 
-<script src="{% static 'js/login.js' %}"></script>
+<script src="{% static 'js/login.js' %}?v=6"></script>
 </body>
 </html>

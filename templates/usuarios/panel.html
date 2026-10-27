@@ -37,7 +37,7 @@
         </div>
 
 
-        <!-- MENÚ -->
+        <!-- MENÚ (según el rol de la sesión) -->
         <nav class="sidebar-menu">
 
             <a href="{% url 'panel' %}" class="menu-item active">
@@ -45,22 +45,27 @@
                 <span>Inicio</span>
             </a>
 
+            {% if rol == 'ADMINISTRADOR' or rol == 'ESTUDIANTE' %}
             <a href="{% url 'convocatorias' %}" class="menu-item">
                 📣
                 <span>Convocatorias</span>
             </a>
+            {% endif %}
 
             <a href="{% url 'solicitudes' %}" class="menu-item">
                 ▤
                 <span>Solicitudes</span>
             </a>
 
+            {% if rol == 'ADMINISTRADOR' or rol == 'EVALUADOR' %}
             <a href="{% url 'evaluaciones' %}" class="menu-item">
                 ☑
                 <span>Evaluaciones</span>
-                <span class="badge">317</span>
+                <span class="badge">{{ evaluaciones_pendientes }}</span>
             </a>
+            {% endif %}
 
+            {% if rol == 'ADMINISTRADOR' or rol == 'EVALUADOR' %}
             <a href="{% url 'comites' %}" class="menu-item">
                 ♙
                 <span>Comités</span>
@@ -70,21 +75,26 @@
                 ▥
                 <span>Reportes</span>
             </a>
+            {% endif %}
 
         </nav>
 
 
-        <!-- USUARIO -->
+        <!-- USUARIO CON SESIÓN INICIADA -->
         <div class="sidebar-user">
 
             <div class="avatar">
-                DA
+                {{ iniciales }}
             </div>
 
             <div>
-                <strong>Daniel Hernandez</strong>
+                <strong>{{ usuario_nombre }}</strong>
 
-                <a href="{% url 'login' %}">
+                <span style="display:block; font-size:12px; opacity:.75;">
+                    {{ rol_etiqueta }}
+                </span>
+
+                <a href="{% url 'logout' %}">
                     Cerrar sesión
                 </a>
             </div>
@@ -105,7 +115,8 @@
 
             <div>
                 <h1>Panel Principal</h1>
-                <p>Domingo, 16 de agosto de 2026</p>
+                {% now "l, j \d\e F \d\e Y" as hoy %}
+                <p>{{ hoy|capfirst }}</p>
             </div>
 
 
@@ -139,6 +150,17 @@
         </header>
 
 
+        <!-- AVISOS (por ejemplo, "no tenés permiso para esa sección") -->
+        {% for m in messages %}
+        <p
+            role="alert"
+            style="color:#b42318; background:#fef3f2; border:1px solid #fecdca; border-radius:8px; padding:10px 14px; margin:16px 24px 0; font-size:14px;"
+        >
+            {{ m }}
+        </p>
+        {% endfor %}
+
+
         <!-- =========================
              DASHBOARD
         ========================== -->
@@ -149,11 +171,10 @@
             <div class="left-column">
 
 
-                <!-- CONVOCATORIAS -->
+                <!-- CONVOCATORIAS ABIERTAS (datos de Oracle) -->
                 <section class="card convocatorias-card">
 
-
-                    <!-- CONVOCATORIA 1 -->
+                    {% for c in convocatorias %}
                     <div class="convocatoria-row">
 
                         <div class="conv-info">
@@ -165,17 +186,17 @@
                                 </span>
 
                                 <span>
-                                    NIVEL MEDIO
+                                    {{ c.nivel }}
                                 </span>
 
                             </div>
 
                             <h3>
-                                Programa de Becas Técnicas y Vocacionales
+                                {{ c.nombre }}
                             </h3>
 
                             <p>
-                                Cierre: 05 sep 2026
+                                Cierre: {{ c.cierre|date:"d M Y" }}
                             </p>
 
                         </div>
@@ -186,77 +207,18 @@
                             <div class="progress-info">
 
                                 <span>
-                                    634 sol.
+                                    {{ c.solicitudes }} sol.
                                 </span>
 
-                                <span class="danger">
-                                    100%
+                                <span>
+                                    {{ c.pct }}%
                                 </span>
 
+                                {% if rol == 'ADMINISTRADOR' or rol == 'ESTUDIANTE' %}
                                 <a href="{% url 'convocatorias' %}">
                                     Ver →
                                 </a>
-
-                            </div>
-
-
-                            <div class="progress-track">
-
-                                <div
-                                    class="progress-bar danger-bar"
-                                    style="width:100%">
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- CONVOCATORIA 2 -->
-                    <div class="convocatoria-row">
-
-                        <div class="conv-info">
-
-                            <div class="conv-meta">
-
-                                <span class="status next">
-                                    Próxima
-                                </span>
-
-                                <span>
-                                    UNIVERSITARIO
-                                </span>
-
-                            </div>
-
-                            <h3>
-                                Beca Mujer en Ciencia y Tecnología
-                            </h3>
-
-                            <p>
-                                Cierre: 20 oct 2026
-                            </p>
-
-                        </div>
-
-
-                        <div class="conv-progress">
-
-                            <div class="progress-info">
-
-                                <span>
-                                    57 sol.
-                                </span>
-
-                                <span>
-                                    71%
-                                </span>
-
-                                <a href="{% url 'convocatorias' %}">
-                                    Ver →
-                                </a>
+                                {% endif %}
 
                             </div>
 
@@ -265,7 +227,7 @@
 
                                 <div
                                     class="progress-bar green-bar"
-                                    style="width:71%">
+                                    style="width:{{ c.pct }}%">
                                 </div>
 
                             </div>
@@ -273,6 +235,13 @@
                         </div>
 
                     </div>
+                    {% empty %}
+                    <div class="convocatoria-row">
+                        <div class="conv-info">
+                            <p>No hay convocatorias abiertas.</p>
+                        </div>
+                    </div>
+                    {% endfor %}
 
                 </section>
 
@@ -304,111 +273,29 @@
 
                     <div class="activity-list">
 
-
+                        {% for a in actividad %}
                         <div class="activity-item">
 
-                            <span class="dot dot-green"></span>
+                            <span class="dot {{ a.dot }}"></span>
 
                             <div>
                                 <p>
-                                    Solicitud #4821 aprobada por
-                                    Comité de Ciencias
+                                    {{ a.texto }}
                                 </p>
 
                                 <small>
-                                    Hace 12 min
+                                    {{ a.fecha|date:"d/m/Y" }}
                                 </small>
                             </div>
 
                         </div>
-
-
+                        {% empty %}
                         <div class="activity-item">
-
-                            <span class="dot dot-blue"></span>
-
                             <div>
-                                <p>
-                                    Nuevo documento cargado —
-                                    María López Ajú
-                                    (Expediente #3317)
-                                </p>
-
-                                <small>
-                                    Hace 38 min
-                                </small>
+                                <p>Todavía no hay actividad registrada.</p>
                             </div>
-
                         </div>
-
-
-                        <div class="activity-item">
-
-                            <span class="dot dot-yellow"></span>
-
-                            <div>
-                                <p>
-                                    Convocatoria
-                                    "Beca Técnica 2026"
-                                    publicada
-                                </p>
-
-                                <small>
-                                    Hace 1h
-                                </small>
-                            </div>
-
-                        </div>
-
-
-                        <div class="activity-item">
-
-                            <span class="dot dot-red"></span>
-
-                            <div>
-                                <p>
-                                    Solicitud #4799 rechazada —
-                                    documentación incompleta
-                                </p>
-
-                                <small>
-                                    Hace 2h
-                                </small>
-                            </div>
-
-                        </div>
-
-
-                        <div class="activity-item">
-
-                            <span class="dot dot-purple"></span>
-
-                            <div>
-                                <p>
-                                    Comité evaluador asignado —
-                                    Área de Humanidades
-                                </p>
-
-                                <small>
-                                    Hace 3h
-                                </small>
-                            </div>
-
-                        </div>
-
-
-                        <div class="activity-item">
-
-                            <span class="dot dot-blue-dark"></span>
-
-                            <div>
-                                <p>
-                                    43 nuevas solicitudes registradas —
-                                    Convocatoria Nacional
-                                </p>
-                            </div>
-
-                        </div>
+                        {% endfor %}
 
                     </div>
 
@@ -423,7 +310,8 @@
             <div class="right-column">
 
 
-                <!-- ACCIONES RÁPIDAS -->
+                <!-- ACCIONES RÁPIDAS (solo administrador) -->
+                {% if rol == 'ADMINISTRADOR' %}
                 <section class="card quick-actions">
 
 
@@ -473,10 +361,11 @@
                     </a>
 
                 </section>
+                {% endif %}
 
 
                 <!-- =========================
-                     ESTADÍSTICAS
+                     ESTADÍSTICAS (datos de Oracle)
                 ========================== -->
                 <section class="card stats-card">
 
@@ -485,21 +374,21 @@
                     </h2>
 
                     <p class="subtitle">
-                        Distribución ciclo 2026
+                        Distribución actual
                     </p>
 
 
-                    <!-- NIVEL MEDIO -->
+                    {% for n in niveles %}
                     <div class="stat-item">
 
                         <div class="stat-header">
 
                             <span>
-                                Nivel Medio
+                                {{ n.etiqueta }}
                             </span>
 
                             <strong>
-                                634
+                                {{ n.total }}
                             </strong>
 
                         </div>
@@ -508,81 +397,18 @@
                         <div class="stat-track">
 
                             <div
-                                class="stat-fill blue-fill"
-                                style="width:51%">
+                                class="stat-fill {{ n.color }}"
+                                style="width:{{ n.pct }}%">
                             </div>
 
                         </div>
 
                         <small>
-                            51% del total
+                            {{ n.pct }}% del total
                         </small>
 
                     </div>
-
-
-                    <!-- UNIVERSITARIO -->
-                    <div class="stat-item">
-
-                        <div class="stat-header">
-
-                            <span>
-                                Universitario
-                            </span>
-
-                            <strong>
-                                469
-                            </strong>
-
-                        </div>
-
-
-                        <div class="stat-track">
-
-                            <div
-                                class="stat-fill green-fill"
-                                style="width:38%">
-                            </div>
-
-                        </div>
-
-                        <small>
-                            38% del total
-                        </small>
-
-                    </div>
-
-
-                    <!-- POSGRADO -->
-                    <div class="stat-item">
-
-                        <div class="stat-header">
-
-                            <span>
-                                Posgrado
-                            </span>
-
-                            <strong>
-                                145
-                            </strong>
-
-                        </div>
-
-
-                        <div class="stat-track">
-
-                            <div
-                                class="stat-fill yellow-fill"
-                                style="width:12%">
-                            </div>
-
-                        </div>
-
-                        <small>
-                            12% del total
-                        </small>
-
-                    </div>
+                    {% endfor %}
 
 
                     <hr>
@@ -596,7 +422,7 @@
                         </span>
 
                         <strong>
-                            1,248
+                            {{ total }}
                         </strong>
 
                     </div>
@@ -609,7 +435,7 @@
                         </span>
 
                         <strong class="green-text">
-                            892
+                            {{ aprobadas }}
                         </strong>
 
                     </div>
@@ -622,7 +448,7 @@
                         </span>
 
                         <strong>
-                            71.5%
+                            {{ tasa|floatformat:1 }}%
                         </strong>
 
                     </div>

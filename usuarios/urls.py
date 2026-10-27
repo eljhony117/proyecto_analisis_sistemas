@@ -1,4 +1,5 @@
 from django.urls import path
+from django.db import DatabaseError
 from . import views
 
 
@@ -6,6 +7,10 @@ urlpatterns = [
     path("", views.login_view, name="login"),
 
     path("panel/", views.panel_view, name="panel"),
+
+    path("salir/", views.logout_view, name="logout"),
+
+    path("registro/", views.registro_view, name="registro"),
 
     path(
         "convocatorias/",

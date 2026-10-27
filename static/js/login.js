@@ -61,27 +61,34 @@ eyeButtons.forEach(function (button) {
 
 });
 
+
 /* =========================================
-   IR AL PANEL PRINCIPAL
+   FORMULARIOS
 ========================================= */
 
-const loginForm = document.getElementById("loginForm");
+/*
+   Los dos formularios (ingreso y registro) se envían a Django por POST.
+   Django valida contra la tabla USUARIO de Oracle, así que aquí no se
+   intercepta ningún envío.
+*/
+
+/* Si el registro falló en el servidor, volver a abrir esa pestaña. */
+if (document.body.dataset.tab === "registro") {
+    tabRegister.click();
+}
+
+
+/* Aviso inmediato si las contraseñas del registro no coinciden. */
 const registerForm = document.getElementById("registerForm");
 
+registerForm.addEventListener("submit", function (event) {
 
-loginForm.addEventListener("submit", function(event) {
+    const clave = document.getElementById("registerPassword").value;
+    const confirmar = document.getElementById("confirmPassword").value;
 
-    event.preventDefault();
-
-    window.location.href = "/panel/";
-
-});
-
-
-registerForm.addEventListener("submit", function(event) {
-
-    event.preventDefault();
-
-    window.location.href = "/panel/";
+    if (clave !== confirmar) {
+        event.preventDefault();
+        alert("Las contraseñas no coinciden.");
+    }
 
 });
