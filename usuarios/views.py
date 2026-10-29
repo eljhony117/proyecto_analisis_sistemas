@@ -198,7 +198,7 @@ def panel_view(request):
     # ---- Solicitudes por nivel (segun el nivel del estudiante) ----
     conteo = (
         SolicitudBecas.objects
-        .values_list("id_estudainte__nivel_educativo")
+        .values_list("id_estudiante__nivel_educativo")
         .annotate(n=Count("pk"))
         .order_by()
     )

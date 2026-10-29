@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -8,91 +9,18 @@
 
     <title>Solicitudes</title>
 
-    <link rel="stylesheet" href="{% static 'css/solicitudes.css' %}">
+    <link rel="stylesheet" href="{% static 'css/solicitudes.css' %}?v=2">
+    <link rel="stylesheet" href="{% static 'css/roles.css' %}">
 </head>
 
-<body>
+<body data-rol="{{ rol }}">
 
 <div class="app-layout">
 
     <!-- =========================
          SIDEBAR
     ========================== -->
-    <aside class="sidebar">
-
-        <div class="sidebar-brand">
-
-            <div class="brand-icon">✓</div>
-
-            <div>
-                <h2>404: Club no encontrado</h2>
-                <p>Gestión de Becas</p>
-            </div>
-
-        </div>
-
-        <div class="mineduc">
-            MINISTERIO DE EDUCACIÓN ·<br>
-            GUATEMALA
-        </div>
-
-
-        <nav class="sidebar-menu">
-
-            <a href="{% url 'panel' %}" class="menu-item">
-                <span class="menu-icon">⌂</span>
-                <span>Inicio</span>
-            </a>
-
-            <a href="{% url 'convocatorias' %}" class="menu-item">
-                <span class="menu-icon">⚑</span>
-                <span>Convocatorias</span>
-            </a>
-
-            <a href="{% url 'solicitudes' %}" class="menu-item active">
-                <span class="menu-icon">▤</span>
-                <span>Solicitudes</span>
-            </a>
-
-            <a href="{% url 'evaluaciones' %}" class="menu-item">
-                <span class="menu-icon">☑</span>
-                <span>Evaluaciones</span>
-
-                <span class="badge">
-                    317
-                </span>
-            </a>
-
-            <a href="{% url 'comites' %}" class="menu-item">
-                <span class="menu-icon">♙</span>
-                <span>Comités</span>
-            </a>
-
-            <a href="{% url 'reportes' %}" class="menu-item">
-                <span class="menu-icon">▥</span>
-                <span>Reportes</span>
-            </a>
-
-        </nav>
-
-
-        <div class="sidebar-user">
-
-            <div class="avatar">
-                DH
-            </div>
-
-            <div>
-                <strong>dhernandezl34</strong>
-
-                <a href="{% url 'login' %}">
-                    Cerrar sesión
-                </a>
-            </div>
-
-        </div>
-
-    </aside>
+    {% include "usuarios/_sidebar.html" with activo="solicitudes" %}
 
 
     <!-- =========================
@@ -100,8 +28,9 @@
     ========================== -->
     <main class="main-area">
 
-
-        <!-- HEADER -->
+        <!-- =========================
+             HEADER
+        ========================== -->
         <header class="top-header">
 
             <div>
@@ -111,7 +40,7 @@
                 </h1>
 
                 <p>
-                    Domingo, 16 de agosto de 2026
+                    {% now "l, j \d\e F \d\e Y" as hoy %}{{ hoy|capfirst }}
                 </p>
 
             </div>
@@ -119,28 +48,181 @@
 
             <div class="header-actions">
 
-                <div class="header-search">
+                <!-- BUSCADOR GLOBAL -->
+                <div class="global-search">
 
-                    <input
-                        type="text"
-                        placeholder="Buscar solicitud, estudiante..."
+                    <div class="header-search">
+
+                        <input
+                            type="text"
+                            id="globalSearchInput"
+                            placeholder="Buscar solicitud, estudiante..."
+                            autocomplete="off"
+                        >
+
+                        <button
+                            type="button"
+                            id="clearGlobalSearch"
+                            class="search-clear"
+                            aria-label="Limpiar búsqueda"
+                        >
+                            ×
+                        </button>
+
+                        <span>
+                            ⌕
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        class="search-results"
+                        id="globalSearchResults"
                     >
-
-                    <span>
-                        ⌕
-                    </span>
+                    </div>
 
                 </div>
 
 
-                <button
-                    class="notification-button"
-                    type="button"
-                >
-                    ♧
+                <!-- NOTIFICACIONES -->
+                <div class="notification-wrapper">
 
-                    <span class="notification-dot"></span>
-                </button>
+                    <button
+                        class="notification-button"
+                        id="notificationButton"
+                        type="button"
+                        title="Notificaciones"
+                    >
+                        ♧
+
+                        <span
+                            class="notification-dot"
+                            id="notificationDot"
+                        ></span>
+                    </button>
+
+
+                    <div
+                        class="notification-panel"
+                        id="notificationPanel"
+                    >
+
+                        <div class="notification-header">
+
+                            <div>
+
+                                <h3>
+                                    Notificaciones
+                                </h3>
+
+                                <span id="notificationCounter">
+                                    3 nuevas
+                                </span>
+
+                            </div>
+
+                            <button
+                                type="button"
+                                class="notification-close"
+                                id="notificationClose"
+                            >
+                                ×
+                            </button>
+
+                        </div>
+
+
+                        <div class="notification-list">
+
+                            <div class="notification-item unread">
+
+                                <span class="notification-icon">
+                                    ✓
+                                </span>
+
+                                <div>
+
+                                    <strong>
+                                        Solicitud aprobada
+                                    </strong>
+
+                                    <p>
+                                        La solicitud #4821 de Carlos Méndez fue aprobada.
+                                    </p>
+
+                                    <small>
+                                        Hace 12 min
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="notification-item unread">
+
+                                <span class="notification-icon">
+                                    ◉
+                                </span>
+
+                                <div>
+
+                                    <strong>
+                                        Nueva solicitud
+                                    </strong>
+
+                                    <p>
+                                        Se recibió una nueva solicitud de beca.
+                                    </p>
+
+                                    <small>
+                                        Hace 35 min
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="notification-item unread">
+
+                                <span class="notification-icon">
+                                    !
+                                </span>
+
+                                <div>
+
+                                    <strong>
+                                        Solicitud pendiente
+                                    </strong>
+
+                                    <p>
+                                        Existen solicitudes pendientes de revisión.
+                                    </p>
+
+                                    <small>
+                                        Hace 1 hora
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="mark-read-button"
+                            id="markNotificationsRead"
+                        >
+                            Marcar todas como leídas
+                        </button>
+
+                    </div>
+
+                </div>
 
             </div>
 
@@ -151,7 +233,6 @@
              CONTENIDO
         ========================== -->
         <section class="content">
-
 
             <!-- TÍTULO -->
             <div class="page-title-row">
@@ -171,6 +252,7 @@
 
                 <button
                     class="new-button"
+                    id="openNewSolicitudModal"
                     type="button"
                 >
                     <span>＋</span>
@@ -186,7 +268,6 @@
             ========================== -->
             <div class="filter-row">
 
-
                 <div class="table-search">
 
                     <span>
@@ -197,6 +278,7 @@
                         type="text"
                         id="solicitudSearch"
                         placeholder="Buscar por nombre o ID..."
+                        autocomplete="off"
                     >
 
                 </div>
@@ -207,6 +289,7 @@
                     <button
                         class="filter-button active"
                         data-filter="todos"
+                        type="button"
                     >
                         Todos
                     </button>
@@ -214,6 +297,7 @@
                     <button
                         class="filter-button"
                         data-filter="aprobada"
+                        type="button"
                     >
                         Aprobada
                     </button>
@@ -221,6 +305,7 @@
                     <button
                         class="filter-button"
                         data-filter="revision"
+                        type="button"
                     >
                         En revisión
                     </button>
@@ -228,6 +313,7 @@
                     <button
                         class="filter-button"
                         data-filter="pendiente"
+                        type="button"
                     >
                         Pendiente
                     </button>
@@ -235,6 +321,7 @@
                     <button
                         class="filter-button"
                         data-filter="rechazada"
+                        type="button"
                     >
                         Rechazada
                     </button>
@@ -256,30 +343,12 @@
                         <tr>
 
                             <th>ID</th>
-
-                            <th>
-                                ESTUDIANTE
-                            </th>
-
-                            <th>
-                                NIVEL
-                            </th>
-
-                            <th>
-                                CONVOCATORIA
-                            </th>
-
-                            <th>
-                                FECHA
-                            </th>
-
-                            <th>
-                                ESTADO
-                            </th>
-
-                            <th>
-                                ACCIÓN
-                            </th>
+                            <th>ESTUDIANTE</th>
+                            <th>NIVEL</th>
+                            <th>CONVOCATORIA</th>
+                            <th>FECHA</th>
+                            <th>ESTADO</th>
+                            <th>ACCIÓN</th>
 
                         </tr>
 
@@ -287,7 +356,6 @@
 
 
                     <tbody id="solicitudesBody">
-
 
                         <!-- SOLICITUD 1 -->
                         <tr
@@ -323,7 +391,7 @@
 
                             </td>
 
-                            <td>
+                            <td class="actions-cell">
 
                                 <button
                                     class="action-eye"
@@ -372,11 +440,12 @@
 
                             </td>
 
-                            <td>
+                            <td class="actions-cell">
 
                                 <button
                                     class="action-eye"
                                     type="button"
+                                    title="Ver solicitud"
                                 >
                                     ◉
                                 </button>
@@ -425,6 +494,7 @@
                                 <button
                                     class="action-eye"
                                     type="button"
+                                    title="Ver solicitud"
                                 >
                                     ◉
                                 </button>
@@ -484,11 +554,12 @@
 
                             </td>
 
-                            <td>
+                            <td class="actions-cell">
 
                                 <button
                                     class="action-eye"
                                     type="button"
+                                    title="Ver solicitud"
                                 >
                                     ◉
                                 </button>
@@ -532,11 +603,12 @@
 
                             </td>
 
-                            <td>
+                            <td class="actions-cell">
 
                                 <button
                                     class="action-eye"
                                     type="button"
+                                    title="Ver solicitud"
                                 >
                                     ◉
                                 </button>
@@ -580,11 +652,12 @@
 
                             </td>
 
-                            <td>
+                            <td class="actions-cell">
 
                                 <button
                                     class="action-eye"
                                     type="button"
+                                    title="Ver solicitud"
                                 >
                                     ◉
                                 </button>
@@ -633,6 +706,7 @@
                                 <button
                                     class="action-eye"
                                     type="button"
+                                    title="Ver solicitud"
                                 >
                                     ◉
                                 </button>
@@ -640,6 +714,7 @@
                                 <button
                                     class="action-approve"
                                     type="button"
+                                    title="Aprobar"
                                 >
                                     ✓
                                 </button>
@@ -647,6 +722,7 @@
                                 <button
                                     class="action-reject"
                                     type="button"
+                                    title="Rechazar"
                                 >
                                     ×
                                 </button>
@@ -690,11 +766,12 @@
 
                             </td>
 
-                            <td>
+                            <td class="actions-cell">
 
                                 <button
                                     class="action-eye"
                                     type="button"
+                                    title="Ver solicitud"
                                 >
                                     ◉
                                 </button>
@@ -717,93 +794,345 @@
 
 
 <!-- =========================
-     JAVASCRIPT
+     MODAL NUEVA SOLICITUD
 ========================== -->
-<script>
+<div
+    class="modal-overlay"
+    id="newSolicitudModal"
+>
 
-    const filterButtons =
-        document.querySelectorAll(".filter-button");
+    <div class="modal-card">
 
-    const solicitudRows =
-        document.querySelectorAll(".solicitud-row");
+        <div class="modal-header">
 
-    const solicitudSearch =
-        document.getElementById("solicitudSearch");
+            <div>
 
+                <h2>
+                    Nueva solicitud
+                </h2>
 
-    let currentFilter = "todos";
+                <p>
+                    Registra una nueva solicitud de beca.
+                </p>
 
+            </div>
 
-    function filterSolicitudes() {
+            <button
+                class="modal-close"
+                id="closeNewSolicitudModal"
+                type="button"
+            >
+                ×
+            </button>
 
-        const text =
-            solicitudSearch.value
-                .toLowerCase()
-                .trim();
-
-
-        solicitudRows.forEach(row => {
-
-            const status =
-                row.dataset.status;
-
-            const rowText =
-                row.textContent.toLowerCase();
-
-
-            const matchesFilter =
-                currentFilter === "todos" ||
-                status === currentFilter;
+        </div>
 
 
-            const matchesSearch =
-                rowText.includes(text);
+        <form id="newSolicitudForm">
+
+            <div class="modal-body">
+
+                <div class="form-field">
+
+                    <label for="newStudent">
+                        Nombre del estudiante
+                    </label>
+
+                    <input
+                        type="text"
+                        id="newStudent"
+                        required
+                    >
+
+                </div>
 
 
-            if (matchesFilter && matchesSearch) {
+                <div class="form-grid">
 
-                row.style.display = "";
+                    <div class="form-field">
 
-            } else {
+                        <label for="newLevel">
+                            Nivel
+                        </label>
 
-                row.style.display = "none";
+                        <select
+                            id="newLevel"
+                            required
+                        >
 
-            }
+                            <option value="">
+                                Seleccionar
+                            </option>
 
-        });
+                            <option value="Nivel Medio">
+                                Nivel Medio
+                            </option>
 
-    }
+                            <option value="Universitario">
+                                Universitario
+                            </option>
 
+                            <option value="Posgrado">
+                                Posgrado
+                            </option>
 
-    filterButtons.forEach(button => {
+                        </select>
 
-        button.addEventListener("click", function() {
-
-            filterButtons.forEach(btn => {
-                btn.classList.remove("active");
-            });
-
-
-            this.classList.add("active");
-
-            currentFilter =
-                this.dataset.filter;
-
-
-            filterSolicitudes();
-
-        });
-
-    });
+                    </div>
 
 
-    solicitudSearch.addEventListener(
-        "input",
-        filterSolicitudes
-    );
+                    <div class="form-field">
 
-</script>
+                        <label for="newStatus">
+                            Estado
+                        </label>
+
+                        <select
+                            id="newStatus"
+                            required
+                        >
+
+                            <option value="pendiente">
+                                Pendiente
+                            </option>
+
+                            <option value="revision">
+                                En revisión
+                            </option>
+
+                            <option value="aprobada">
+                                Aprobada
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label for="newConvocatoria">
+                        Convocatoria
+                    </label>
+
+                    <select
+                        id="newConvocatoria"
+                        required
+                    >
+
+                        <option value="">
+                            Seleccionar convocatoria
+                        </option>
+
+                        <option value="Excelencia Académica 2026">
+                            Excelencia Académica 2026
+                        </option>
+
+                        <option value="Posgrado Internacional CONCYT">
+                            Posgrado Internacional CONCYT
+                        </option>
+
+                        <option value="Becas Técnicas y Vocacionales">
+                            Becas Técnicas y Vocacionales
+                        </option>
+
+                        <option value="Mujer en Ciencia y Tecnología">
+                            Mujer en Ciencia y Tecnología
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label for="newDate">
+                        Fecha
+                    </label>
+
+                    <input
+                        type="date"
+                        id="newDate"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    id="cancelNewSolicitud"
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Crear solicitud
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     MODAL DETALLE SOLICITUD
+========================== -->
+<div
+    class="modal-overlay"
+    id="detailSolicitudModal"
+>
+
+    <div class="modal-card">
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2 id="detailSolicitudTitle">
+                    Detalle de solicitud
+                </h2>
+
+                <p>
+                    Información de la solicitud seleccionada.
+                </p>
+
+            </div>
+
+            <button
+                class="modal-close"
+                id="closeDetailSolicitud"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <div class="form-grid">
+
+                <div class="form-field">
+
+                    <label>ID</label>
+
+                    <input
+                        type="text"
+                        id="detailId"
+                        readonly
+                    >
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label>Estado</label>
+
+                    <input
+                        type="text"
+                        id="detailStatus"
+                        readonly
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-field">
+
+                <label>Estudiante</label>
+
+                <input
+                    type="text"
+                    id="detailStudent"
+                    readonly
+                >
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <div class="form-field">
+
+                    <label>Nivel</label>
+
+                    <input
+                        type="text"
+                        id="detailLevel"
+                        readonly
+                    >
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label>Fecha</label>
+
+                    <input
+                        type="text"
+                        id="detailDate"
+                        readonly
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-field">
+
+                <label>Convocatoria</label>
+
+                <input
+                    type="text"
+                    id="detailConvocatoria"
+                    readonly
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="modal-footer">
+
+            <button
+                type="button"
+                class="primary-button"
+                id="closeDetailSolicitudBottom"
+            >
+                Cerrar
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="{% static 'js/solicitudes.js' %}?v=2"></script>
 
 </body>
-
 </html>

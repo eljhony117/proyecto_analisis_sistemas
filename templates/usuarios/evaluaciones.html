@@ -1,228 +1,518 @@
 {% load static %}
+
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Evaluaciones</title>
 
-    <link rel="stylesheet" href="{% static 'css/evaluaciones.css' %}">
+    <link rel="stylesheet" href="{% static 'css/evaluaciones.css' %}?v=10">
+
+    <link rel="stylesheet" href="{% static 'css/roles.css' %}">
 </head>
 
-<body>
+<body data-rol="{{ rol }}">
 
 <div class="app-layout">
 
     <!-- =========================
+
          SIDEBAR
+
     ========================== -->
-    <aside class="sidebar">
 
-        <div class="sidebar-brand">
-
-            <div class="brand-icon">✓</div>
-
-            <div>
-                <h2>404: Club no encontrado</h2>
-                <p>Gestión de Becas</p>
-            </div>
-
-        </div>
-
-        <div class="mineduc">
-            MINISTERIO DE EDUCACIÓN ·<br>
-            GUATEMALA
-        </div>
-
-
-        <nav class="sidebar-menu">
-
-            <a href="{% url 'panel' %}" class="menu-item">
-                <span class="menu-icon">⌂</span>
-                <span>Inicio</span>
-            </a>
-
-            <a href="{% url 'convocatorias' %}" class="menu-item">
-                <span class="menu-icon">⚑</span>
-                <span>Convocatorias</span>
-            </a>
-
-            <a href="{% url 'solicitudes' %}" class="menu-item">
-                <span class="menu-icon">▤</span>
-                <span>Solicitudes</span>
-            </a>
-
-            <a href="{% url 'evaluaciones' %}" class="menu-item active">
-                <span class="menu-icon">☑</span>
-                <span>Evaluaciones</span>
-
-                <span class="badge">
-                    317
-                </span>
-            </a>
-
-            <a href="{% url 'comites' %}" class="menu-item">
-                <span class="menu-icon">♙</span>
-                <span>Comités</span>
-            </a>
-
-            <a href="{% url 'reportes' %}" class="menu-item">
-                <span class="menu-icon">▥</span>
-                <span>Reportes</span>
-            </a>
-
-        </nav>
-
-
-        <div class="sidebar-user">
-
-            <div class="avatar">
-                DH
-            </div>
-
-            <div>
-                <strong>dhernandezl34</strong>
-
-                <a href="{% url 'login' %}">
-                    Cerrar sesión
-                </a>
-            </div>
-
-        </div>
-
-    </aside>
-
+    {% include "usuarios/_sidebar.html" with activo="evaluaciones" %}
 
     <!-- =========================
+
          CONTENIDO PRINCIPAL
+
     ========================== -->
+
     <main class="main-area">
 
         <!-- HEADER -->
+
         <header class="top-header">
 
             <div>
+
                 <h1>Evaluaciones</h1>
 
                 <p>
-                    Domingo, 16 de agosto de 2026
-                </p>
-            </div>
 
+                    {% now "l, j \d\e F \d\e Y" as hoy %}{{ hoy|capfirst }}
+
+                </p>
+
+            </div>
 
             <div class="header-actions">
 
-                <div class="header-search">
+                <!-- BUSCADOR -->
 
-                    <input
-                        type="text"
-                        id="headerSearch"
-                        placeholder="Buscar solicitud, estudiante..."
-                    >
+                <div class="global-search">
 
-                    <span>⌕</span>
+                    <div class="header-search">
+
+                        <input
+
+                            type="text"
+
+                            id="headerSearch"
+
+                            placeholder="Buscar solicitud, estudiante..."
+
+                            autocomplete="off"
+
+                        >
+
+                        <button
+
+                            type="button"
+
+                            id="clearHeaderSearch"
+
+                            class="search-clear"
+
+                            aria-label="Limpiar búsqueda"
+
+                        >
+
+                            ×
+
+                        </button>
+
+                        <span>⌕</span>
+
+                    </div>
 
                 </div>
 
+                <!-- NOTIFICACIONES -->
 
-                <button
-                    class="notification-button"
-                    type="button"
-                >
-                    ♧
+                <div class="notification-wrapper">
 
-                    <span class="notification-dot"></span>
-                </button>
+                    <button
+
+                        class="notification-button"
+
+                        id="notificationButton"
+
+                        type="button"
+
+                        title="Notificaciones"
+
+                    >
+
+                        ♧
+
+                        <span
+
+                            class="notification-dot"
+
+                            id="notificationDot"
+
+                        ></span>
+
+                    </button>
+
+                    <div
+
+                        class="notification-panel"
+
+                        id="notificationPanel"
+
+                    >
+
+                        <div class="notification-header">
+
+                            <div>
+
+                                <h3>Notificaciones</h3>
+
+                                <span id="notificationCounter">
+
+                                    3 nuevas
+
+                                </span>
+
+                            </div>
+
+                            <button
+
+                                type="button"
+
+                                class="notification-close"
+
+                                id="notificationClose"
+
+                            >
+
+                                ×
+
+                            </button>
+
+                        </div>
+
+                        <div class="notification-list">
+
+                            <div class="notification-item unread">
+
+                                <span class="notification-icon">!</span>
+
+                                <div>
+
+                                    <strong>Evaluaciones pendientes</strong>
+
+                                    <p>
+
+                                        Existen solicitudes pendientes de evaluación.
+
+                                    </p>
+
+                                    <small>Hace 10 min</small>
+
+                                </div>
+
+                            </div>
+
+                            <div class="notification-item unread">
+
+                                <span class="notification-icon">✓</span>
+
+                                <div>
+
+                                    <strong>Evaluación completada</strong>
+
+                                    <p>
+
+                                        Se completó una evaluación recientemente.
+
+                                    </p>
+
+                                    <small>Hace 35 min</small>
+
+                                </div>
+
+                            </div>
+
+                            <div class="notification-item unread">
+
+                                <span class="notification-icon">♙</span>
+
+                                <div>
+
+                                    <strong>Evaluador pendiente</strong>
+
+                                    <p>
+
+                                        Hay solicitudes que todavía no tienen evaluador asignado.
+
+                                    </p>
+
+                                    <small>Hace 1 hora</small>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <button
+
+                            type="button"
+
+                            class="mark-read-button"
+
+                            id="markNotificationsRead"
+
+                        >
+
+                            Marcar todas como leídas
+
+                        </button>
+
+                    </div>
+
+                </div>
 
             </div>
 
         </header>
 
-
         <!-- =========================
+
              CONTENIDO
+
         ========================== -->
+
         <section class="content">
 
             <!-- TÍTULO -->
+
             <div class="page-title-row">
 
                 <div>
-                    <h2>
-                        Evaluaciones
-                    </h2>
+
+                    <h2>Evaluaciones</h2>
 
                     <p>
-                        Gestión de evaluaciones y puntajes por solicitud
-                    </p>
-                </div>
 
+                        Gestión de evaluaciones y puntajes por solicitud
+
+                    </p>
+
+                </div>
 
                 <div class="page-actions">
 
                     <span class="pending-counter">
-                        317 pendientes
+
+                        {{ evaluaciones_pendientes }} pendientes
+
                     </span>
 
-                    <button
-                        class="filter-main-button"
-                        type="button"
-                    >
-                        ☰
-                        <span>Filtrar</span>
-                    </button>
+                    <div class="filter-main-wrapper">
+
+                        <button
+
+                            class="filter-main-button"
+
+                            id="filterMainButton"
+
+                            type="button"
+
+                        >
+
+                            ☰
+
+                            <span>Filtrar</span>
+
+                        </button>
+
+                        <div
+
+                            class="advanced-filter-panel"
+
+                            id="advancedFilterPanel"
+
+                        >
+
+                            <div class="advanced-filter-header">
+
+                                <strong>Filtros avanzados</strong>
+
+                                <button
+
+                                    type="button"
+
+                                    id="closeAdvancedFilter"
+
+                                >
+
+                                    ×
+
+                                </button>
+
+                            </div>
+
+                            <div class="advanced-filter-field">
+
+                                <label for="priorityFilter">
+
+                                    Prioridad
+
+                                </label>
+
+                                <select id="priorityFilter">
+
+                                    <option value="todas">
+
+                                        Todas
+
+                                    </option>
+
+                                    <option value="high">
+
+                                        Alta
+
+                                    </option>
+
+                                    <option value="medium">
+
+                                        Media
+
+                                    </option>
+
+                                    <option value="low">
+
+                                        Baja
+
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="advanced-filter-field">
+
+                                <label for="evaluatorFilter">
+
+                                    Evaluador
+
+                                </label>
+
+                                <select id="evaluatorFilter">
+
+                                    <option value="todos">
+
+                                        Todos
+
+                                    </option>
+
+                                    <option value="asignado">
+
+                                        Asignado
+
+                                    </option>
+
+                                    <option value="sin-asignar">
+
+                                        Sin asignar
+
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="advanced-filter-actions">
+
+                                <button
+
+                                    type="button"
+
+                                    class="secondary-button"
+
+                                    id="clearAdvancedFilters"
+
+                                >
+
+                                    Limpiar
+
+                                </button>
+
+                                <button
+
+                                    type="button"
+
+                                    class="primary-button"
+
+                                    id="applyAdvancedFilters"
+
+                                >
+
+                                    Aplicar
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
             </div>
 
+            <!-- FILTROS DE ESTADO -->
 
-            <!-- FILTROS -->
             <div class="filters">
 
                 <button
+
                     class="filter-button active"
+
                     data-filter="todos"
+
+                    type="button"
+
                 >
+
                     Todos
+
                 </button>
 
                 <button
+
                     class="filter-button"
+
                     data-filter="pendiente"
+
+                    type="button"
+
                 >
+
                     Pendiente
+
                 </button>
 
                 <button
+
                     class="filter-button"
+
                     data-filter="progreso"
+
+                    type="button"
+
                 >
+
                     En progreso
+
                 </button>
 
                 <button
+
                     class="filter-button"
+
                     data-filter="completada"
+
+                    type="button"
+
                 >
+
                     Completada
+
                 </button>
 
             </div>
 
-
             <!-- =========================
+
                  LISTA DE EVALUACIONES
+
             ========================== -->
+
             <div class="evaluaciones-list">
 
-
                 <!-- EVALUACIÓN 1 -->
+
                 <article
+
                     class="evaluacion-card"
+
                     data-status="progreso"
+
+                    data-priority="high"
+
                 >
 
                     <div class="evaluation-info">
@@ -230,68 +520,91 @@
                         <div class="evaluation-meta">
 
                             <span class="evaluation-id">
+
                                 #4820
+
                             </span>
 
                             <span class="status progreso">
+
                                 En progreso
+
                             </span>
 
                             <span class="priority high">
+
                                 ● Prioridad Alta
+
                             </span>
 
                         </div>
 
-
                         <h3>
+
                             María López Sánchez
+
                         </h3>
 
                         <p class="scholarship">
+
                             Posgrado Internacional CONCYT
+
                         </p>
 
                         <p class="evaluator">
+
                             Evaluador:
+
                             <strong>
+
                                 Dr. Roberto Castillo
+
                             </strong>
+
                         </p>
 
                     </div>
-
 
                     <div class="evaluation-result">
 
                         <div class="score">
 
-                            <strong>
-                                78
-                            </strong>
+                            <strong>78</strong>
 
                             <span>
+
                                 puntos
+
                             </span>
 
                         </div>
 
                         <button
+
                             class="evaluate-button"
+
                             type="button"
+
                         >
+
                             Evaluar
+
                         </button>
 
                     </div>
 
                 </article>
-
 
                 <!-- EVALUACIÓN 2 -->
+
                 <article
+
                     class="evaluacion-card"
+
                     data-status="pendiente"
+
+                    data-priority="medium"
+
                 >
 
                     <div class="evaluation-info">
@@ -299,67 +612,89 @@
                         <div class="evaluation-meta">
 
                             <span class="evaluation-id">
+
                                 #4819
+
                             </span>
 
                             <span class="status pendiente">
+
                                 Pendiente
+
                             </span>
 
                             <span class="priority medium">
+
                                 ● Prioridad Media
+
                             </span>
 
                         </div>
 
-
                         <h3>
+
                             Luis Fernando Pérez Gómez
+
                         </h3>
 
                         <p class="scholarship">
+
                             Becas Técnicas y Vocacionales
+
                         </p>
 
                         <p class="evaluator">
+
                             Evaluador:
+
                             <strong class="not-assigned">
+
                                 Sin asignar
+
                             </strong>
+
                         </p>
 
                     </div>
-
 
                     <div class="evaluation-result">
 
                         <div class="score empty-score">
 
-                            <strong>
-                                —
-                            </strong>
+                            <strong>—</strong>
 
                             <span>
+
                                 sin puntaje
+
                             </span>
 
                         </div>
 
-
                         <div class="evaluation-buttons">
 
                             <button
+
                                 class="evaluate-button"
+
                                 type="button"
+
                             >
+
                                 Evaluar
+
                             </button>
 
                             <button
+
                                 class="assign-button"
+
                                 type="button"
+
                             >
+
                                 Asignar
+
                             </button>
 
                         </div>
@@ -368,11 +703,16 @@
 
                 </article>
 
-
                 <!-- EVALUACIÓN 3 -->
+
                 <article
+
                     class="evaluacion-card"
+
                     data-status="progreso"
+
+                    data-priority="medium"
+
                 >
 
                     <div class="evaluation-info">
@@ -380,68 +720,91 @@
                         <div class="evaluation-meta">
 
                             <span class="evaluation-id">
+
                                 #4816
+
                             </span>
 
                             <span class="status progreso">
+
                                 En progreso
+
                             </span>
 
                             <span class="priority medium">
+
                                 ● Prioridad Media
+
                             </span>
 
                         </div>
 
-
                         <h3>
+
                             Gabriela Torres Chávez
+
                         </h3>
 
                         <p class="scholarship">
+
                             Becas Técnicas y Vocacionales
+
                         </p>
 
                         <p class="evaluator">
+
                             Evaluador:
+
                             <strong>
+
                                 Lic. Carmen Pineda
+
                             </strong>
+
                         </p>
 
                     </div>
-
 
                     <div class="evaluation-result">
 
                         <div class="score">
 
-                            <strong>
-                                65
-                            </strong>
+                            <strong>65</strong>
 
                             <span>
+
                                 puntos
+
                             </span>
 
                         </div>
 
                         <button
+
                             class="evaluate-button"
+
                             type="button"
+
                         >
+
                             Evaluar
+
                         </button>
 
                     </div>
 
                 </article>
 
-
                 <!-- EVALUACIÓN 4 -->
+
                 <article
+
                     class="evaluacion-card"
+
                     data-status="pendiente"
+
+                    data-priority="high"
+
                 >
 
                     <div class="evaluation-info">
@@ -449,67 +812,89 @@
                         <div class="evaluation-meta">
 
                             <span class="evaluation-id">
+
                                 #4815
+
                             </span>
 
                             <span class="status pendiente">
+
                                 Pendiente
+
                             </span>
 
                             <span class="priority high">
+
                                 ● Prioridad Alta
+
                             </span>
 
                         </div>
 
-
                         <h3>
+
                             José Miguel Castillo Rux
+
                         </h3>
 
                         <p class="scholarship">
+
                             Posgrado Internacional CONCYT
+
                         </p>
 
                         <p class="evaluator">
+
                             Evaluador:
+
                             <strong class="not-assigned">
+
                                 Sin asignar
+
                             </strong>
+
                         </p>
 
                     </div>
-
 
                     <div class="evaluation-result">
 
                         <div class="score empty-score">
 
-                            <strong>
-                                —
-                            </strong>
+                            <strong>—</strong>
 
                             <span>
+
                                 sin puntaje
+
                             </span>
 
                         </div>
 
-
                         <div class="evaluation-buttons">
 
                             <button
+
                                 class="evaluate-button"
+
                                 type="button"
+
                             >
+
                                 Evaluar
+
                             </button>
 
                             <button
+
                                 class="assign-button"
+
                                 type="button"
+
                             >
+
                                 Asignar
+
                             </button>
 
                         </div>
@@ -518,11 +903,16 @@
 
                 </article>
 
-
                 <!-- EVALUACIÓN 5 -->
+
                 <article
+
                     class="evaluacion-card"
+
                     data-status="completada"
+
+                    data-priority="low"
+
                 >
 
                     <div class="evaluation-info">
@@ -530,57 +920,75 @@
                         <div class="evaluation-meta">
 
                             <span class="evaluation-id">
+
                                 #4814
+
                             </span>
 
                             <span class="status completada">
+
                                 Completada
+
                             </span>
 
                             <span class="priority low">
+
                                 ● Prioridad Baja
+
                             </span>
 
                         </div>
 
-
                         <h3>
+
                             Rosa Elena Fuentes López
+
                         </h3>
 
                         <p class="scholarship">
+
                             Excelencia Académica 2026
+
                         </p>
 
                         <p class="evaluator">
+
                             Evaluador:
+
                             <strong>
+
                                 Lic. Andrea Morales
+
                             </strong>
+
                         </p>
 
                     </div>
-
 
                     <div class="evaluation-result">
 
                         <div class="score completed-score">
 
-                            <strong>
-                                92
-                            </strong>
+                            <strong>92</strong>
 
                             <span>
+
                                 puntos
+
                             </span>
 
                         </div>
 
                         <button
-                            class="evaluate-button"
+
+                            class="evaluate-button view-evaluation"
+
                             type="button"
+
                         >
+
                             Ver
+
                         </button>
 
                     </div>
@@ -595,93 +1003,440 @@
 
 </div>
 
+<!-- =========================
+
+     MODAL EVALUAR
+
+========================== -->
+
+<div
+
+    class="modal-overlay"
+
+    id="evaluationModal"
+
+>
+
+    <div class="modal-card">
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2 id="evaluationModalTitle">
+
+                    Evaluar solicitud
+
+                </h2>
+
+                <p id="evaluationModalSubtitle">
+
+                    Registra el puntaje y las observaciones.
+
+                </p>
+
+            </div>
+
+            <button
+
+                class="modal-close"
+
+                id="closeEvaluationModal"
+
+                type="button"
+
+            >
+
+                ×
+
+            </button>
+
+        </div>
+
+        <form id="evaluationForm">
+
+            <div class="modal-body">
+
+                <div class="form-grid">
+
+                    <div class="form-field">
+
+                        <label for="evaluationId">
+
+                            Solicitud
+
+                        </label>
+
+                        <input
+
+                            type="text"
+
+                            id="evaluationId"
+
+                            readonly
+
+                        >
+
+                    </div>
+
+                    <div class="form-field">
+
+                        <label for="evaluationStudent">
+
+                            Estudiante
+
+                        </label>
+
+                        <input
+
+                            type="text"
+
+                            id="evaluationStudent"
+
+                            readonly
+
+                        >
+
+                    </div>
+
+                </div>
+
+                <div class="form-field">
+
+                    <label for="evaluationScholarship">
+
+                        Convocatoria
+
+                    </label>
+
+                    <input
+
+                        type="text"
+
+                        id="evaluationScholarship"
+
+                        readonly
+
+                    >
+
+                </div>
+
+                <div class="form-field">
+
+                    <label for="evaluationEvaluator">
+
+                        Evaluador
+
+                    </label>
+
+                    <input
+
+                        type="text"
+
+                        id="evaluationEvaluator"
+
+                        readonly
+
+                    >
+
+                </div>
+
+                <div class="form-field">
+
+                    <label for="evaluationScore">
+
+                        Puntaje
+
+                    </label>
+
+                    <input
+
+                        type="number"
+
+                        id="evaluationScore"
+
+                        min="0"
+
+                        max="100"
+
+                        placeholder="0 - 100"
+
+                        required
+
+                    >
+
+                </div>
+
+                <div class="form-field">
+
+                    <label for="evaluationObservations">
+
+                        Observaciones
+
+                    </label>
+
+                    <textarea
+
+                        id="evaluationObservations"
+
+                        rows="5"
+
+                        placeholder="Ingrese las observaciones de la evaluación..."
+
+                    ></textarea>
+
+                </div>
+
+                <div class="form-field">
+
+                    <label for="evaluationStatus">
+
+                        Estado
+
+                    </label>
+
+                    <select id="evaluationStatus">
+
+                        <option value="progreso">
+
+                            En progreso
+
+                        </option>
+
+                        <option value="completada">
+
+                            Completada
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+
+                    type="button"
+
+                    class="secondary-button"
+
+                    id="cancelEvaluation"
+
+                >
+
+                    Cancelar
+
+                </button>
+
+                <button
+
+                    type="submit"
+
+                    class="primary-button"
+
+                    id="saveEvaluationButton"
+
+                >
+
+                    Guardar evaluación
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
 
 <!-- =========================
-     JAVASCRIPT
+
+     MODAL ASIGNAR EVALUADOR
+
 ========================== -->
-<script>
 
-    const filterButtons =
-        document.querySelectorAll(".filter-button");
+<div
 
-    const evaluationCards =
-        document.querySelectorAll(".evaluacion-card");
+    class="modal-overlay"
 
-    const headerSearch =
-        document.getElementById("headerSearch");
+    id="assignModal"
 
-    let currentFilter = "todos";
+>
 
+    <div class="modal-card small-modal">
 
-    function filterEvaluations() {
+        <div class="modal-header">
 
-        const text =
-            headerSearch.value
-                .toLowerCase()
-                .trim();
+            <div>
 
+                <h2>
 
-        evaluationCards.forEach(card => {
+                    Asignar evaluador
 
-            const status =
-                card.dataset.status;
+                </h2>
 
-            const content =
-                card.textContent.toLowerCase();
+                <p id="assignModalSubtitle">
 
+                    Selecciona el evaluador responsable.
 
-            const matchesFilter =
-                currentFilter === "todos" ||
-                status === currentFilter;
+                </p>
 
+            </div>
 
-            const matchesSearch =
-                content.includes(text);
+            <button
 
+                class="modal-close"
 
-            if (matchesFilter && matchesSearch) {
+                id="closeAssignModal"
 
-                card.style.display = "flex";
+                type="button"
 
-            } else {
+            >
 
-                card.style.display = "none";
+                ×
 
-            }
+            </button>
 
-        });
+        </div>
 
-    }
+        <form id="assignForm">
 
+            <div class="modal-body">
 
-    filterButtons.forEach(button => {
+                <div class="form-field">
 
-        button.addEventListener("click", function() {
+                    <label for="assignSolicitud">
 
-            filterButtons.forEach(btn => {
-                btn.classList.remove("active");
-            });
+                        Solicitud
 
+                    </label>
 
-            this.classList.add("active");
+                    <input
 
-            currentFilter =
-                this.dataset.filter;
+                        type="text"
 
+                        id="assignSolicitud"
 
-            filterEvaluations();
+                        readonly
 
-        });
+                    >
 
-    });
+                </div>
 
+                <div class="form-field">
 
-    headerSearch.addEventListener(
-        "input",
-        filterEvaluations
-    );
+                    <label for="assignStudent">
 
-</script>
+                        Estudiante
+
+                    </label>
+
+                    <input
+
+                        type="text"
+
+                        id="assignStudent"
+
+                        readonly
+
+                    >
+
+                </div>
+
+                <div class="form-field">
+
+                    <label for="assignEvaluator">
+
+                        Evaluador
+
+                    </label>
+
+                    <select
+
+                        id="assignEvaluator"
+
+                        required
+
+                    >
+
+                        <option value="">
+
+                            Seleccionar evaluador
+
+                        </option>
+
+                        <option value="Dr. Roberto Castillo">
+
+                            Dr. Roberto Castillo
+
+                        </option>
+
+                        <option value="Lic. Carmen Pineda">
+
+                            Lic. Carmen Pineda
+
+                        </option>
+
+                        <option value="Lic. Andrea Morales">
+
+                            Lic. Andrea Morales
+
+                        </option>
+
+                        <option value="Ing. Carlos Herrera">
+
+                            Ing. Carlos Herrera
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+
+                    type="button"
+
+                    class="secondary-button"
+
+                    id="cancelAssign"
+
+                >
+
+                    Cancelar
+
+                </button>
+
+                <button
+
+                    type="submit"
+
+                    class="primary-button"
+
+                >
+
+                    Asignar evaluador
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script src="{% static 'js/evaluaciones.js' %}?v=10"></script>
 
 </body>
+
 </html>
