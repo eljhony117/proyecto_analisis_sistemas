@@ -1,0 +1,19 @@
+/* Botones que solo ve cada rol.
+   Esto solo oculta botones en pantalla. Cuando estas acciones se guarden en
+   Oracle, el permiso tambien se debe validar en views.py. */
+
+/* Solo el administrador: crear y gestionar convocatorias, gestionar comites,
+   aprobar o rechazar solicitudes y asignar evaluadores. */
+body:not([data-rol="ADMINISTRADOR"]) #openNewConvModal,
+body:not([data-rol="ADMINISTRADOR"]) #newCommitteeButton,
+body:not([data-rol="ADMINISTRADOR"]) .manage-button,
+body:not([data-rol="ADMINISTRADOR"]) .action-approve,
+body:not([data-rol="ADMINISTRADOR"]) .action-reject,
+body:not([data-rol="ADMINISTRADOR"]) .assign-button {
+    display: none !important;
+}
+
+/* El evaluador no crea solicitudes (sí el administrador y el estudiante). */
+body[data-rol="EVALUADOR"] #openNewSolicitudModal {
+    display: none !important;
+}

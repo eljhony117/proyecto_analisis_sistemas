@@ -1,0 +1,81 @@
+{% comment %}
+El menu, el nombre, las iniciales y el rol salen de la sesion (context_processors.py).
+{% endcomment %}
+<aside class="sidebar">
+
+    <div class="sidebar-brand">
+
+        <div class="brand-icon">✓</div>
+
+        <div>
+            <h2>404: Club no encontrado</h2>
+            <p>Gestión de Becas</p>
+        </div>
+
+    </div>
+
+    <div class="mineduc">
+        MINISTERIO DE EDUCACIÓN ·<br>
+        GUATEMALA
+    </div>
+
+    <nav class="sidebar-menu">
+
+        <a href="{% url 'panel' %}" class="menu-item{% if activo == 'panel' %} active{% endif %}">
+            <span class="menu-icon">⌂</span>
+            <span>Inicio</span>
+        </a>
+
+        {% if rol == 'ADMINISTRADOR' or rol == 'ESTUDIANTE' %}
+        <a href="{% url 'convocatorias' %}" class="menu-item{% if activo == 'convocatorias' %} active{% endif %}">
+            <span class="menu-icon">⚑</span>
+            <span>Convocatorias</span>
+        </a>
+        {% endif %}
+
+        <a href="{% url 'solicitudes' %}" class="menu-item{% if activo == 'solicitudes' %} active{% endif %}">
+            <span class="menu-icon">▤</span>
+            <span>Solicitudes</span>
+        </a>
+
+        {% if rol == 'ADMINISTRADOR' or rol == 'EVALUADOR' %}
+        <a href="{% url 'evaluaciones' %}" class="menu-item{% if activo == 'evaluaciones' %} active{% endif %}">
+            <span class="menu-icon">☑</span>
+            <span>Evaluaciones</span>
+            <span class="badge">{{ evaluaciones_pendientes }}</span>
+        </a>
+
+        <a href="{% url 'comites' %}" class="menu-item{% if activo == 'comites' %} active{% endif %}">
+            <span class="menu-icon">♙</span>
+            <span>Comités</span>
+        </a>
+
+        <a href="{% url 'reportes' %}" class="menu-item{% if activo == 'reportes' %} active{% endif %}">
+            <span class="menu-icon">▥</span>
+            <span>Reportes</span>
+        </a>
+        {% endif %}
+
+    </nav>
+
+    <div class="sidebar-user">
+
+        <div class="avatar">
+            {{ iniciales }}
+        </div>
+
+        <div>
+            <strong>{{ usuario_nombre }}</strong>
+
+            <span style="display:block; font-size:12px; opacity:.75;">
+                {{ rol_etiqueta }}
+            </span>
+
+            <a href="{% url 'logout' %}">
+                Cerrar sesión
+            </a>
+        </div>
+
+    </div>
+
+</aside>

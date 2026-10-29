@@ -1,514 +1,114 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Comités Evaluadores</title>
-
-    <link rel="stylesheet" href="{% static 'css/comites.css' %}">
+    <link rel="stylesheet" href="{% static 'css/comites.css' %}?v=5">
+    <link rel="stylesheet" href="{% static 'css/roles.css' %}">
 </head>
-
-<body>
-
+<body data-rol="{{ rol }}">
 <div class="app-layout">
+    {% include "usuarios/_sidebar.html" with activo="comites" %}
 
-    <!-- =========================
-         SIDEBAR
-    ========================== -->
-    <aside class="sidebar">
-
-        <div class="sidebar-brand">
-
-            <div class="brand-icon">✓</div>
-
-            <div>
-                <h2>404: Club no encontrado</h2>
-                <p>Gestión de Becas</p>
-            </div>
-
-        </div>
-
-        <div class="mineduc">
-            MINISTERIO DE EDUCACIÓN ·<br>
-            GUATEMALA
-        </div>
-
-
-        <nav class="sidebar-menu">
-
-            <a href="{% url 'panel' %}" class="menu-item">
-                <span class="menu-icon">⌂</span>
-                <span>Inicio</span>
-            </a>
-
-            <a href="{% url 'convocatorias' %}" class="menu-item">
-                <span class="menu-icon">⚑</span>
-                <span>Convocatorias</span>
-            </a>
-
-            <a href="{% url 'solicitudes' %}" class="menu-item">
-                <span class="menu-icon">▤</span>
-                <span>Solicitudes</span>
-            </a>
-
-            <a href="{% url 'evaluaciones' %}" class="menu-item">
-                <span class="menu-icon">☑</span>
-                <span>Evaluaciones</span>
-                <span class="badge">317</span>
-            </a>
-
-            <a href="{% url 'comites' %}" class="menu-item active">
-                <span class="menu-icon">♙</span>
-                <span>Comités</span>
-            </a>
-
-            <a href="{% url 'reportes' %}" class="menu-item">
-                <span class="menu-icon">▥</span>
-                <span>Reportes</span>
-            </a>
-
-        </nav>
-
-
-        <div class="sidebar-user">
-
-            <div class="avatar">
-                DH
-            </div>
-
-            <div>
-                <strong>dhernandezl34</strong>
-
-                <a href="{% url 'login' %}">
-                    Cerrar sesión
-                </a>
-            </div>
-
-        </div>
-
-    </aside>
-
-
-    <!-- =========================
-         CONTENIDO PRINCIPAL
-    ========================== -->
     <main class="main-area">
-
-        <!-- HEADER -->
         <header class="top-header">
-
             <div>
                 <h1>Comités Evaluadores</h1>
-                <p>Domingo, 16 de agosto de 2026</p>
+                <p>{% now "l, j \d\e F \d\e Y" as hoy %}{{ hoy|capfirst }}</p>
             </div>
-
-
             <div class="header-actions">
-
                 <div class="header-search">
-
-                    <input
-                        type="text"
-                        id="committeeSearch"
-                        placeholder="Buscar solicitud, estudiante..."
-                    >
-
+                    <input type="text" id="committeeSearch" placeholder="Buscar solicitud, estudiante..." autocomplete="off">
                     <span>⌕</span>
-
                 </div>
-
-
-                <button
-                    class="notification-button"
-                    type="button"
-                >
-                    ♧
-                    <span class="notification-dot"></span>
-                </button>
-
+                <div class="notification-wrapper">
+                    <button class="notification-button" id="notificationButton" type="button" title="Notificaciones">
+                        ♧<span class="notification-dot" id="notificationDot"></span>
+                    </button>
+                    <div class="notification-panel" id="notificationPanel" hidden>
+                        <div class="notification-header">
+                            <div><h3>Notificaciones</h3><span id="notificationCounter">3 nuevas</span></div>
+                            <button type="button" class="notification-close" id="notificationClose">×</button>
+                        </div>
+                        <div class="notification-list">
+                            <div class="notification-item unread"><span class="notification-icon">!</span><div><strong>Comité pendiente</strong><p>Hay solicitudes pendientes de asignación a comité.</p><small>Hace 15 min</small></div></div>
+                            <div class="notification-item unread"><span class="notification-icon">✓</span><div><strong>Evaluaciones actualizadas</strong><p>Se registraron nuevas evaluaciones en los comités.</p><small>Hace 40 min</small></div></div>
+                            <div class="notification-item unread"><span class="notification-icon">♙</span><div><strong>Asignación de evaluadores</strong><p>Revisa la distribución de miembros de los comités.</p><small>Hace 1 hora</small></div></div>
+                        </div>
+                        <button type="button" class="mark-read-button" id="markNotificationsRead">Marcar todas como leídas</button>
+                    </div>
+                </div>
             </div>
-
         </header>
 
-
-        <!-- =========================
-             CONTENIDO
-        ========================== -->
         <section class="content">
-
             <div class="page-title-row">
-
-                <div>
-
-                    <h2>
-                        Comités Evaluadores
-                    </h2>
-
-                    <p>
-                        Gestión de comités y asignación de evaluadores
-                    </p>
-
-                </div>
-
-
-                <button
-                    class="new-button"
-                    type="button"
-                >
-                    <span>＋</span>
-                    Nuevo comité
-                </button>
-
+                <div><h2>Comités Evaluadores</h2><p>Gestión de comités y asignación de evaluadores</p></div>
+                <button class="new-button" id="newCommitteeButton" type="button"><span>＋</span>Nuevo comité</button>
             </div>
 
-
-            <!-- =========================
-                 GRID DE COMITÉS
-            ========================== -->
-            <div class="committee-grid">
-
-
-                <!-- COMITÉ 1 -->
-                <article class="committee-card">
-
-                    <div class="committee-top">
-
-                        <div class="committee-icon">
-                            ♙
-                        </div>
-
-                        <span class="status active">
-                            Activo
-                        </span>
-
-                    </div>
-
-
-                    <div class="committee-info">
-
-                        <h3>
-                            Comité de Ciencias e Ingeniería
-                        </h3>
-
-                        <p>
-                            Coordinador:
-                            <strong>
-                                Dr. Roberto Castillo
-                            </strong>
-                        </p>
-
-                    </div>
-
-
+            <div class="committee-grid" id="committeeGrid">
+                <article class="committee-card" data-members="Dr. Roberto Castillo|Ing. Carlos Herrera|Lic. Andrea Morales|MSc. Elena Ramírez|Ing. Javier López">
+                    <div class="committee-top"><div class="committee-icon">♙</div><span class="status active">Activo</span></div>
+                    <div class="committee-info"><h3>Comité de Ciencias e Ingeniería</h3><p>Coordinador: <strong>Dr. Roberto Castillo</strong></p></div>
                     <hr>
-
-
-                    <div class="committee-stats">
-
-                        <div class="stat-block">
-                            <strong>5</strong>
-                            <span>miembros</span>
-                        </div>
-
-                        <div class="divider"></div>
-
-                        <div class="stat-block">
-                            <strong>142</strong>
-                            <span>evaluaciones</span>
-                        </div>
-
-                    </div>
-
-
-                    <div class="committee-actions">
-
-                        <button
-                            class="secondary-button"
-                            type="button"
-                        >
-                            Ver miembros
-                        </button>
-
-                        <button
-                            class="primary-button"
-                            type="button"
-                        >
-                            Gestionar
-                        </button>
-
-                    </div>
-
+                    <div class="committee-stats"><div class="stat-block"><strong class="member-count">5</strong><span>miembros</span></div><div class="divider"></div><div class="stat-block"><strong>142</strong><span>evaluaciones</span></div></div>
+                    <div class="committee-actions"><button class="secondary-button view-members-button" type="button">Ver miembros</button><button class="primary-button manage-button" type="button">Gestionar</button></div>
                 </article>
 
-
-                <!-- COMITÉ 2 -->
-                <article class="committee-card">
-
-                    <div class="committee-top">
-
-                        <div class="committee-icon">
-                            ♙
-                        </div>
-
-                        <span class="status active">
-                            Activo
-                        </span>
-
-                    </div>
-
-
-                    <div class="committee-info">
-
-                        <h3>
-                            Comité de Humanidades y Sociales
-                        </h3>
-
-                        <p>
-                            Coordinador:
-                            <strong>
-                                Lic. Carmen Pineda
-                            </strong>
-                        </p>
-
-                    </div>
-
-
+                <article class="committee-card" data-members="Lic. Carmen Pineda|Lic. Sofía Méndez|MSc. Daniel García|Lic. Ana Lucía Pérez">
+                    <div class="committee-top"><div class="committee-icon">♙</div><span class="status active">Activo</span></div>
+                    <div class="committee-info"><h3>Comité de Humanidades y Sociales</h3><p>Coordinador: <strong>Lic. Carmen Pineda</strong></p></div>
                     <hr>
-
-
-                    <div class="committee-stats">
-
-                        <div class="stat-block">
-                            <strong>4</strong>
-                            <span>miembros</span>
-                        </div>
-
-                        <div class="divider"></div>
-
-                        <div class="stat-block">
-                            <strong>98</strong>
-                            <span>evaluaciones</span>
-                        </div>
-
-                    </div>
-
-
-                    <div class="committee-actions">
-
-                        <button
-                            class="secondary-button"
-                            type="button"
-                        >
-                            Ver miembros
-                        </button>
-
-                        <button
-                            class="primary-button"
-                            type="button"
-                        >
-                            Gestionar
-                        </button>
-
-                    </div>
-
+                    <div class="committee-stats"><div class="stat-block"><strong class="member-count">4</strong><span>miembros</span></div><div class="divider"></div><div class="stat-block"><strong>98</strong><span>evaluaciones</span></div></div>
+                    <div class="committee-actions"><button class="secondary-button view-members-button" type="button">Ver miembros</button><button class="primary-button manage-button" type="button">Gestionar</button></div>
                 </article>
 
-
-                <!-- COMITÉ 3 -->
-                <article class="committee-card">
-
-                    <div class="committee-top">
-
-                        <div class="committee-icon">
-                            ♙
-                        </div>
-
-                        <span class="status active">
-                            Activo
-                        </span>
-
-                    </div>
-
-
-                    <div class="committee-info">
-
-                        <h3>
-                            Comité Técnico Vocacional
-                        </h3>
-
-                        <p>
-                            Coordinador:
-                            <strong>
-                                Ing. Mario Estrada
-                            </strong>
-                        </p>
-
-                    </div>
-
-
+                <article class="committee-card" data-members="Ing. Mario Estrada|Téc. Carlos Gómez|Ing. Paola Reyes|Lic. Fernando López|Ing. Ricardo Méndez|Téc. Julia Hernández">
+                    <div class="committee-top"><div class="committee-icon">♙</div><span class="status active">Activo</span></div>
+                    <div class="committee-info"><h3>Comité Técnico Vocacional</h3><p>Coordinador: <strong>Ing. Mario Estrada</strong></p></div>
                     <hr>
-
-
-                    <div class="committee-stats">
-
-                        <div class="stat-block">
-                            <strong>6</strong>
-                            <span>miembros</span>
-                        </div>
-
-                        <div class="divider"></div>
-
-                        <div class="stat-block">
-                            <strong>210</strong>
-                            <span>evaluaciones</span>
-                        </div>
-
-                    </div>
-
-
-                    <div class="committee-actions">
-
-                        <button
-                            class="secondary-button"
-                            type="button"
-                        >
-                            Ver miembros
-                        </button>
-
-                        <button
-                            class="primary-button"
-                            type="button"
-                        >
-                            Gestionar
-                        </button>
-
-                    </div>
-
+                    <div class="committee-stats"><div class="stat-block"><strong class="member-count">6</strong><span>miembros</span></div><div class="divider"></div><div class="stat-block"><strong>210</strong><span>evaluaciones</span></div></div>
+                    <div class="committee-actions"><button class="secondary-button view-members-button" type="button">Ver miembros</button><button class="primary-button manage-button" type="button">Gestionar</button></div>
                 </article>
 
-
-                <!-- COMITÉ 4 -->
-                <article class="committee-card">
-
-                    <div class="committee-top">
-
-                        <div class="committee-icon">
-                            ♙
-                        </div>
-
-                        <span class="status active">
-                            Activo
-                        </span>
-
-                    </div>
-
-
-                    <div class="committee-info">
-
-                        <h3>
-                            Comité de Posgrados Internacionales
-                        </h3>
-
-                        <p>
-                            Coordinador:
-                            <strong>
-                                Dra. Lucía Vásquez
-                            </strong>
-                        </p>
-
-                    </div>
-
-
+                <article class="committee-card" data-members="Dra. Lucía Vásquez|Dr. Roberto Castillo|Lic. Andrea Morales">
+                    <div class="committee-top"><div class="committee-icon">♙</div><span class="status active">Activo</span></div>
+                    <div class="committee-info"><h3>Comité de Posgrados Internacionales</h3><p>Coordinador: <strong>Dra. Lucía Vásquez</strong></p></div>
                     <hr>
-
-
-                    <div class="committee-stats">
-
-                        <div class="stat-block">
-                            <strong>3</strong>
-                            <span>miembros</span>
-                        </div>
-
-                        <div class="divider"></div>
-
-                        <div class="stat-block">
-                            <strong>45</strong>
-                            <span>evaluaciones</span>
-                        </div>
-
-                    </div>
-
-
-                    <div class="committee-actions">
-
-                        <button
-                            class="secondary-button"
-                            type="button"
-                        >
-                            Ver miembros
-                        </button>
-
-                        <button
-                            class="primary-button"
-                            type="button"
-                        >
-                            Gestionar
-                        </button>
-
-                    </div>
-
+                    <div class="committee-stats"><div class="stat-block"><strong class="member-count">3</strong><span>miembros</span></div><div class="divider"></div><div class="stat-block"><strong>45</strong><span>evaluaciones</span></div></div>
+                    <div class="committee-actions"><button class="secondary-button view-members-button" type="button">Ver miembros</button><button class="primary-button manage-button" type="button">Gestionar</button></div>
                 </article>
-
             </div>
-
         </section>
-
     </main>
-
 </div>
 
+<div class="modal-overlay" id="membersModal" hidden>
+    <div class="modal-card">
+        <div class="modal-header"><div><h2 id="membersModalTitle">Miembros del comité</h2><p id="membersModalSubtitle"></p></div><button class="modal-close" id="closeMembersModal" type="button">×</button></div>
+        <div class="modal-body"><div class="members-list" id="membersList"></div></div>
+        <div class="modal-footer"><button class="primary-button modal-action" id="closeMembersFooter" type="button">Cerrar</button></div>
+    </div>
+</div>
 
-<script>
+<div class="modal-overlay" id="committeeModal" hidden>
+    <div class="modal-card">
+        <form id="committeeForm">
+            <div class="modal-header"><div><h2 id="committeeModalTitle">Nuevo comité</h2><p id="committeeModalSubtitle">Registra la información del comité evaluador.</p></div><button class="modal-close" id="closeCommitteeModal" type="button">×</button></div>
+            <div class="modal-body">
+                <div class="form-field"><label for="committeeName">Nombre del comité</label><input id="committeeName" type="text" required></div>
+                <div class="form-field"><label for="committeeCoordinator">Coordinador</label><input id="committeeCoordinator" type="text" required></div>
+                <div class="form-field"><label for="committeeStatus">Estado</label><select id="committeeStatus"><option value="Activo">Activo</option><option value="Inactivo">Inactivo</option></select></div>
+                <div class="form-field"><label for="committeeMembers">Miembros</label><textarea id="committeeMembers" placeholder="Escribe un miembro por línea" required></textarea><small>Coloca un integrante por línea.</small></div>
+            </div>
+            <div class="modal-footer"><button class="secondary-button modal-action" id="cancelCommittee" type="button">Cancelar</button><button class="primary-button modal-action" type="submit">Guardar comité</button></div>
+        </form>
+    </div>
+</div>
 
-    const searchInput =
-        document.getElementById("committeeSearch");
-
-    const committeeCards =
-        document.querySelectorAll(".committee-card");
-
-
-    searchInput.addEventListener("input", function() {
-
-        const text =
-            this.value
-                .toLowerCase()
-                .trim();
-
-
-        committeeCards.forEach(card => {
-
-            const content =
-                card.textContent.toLowerCase();
-
-
-            if (content.includes(text)) {
-
-                card.style.display = "block";
-
-            } else {
-
-                card.style.display = "none";
-
-            }
-
-        });
-
-    });
-
-</script>
-
+<script src="{% static 'js/comites.js' %}?v=5"></script>
 </body>
 </html>
