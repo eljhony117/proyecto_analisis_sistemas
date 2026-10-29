@@ -11,6 +11,7 @@ ETIQUETAS_ROL = {
     "ESTUDIANTE": "Estudiante",
 }
 
+
 def _evaluaciones_pendientes():
     """Evaluaciones que aun no terminan (numerito del menu).
 
@@ -24,6 +25,7 @@ def _evaluaciones_pendientes():
     except DatabaseError:
         return 0
 
+
 def sesion(request):
     rol = request.session.get("usuario_rol", "")
     nombre = request.session.get("usuario_nombre", "")
@@ -32,6 +34,6 @@ def sesion(request):
         "rol_etiqueta": ETIQUETAS_ROL.get(rol, ""),
         "usuario_nombre": nombre,
         "iniciales": nombre[:2].upper(),
-        # Si la vista (por ejemplo panel_view) pasa este mismo dato, el de la vista manda.
+        # Si la vista pasa este mismo dato, el de la vista manda.
         "evaluaciones_pendientes": _evaluaciones_pendientes,
     }

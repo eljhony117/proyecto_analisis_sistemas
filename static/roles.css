@@ -17,3 +17,56 @@ body:not([data-rol="ADMINISTRADOR"]) .assign-button {
 body[data-rol="EVALUADOR"] #openNewSolicitudModal {
     display: none !important;
 }
+
+/* ---- Convocatorias: estado "Cerrada" y boton "Aplicar" (estudiante) ---- */
+.status.cerrada {
+    background: #e6eaf0;
+    color: #6b7c93;
+}
+
+.convocatoria-card.convocatoria-cerrada {
+    opacity: .72;
+}
+
+.apply-button {
+    min-width: 92px;
+    height: 38px;
+    padding: 0 16px;
+    border: 1px solid #0d8e79;
+    border-radius: 9px;
+    background: #0d8e79;
+    color: #fff;
+    font: inherit;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.apply-button:hover:not(:disabled) {
+    background: #0a7765;
+}
+
+.apply-button:disabled {
+    border-color: #d3dbe6;
+    background: #eef1f6;
+    color: #8a9bb0;
+    cursor: not-allowed;
+}
+
+.aviso-toast {
+    position: fixed;
+    right: 28px;
+    bottom: 28px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    background: #087f6d;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 10px 30px rgba(20, 50, 90, .22);
+    z-index: 3000;
+}
+
+.aviso-toast.error {
+    background: #c73343;
+}
