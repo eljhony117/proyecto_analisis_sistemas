@@ -70,6 +70,13 @@
                 btn.className = "apply-button";
                 cont.appendChild(btn);
             }
+            if (card.dataset.aplicada === "1") {
+                btn.dataset.aplicada = "1";
+                btn.disabled = true;
+                btn.textContent = "Ya aplicaste ✓";
+                btn.title = "Ya enviaste tu solicitud a esta convocatoria";
+                return;
+            }
             if (btn.dataset.aplicada === "1") { return; }
 
             if (estado === "abierta") {
@@ -139,6 +146,9 @@
                   '</div>' +
                   '<div class="modal-body">' +
                     '<p id="aplicarTexto" style="line-height:1.5;color:#36577f"></p>' +
+                    '<div class="form-field" style="margin-top:14px"><label for="aplicarDepto">Departamento</label>' +
+                    '<select id="aplicarDepto"><option value="">Seleccionar</option></select></div>' +
+                    '<div id="aplicarError" class="form-error" hidden></div>' +
                   '</div>' +
                   '<div class="modal-footer">' +
                     '<button class="secondary-button" id="aplicarCancelar" type="button">Cancelar</button>' +
@@ -146,6 +156,17 @@
                   '</div>' +
                 '</div>';
             document.body.appendChild(fondo);
+
+            var selDepto = document.getElementById("aplicarDepto");
+            try {
+                JSON.parse(document.getElementById("departamentos-data").textContent)
+                    .forEach(function (d) {
+                        var op = document.createElement("option");
+                        op.value = d; op.textContent = d;
+                        selDepto.appendChild(op);
+                    });
+            } catch (e) { /* sin lista: el servidor rechazara el envio */ }
+            var cajaError = document.getElementById("aplicarError");
 
             var tarjeta = null;
             var confirmar = document.getElementById("aplicarConfirmar");
@@ -160,6 +181,10 @@
                 var btn = ev.target.closest(".apply-button");
                 if (!btn || btn.disabled) { return; }
                 var card = btn.closest(".convocatoria-card");
+                if (document.body.dataset.perfil !== "1") {
+                    aviso("Tu usuario aún no tiene perfil de estudiante. Pide al administrador que lo complete.", true);
+                    return;
+                }
                 // Se vuelve a comprobar al hacer clic: la fecha pudo vencer
                 // mientras la pagina estaba abierta.
                 actualizarTarjeta(card);
@@ -170,6 +195,8 @@
                 document.getElementById("aplicarTexto").textContent =
                     "Se registrará tu solicitud para esta convocatoria. " +
                     "Podrás darle seguimiento en la sección Solicitudes.";
+                selDepto.value = "";
+                cajaError.hidden = true;
                 fondo.classList.add("show");
                 document.body.classList.add("modal-open");
             });
@@ -178,16 +205,26 @@
                 if (!tarjeta) { return; }
                 var card = tarjeta;
                 if (card.dataset.status !== "abierta") { cerrar(); return; }
+                if (!selDepto.value) {
+                    cajaError.textContent = "Selecciona tu departamento.";
+                    cajaError.hidden = false;
+                    return;
+                }
                 confirmar.disabled = true;
-                enviarSolicitud(card).then(function () {
+                cajaError.hidden = true;
+                enviarSolicitud(card, selDepto.value).then(function () {
                     var btn = card.querySelector(".apply-button");
+                    card.dataset.aplicada = "1";
                     btn.dataset.aplicada = "1";
                     btn.disabled = true;
                     btn.textContent = "Solicitud enviada ✓";
                     cerrar();
                     aviso("Tu solicitud fue registrada.");
+                    // Recargar para que el contador de solicitudes sea el de Oracle.
+                    setTimeout(function () { window.location.reload(); }, 900);
                 }, function (err) {
-                    aviso((err && err.message) || "No se pudo enviar la solicitud.", true);
+                    cajaError.textContent = (err && err.message) || "No se pudo enviar la solicitud.";
+                    cajaError.hidden = false;
                 }).then(function () { confirmar.disabled = false; });
             });
 
@@ -201,11 +238,28 @@
             });
         }
 
-        // PENDIENTE (Oracle): reemplazar por un fetch POST a una vista de Django
-        // que cree la solicitud del estudiante. Hace falta antes enlazar USUARIO
-        // con ESTUDIANTE, para saber que estudiante es quien inicio sesion.
-        function enviarSolicitud(card) {
-            return Promise.resolve();
+        // Guarda la solicitud en Oracle. El servidor vuelve a validar todo
+        // (rol, estado de la convocatoria, departamento, solicitud repetida).
+        function enviarSolicitud(card, departamento) {
+            var meta = document.querySelector('meta[name="csrf-token"]');
+            var url = document.body.dataset.urlAplicar.replace("/0/", "/" + card.dataset.id + "/");
+            return fetch(url, {
+                method: "POST",
+                credentials: "same-origin",
+                headers: {
+                    "X-CSRFToken": meta ? meta.content : "",
+                    "X-Requested-With": "XMLHttpRequest",
+                    "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+                },
+                body: new URLSearchParams({ departamento: departamento }).toString()
+            }).then(function (res) {
+                if ((res.headers.get("content-type") || "").indexOf("application/json") === -1) {
+                    throw new Error("Tu sesión expiró. Vuelve a iniciar sesión.");
+                }
+                return res.json();
+            }).then(function (datos) {
+                if (!datos.ok) { throw new Error(datos.error || "No se pudo enviar la solicitud."); }
+            });
         }
 
         function aviso(texto, error) {

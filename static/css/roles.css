@@ -110,3 +110,9 @@ body[data-rol="EVALUADOR"] #openNewSolicitudModal {
     color: #5b6b82;
     font-size: 12px;
 }
+
+/* Las solicitudes nacen cuando el estudiante aplica a una convocatoria
+   (boton Aplicar), no desde este formulario. */
+#openNewSolicitudModal {
+    display: none;
+}

@@ -297,7 +297,8 @@ class SolicitudBecas(models.Model):
     estado_solicitud = models.CharField(max_length=20)
     departamento = models.CharField(max_length=50)
     monto_solicitado = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-
+    fecha_solicitud = models.DateField(blank=True, null=True)
+    
     class Meta:
         managed = False
         db_table = 'solicitud_becas'
