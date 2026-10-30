@@ -4,11 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
     <title>Comités Evaluadores</title>
     <link rel="stylesheet" href="{% static 'css/comites.css' %}?v=5">
     <link rel="stylesheet" href="{% static 'css/roles.css' %}">
 </head>
-<body data-rol="{{ rol }}">
+<body data-rol="{{ rol }}" data-url-crear="{% url 'comite_crear' %}" data-url-editar="{% url 'comite_editar' 0 %}">
 <div class="app-layout">
     {% include "usuarios/_sidebar.html" with activo="comites" %}
 
@@ -50,37 +51,17 @@
             </div>
 
             <div class="committee-grid" id="committeeGrid">
-                <article class="committee-card" data-members="Dr. Roberto Castillo|Ing. Carlos Herrera|Lic. Andrea Morales|MSc. Elena Ramírez|Ing. Javier López">
-                    <div class="committee-top"><div class="committee-icon">♙</div><span class="status active">Activo</span></div>
-                    <div class="committee-info"><h3>Comité de Ciencias e Ingeniería</h3><p>Coordinador: <strong>Dr. Roberto Castillo</strong></p></div>
-                    <hr>
-                    <div class="committee-stats"><div class="stat-block"><strong class="member-count">5</strong><span>miembros</span></div><div class="divider"></div><div class="stat-block"><strong>142</strong><span>evaluaciones</span></div></div>
-                    <div class="committee-actions"><button class="secondary-button view-members-button" type="button">Ver miembros</button><button class="primary-button manage-button" type="button">Gestionar</button></div>
-                </article>
-
-                <article class="committee-card" data-members="Lic. Carmen Pineda|Lic. Sofía Méndez|MSc. Daniel García|Lic. Ana Lucía Pérez">
-                    <div class="committee-top"><div class="committee-icon">♙</div><span class="status active">Activo</span></div>
-                    <div class="committee-info"><h3>Comité de Humanidades y Sociales</h3><p>Coordinador: <strong>Lic. Carmen Pineda</strong></p></div>
-                    <hr>
-                    <div class="committee-stats"><div class="stat-block"><strong class="member-count">4</strong><span>miembros</span></div><div class="divider"></div><div class="stat-block"><strong>98</strong><span>evaluaciones</span></div></div>
-                    <div class="committee-actions"><button class="secondary-button view-members-button" type="button">Ver miembros</button><button class="primary-button manage-button" type="button">Gestionar</button></div>
-                </article>
-
-                <article class="committee-card" data-members="Ing. Mario Estrada|Téc. Carlos Gómez|Ing. Paola Reyes|Lic. Fernando López|Ing. Ricardo Méndez|Téc. Julia Hernández">
-                    <div class="committee-top"><div class="committee-icon">♙</div><span class="status active">Activo</span></div>
-                    <div class="committee-info"><h3>Comité Técnico Vocacional</h3><p>Coordinador: <strong>Ing. Mario Estrada</strong></p></div>
-                    <hr>
-                    <div class="committee-stats"><div class="stat-block"><strong class="member-count">6</strong><span>miembros</span></div><div class="divider"></div><div class="stat-block"><strong>210</strong><span>evaluaciones</span></div></div>
-                    <div class="committee-actions"><button class="secondary-button view-members-button" type="button">Ver miembros</button><button class="primary-button manage-button" type="button">Gestionar</button></div>
-                </article>
-
-                <article class="committee-card" data-members="Dra. Lucía Vásquez|Dr. Roberto Castillo|Lic. Andrea Morales">
-                    <div class="committee-top"><div class="committee-icon">♙</div><span class="status active">Activo</span></div>
-                    <div class="committee-info"><h3>Comité de Posgrados Internacionales</h3><p>Coordinador: <strong>Dra. Lucía Vásquez</strong></p></div>
-                    <hr>
-                    <div class="committee-stats"><div class="stat-block"><strong class="member-count">3</strong><span>miembros</span></div><div class="divider"></div><div class="stat-block"><strong>45</strong><span>evaluaciones</span></div></div>
-                    <div class="committee-actions"><button class="secondary-button view-members-button" type="button">Ver miembros</button><button class="primary-button manage-button" type="button">Gestionar</button></div>
-                </article>
+{% for c in comites %}
+<article class="committee-card" data-id="{{ c.id }}" data-members="{{ c.miembros }}" data-docentes="{{ c.docentes_ids }}">
+    <div class="committee-top"><div class="committee-icon">♙</div><span class="status {% if c.activo %}active{% else %}inactive{% endif %}">{% if c.activo %}Activo{% else %}Inactivo{% endif %}</span></div>
+    <div class="committee-info"><h3>{{ c.nombre }}</h3><p>Evaluadores: <strong>{{ c.n_miembros }}</strong></p></div>
+    <hr>
+    <div class="committee-stats"><div class="stat-block"><strong class="member-count">{{ c.n_miembros }}</strong><span>miembros</span></div><div class="divider"></div><div class="stat-block"><strong>{{ c.evaluaciones }}</strong><span>evaluaciones</span></div></div>
+    <div class="committee-actions"><button class="secondary-button view-members-button" type="button">Ver miembros</button><button class="primary-button manage-button" type="button">Gestionar</button></div>
+</article>
+{% empty %}
+<p class="sin-convocatorias">Todavía no hay comités registrados.</p>
+{% endfor %}
             </div>
         </section>
     </main>
@@ -99,16 +80,22 @@
         <form id="committeeForm">
             <div class="modal-header"><div><h2 id="committeeModalTitle">Nuevo comité</h2><p id="committeeModalSubtitle">Registra la información del comité evaluador.</p></div><button class="modal-close" id="closeCommitteeModal" type="button">×</button></div>
             <div class="modal-body">
-                <div class="form-field"><label for="committeeName">Nombre del comité</label><input id="committeeName" type="text" required></div>
-                <div class="form-field"><label for="committeeCoordinator">Coordinador</label><input id="committeeCoordinator" type="text" required></div>
-                <div class="form-field"><label for="committeeStatus">Estado</label><select id="committeeStatus"><option value="Activo">Activo</option><option value="Inactivo">Inactivo</option></select></div>
-                <div class="form-field"><label for="committeeMembers">Miembros</label><textarea id="committeeMembers" placeholder="Escribe un miembro por línea" required></textarea><small>Coloca un integrante por línea.</small></div>
+                <div class="form-field"><label for="committeeName">Nombre del comité</label><input id="committeeName" type="text" maxlength="50" required></div>
+                <div class="form-field"><label>Miembros (docentes)</label><div id="comiteDocentes"></div></div>
+                <div id="comiteError" class="form-error" hidden></div>
+                <div hidden>
+                    <input id="committeeCoordinator" type="text">
+                    <select id="committeeStatus"><option value="Activo">Activo</option><option value="Inactivo">Inactivo</option></select>
+                    <textarea id="committeeMembers"></textarea>
+                </div>
             </div>
             <div class="modal-footer"><button class="secondary-button modal-action" id="cancelCommittee" type="button">Cancelar</button><button class="primary-button modal-action" type="submit">Guardar comité</button></div>
         </form>
     </div>
 </div>
 
+{{ docentes|json_script:"docentes-data" }}
 <script src="{% static 'js/comites.js' %}?v=5"></script>
+<script src="{% static 'js/comites_db.js' %}?v=1"></script>
 </body>
 </html>

@@ -116,3 +116,20 @@ body[data-rol="EVALUADOR"] #openNewSolicitudModal {
 #openNewSolicitudModal {
     display: none;
 }
+
+/* Comites: lista de docentes del formulario */
+#comiteDocentes {
+    max-height: 220px;
+    overflow-y: auto;
+    padding: 8px 12px;
+    border: 1px solid #cbd7e7;
+    border-radius: 9px;
+}
+
+.docente-opcion {
+    display: block;
+    padding: 5px 0;
+    font-weight: normal;
+    color: #12396b;
+    cursor: pointer;
+}

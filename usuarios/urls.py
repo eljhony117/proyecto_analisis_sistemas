@@ -20,7 +20,15 @@ urlpatterns = [
     # Reportes (Oracle)
     path("reportes/", reportes.lista, name="reportes"),
 
-    # Todavía con datos de ejemplo
+    # Evaluaciones (Oracle)
     path("evaluaciones/", views.evaluaciones_view, name="evaluaciones"),
+    path("evaluaciones/", evaluaciones.lista, name="evaluaciones"),
+    path("evaluaciones/asignar/", evaluaciones.asignar, name="evaluacion_asignar"),
+    path("evaluaciones/evaluar/", evaluaciones.evaluar, name="evaluacion_evaluar"),
+
+    #Comités (Oracle)
     path("comites/", views.comites_view, name="comites"),
+    path("comites/", comites.lista, name="comites"),
+    path("comites/crear/", comites.crear, name="comite_crear"),
+    path("comites/<int:pk>/editar/", comites.editar, name="comite_editar"),
 ]

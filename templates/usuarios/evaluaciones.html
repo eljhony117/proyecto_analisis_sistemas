@@ -10,6 +10,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <meta name="csrf-token" content="{{ csrf_token }}">
     <title>Evaluaciones</title>
 
     <link rel="stylesheet" href="{% static 'css/evaluaciones.css' %}?v=10">
@@ -17,7 +18,7 @@
     <link rel="stylesheet" href="{% static 'css/roles.css' %}">
 </head>
 
-<body data-rol="{{ rol }}">
+<body data-rol="{{ rol }}" data-url-asignar="{% url 'evaluacion_asignar' %}" data-url-evaluar="{% url 'evaluacion_evaluar' %}">
 
 <div class="app-layout">
 
@@ -502,501 +503,39 @@
             ========================== -->
 
             <div class="evaluaciones-list">
-
-                <!-- EVALUACIÓN 1 -->
-
-                <article
-
-                    class="evaluacion-card"
-
-                    data-status="progreso"
-
-                    data-priority="high"
-
-                >
-
-                    <div class="evaluation-info">
-
-                        <div class="evaluation-meta">
-
-                            <span class="evaluation-id">
-
-                                #4820
-
-                            </span>
-
-                            <span class="status progreso">
-
-                                En progreso
-
-                            </span>
-
-                            <span class="priority high">
-
-                                ● Prioridad Alta
-
-                            </span>
-
-                        </div>
-
-                        <h3>
-
-                            María López Sánchez
-
-                        </h3>
-
-                        <p class="scholarship">
-
-                            Posgrado Internacional CONCYT
-
-                        </p>
-
-                        <p class="evaluator">
-
-                            Evaluador:
-
-                            <strong>
-
-                                Dr. Roberto Castillo
-
-                            </strong>
-
-                        </p>
-
-                    </div>
-
-                    <div class="evaluation-result">
-
-                        <div class="score">
-
-                            <strong>78</strong>
-
-                            <span>
-
-                                puntos
-
-                            </span>
-
-                        </div>
-
-                        <button
-
-                            class="evaluate-button"
-
-                            type="button"
-
-                        >
-
-                            Evaluar
-
-                        </button>
-
-                    </div>
-
-                </article>
-
-                <!-- EVALUACIÓN 2 -->
-
-                <article
-
-                    class="evaluacion-card"
-
-                    data-status="pendiente"
-
-                    data-priority="medium"
-
-                >
-
-                    <div class="evaluation-info">
-
-                        <div class="evaluation-meta">
-
-                            <span class="evaluation-id">
-
-                                #4819
-
-                            </span>
-
-                            <span class="status pendiente">
-
-                                Pendiente
-
-                            </span>
-
-                            <span class="priority medium">
-
-                                ● Prioridad Media
-
-                            </span>
-
-                        </div>
-
-                        <h3>
-
-                            Luis Fernando Pérez Gómez
-
-                        </h3>
-
-                        <p class="scholarship">
-
-                            Becas Técnicas y Vocacionales
-
-                        </p>
-
-                        <p class="evaluator">
-
-                            Evaluador:
-
-                            <strong class="not-assigned">
-
-                                Sin asignar
-
-                            </strong>
-
-                        </p>
-
-                    </div>
-
-                    <div class="evaluation-result">
-
-                        <div class="score empty-score">
-
-                            <strong>—</strong>
-
-                            <span>
-
-                                sin puntaje
-
-                            </span>
-
-                        </div>
-
-                        <div class="evaluation-buttons">
-
-                            <button
-
-                                class="evaluate-button"
-
-                                type="button"
-
-                            >
-
-                                Evaluar
-
-                            </button>
-
-                            <button
-
-                                class="assign-button"
-
-                                type="button"
-
-                            >
-
-                                Asignar
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </article>
-
-                <!-- EVALUACIÓN 3 -->
-
-                <article
-
-                    class="evaluacion-card"
-
-                    data-status="progreso"
-
-                    data-priority="medium"
-
-                >
-
-                    <div class="evaluation-info">
-
-                        <div class="evaluation-meta">
-
-                            <span class="evaluation-id">
-
-                                #4816
-
-                            </span>
-
-                            <span class="status progreso">
-
-                                En progreso
-
-                            </span>
-
-                            <span class="priority medium">
-
-                                ● Prioridad Media
-
-                            </span>
-
-                        </div>
-
-                        <h3>
-
-                            Gabriela Torres Chávez
-
-                        </h3>
-
-                        <p class="scholarship">
-
-                            Becas Técnicas y Vocacionales
-
-                        </p>
-
-                        <p class="evaluator">
-
-                            Evaluador:
-
-                            <strong>
-
-                                Lic. Carmen Pineda
-
-                            </strong>
-
-                        </p>
-
-                    </div>
-
-                    <div class="evaluation-result">
-
-                        <div class="score">
-
-                            <strong>65</strong>
-
-                            <span>
-
-                                puntos
-
-                            </span>
-
-                        </div>
-
-                        <button
-
-                            class="evaluate-button"
-
-                            type="button"
-
-                        >
-
-                            Evaluar
-
-                        </button>
-
-                    </div>
-
-                </article>
-
-                <!-- EVALUACIÓN 4 -->
-
-                <article
-
-                    class="evaluacion-card"
-
-                    data-status="pendiente"
-
-                    data-priority="high"
-
-                >
-
-                    <div class="evaluation-info">
-
-                        <div class="evaluation-meta">
-
-                            <span class="evaluation-id">
-
-                                #4815
-
-                            </span>
-
-                            <span class="status pendiente">
-
-                                Pendiente
-
-                            </span>
-
-                            <span class="priority high">
-
-                                ● Prioridad Alta
-
-                            </span>
-
-                        </div>
-
-                        <h3>
-
-                            José Miguel Castillo Rux
-
-                        </h3>
-
-                        <p class="scholarship">
-
-                            Posgrado Internacional CONCYT
-
-                        </p>
-
-                        <p class="evaluator">
-
-                            Evaluador:
-
-                            <strong class="not-assigned">
-
-                                Sin asignar
-
-                            </strong>
-
-                        </p>
-
-                    </div>
-
-                    <div class="evaluation-result">
-
-                        <div class="score empty-score">
-
-                            <strong>—</strong>
-
-                            <span>
-
-                                sin puntaje
-
-                            </span>
-
-                        </div>
-
-                        <div class="evaluation-buttons">
-
-                            <button
-
-                                class="evaluate-button"
-
-                                type="button"
-
-                            >
-
-                                Evaluar
-
-                            </button>
-
-                            <button
-
-                                class="assign-button"
-
-                                type="button"
-
-                            >
-
-                                Asignar
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </article>
-
-                <!-- EVALUACIÓN 5 -->
-
-                <article
-
-                    class="evaluacion-card"
-
-                    data-status="completada"
-
-                    data-priority="low"
-
-                >
-
-                    <div class="evaluation-info">
-
-                        <div class="evaluation-meta">
-
-                            <span class="evaluation-id">
-
-                                #4814
-
-                            </span>
-
-                            <span class="status completada">
-
-                                Completada
-
-                            </span>
-
-                            <span class="priority low">
-
-                                ● Prioridad Baja
-
-                            </span>
-
-                        </div>
-
-                        <h3>
-
-                            Rosa Elena Fuentes López
-
-                        </h3>
-
-                        <p class="scholarship">
-
-                            Excelencia Académica 2026
-
-                        </p>
-
-                        <p class="evaluator">
-
-                            Evaluador:
-
-                            <strong>
-
-                                Lic. Andrea Morales
-
-                            </strong>
-
-                        </p>
-
-                    </div>
-
-                    <div class="evaluation-result">
-
-                        <div class="score completed-score">
-
-                            <strong>92</strong>
-
-                            <span>
-
-                                puntos
-
-                            </span>
-
-                        </div>
-
-                        <button
-
-                            class="evaluate-button view-evaluation"
-
-                            type="button"
-
-                        >
-
-                            Ver
-
-                        </button>
-
-                    </div>
-
-                </article>
-
+{% for e in evaluaciones %}
+<article class="evaluacion-card" data-status="{{ e.estado }}" data-priority="{{ e.prioridad }}" data-solicitud="{{ e.solicitud }}" data-eval="{{ e.eval }}">
+    <div class="evaluation-info">
+        <div class="evaluation-meta">
+            <span class="evaluation-id">#{{ e.solicitud }}</span>
+            <span class="status {{ e.estado }}">{{ e.estado_texto }}</span>
+            <span class="priority {{ e.prioridad }}">{{ e.prioridad_texto }}</span>
+        </div>
+        <h3>{{ e.estudiante }}</h3>
+        <p class="scholarship">{{ e.convocatoria }}</p>
+        <p class="evaluator">Evaluador: <strong{% if e.sin_asignar %} class="not-assigned"{% endif %}>{{ e.evaluador }}</strong></p>
+    </div>
+    <div class="evaluation-result">
+        <div class="score{% if not e.tiene_puntaje %} empty-score{% endif %}{% if e.estado == 'completada' %} completed-score{% endif %}">
+            <strong>{{ e.puntaje }}</strong>
+            <span>{% if e.tiene_puntaje %}puntos{% else %}sin puntaje{% endif %}</span>
+        </div>
+        {% if e.estado == 'completada' %}
+        <button class="evaluate-button view-evaluation" type="button">Ver</button>
+        {% elif e.sin_asignar %}
+        <div class="evaluation-buttons">
+            <button class="evaluate-button" type="button">Evaluar</button>
+            <button class="assign-button" type="button">Asignar</button>
+        </div>
+        {% else %}
+        <button class="evaluate-button" type="button">Evaluar</button>
+        {% endif %}
+    </div>
+</article>
+{% empty %}
+<p class="sin-convocatorias">Todavía no hay evaluaciones ni solicitudes por evaluar.</p>
+{% endfor %}
             </div>
-
         </section>
 
     </main>
@@ -1435,7 +974,9 @@
 
 </div>
 
+{{ evaluadores|json_script:"evaluadores-data" }}
 <script src="{% static 'js/evaluaciones.js' %}?v=10"></script>
+<script src="{% static 'js/evaluaciones_db.js' %}?v=1"></script>
 
 </body>
 
