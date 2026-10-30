@@ -11,6 +11,7 @@ ETIQUETAS_ROL = {
     "ESTUDIANTE": "Estudiante",
 }
 
+
 def _evaluaciones_pendientes():
     """Evaluaciones que aun no terminan (numerito del menu).
 
@@ -23,6 +24,7 @@ def _evaluaciones_pendientes():
         return Evaluacion.objects.exclude(estado__iexact="COMPLETADA").count()
     except DatabaseError:
         return 0
+
 
 def sesion(request):
     rol = request.session.get("usuario_rol", "")

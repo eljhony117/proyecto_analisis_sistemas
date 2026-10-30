@@ -103,47 +103,26 @@
             <!-- TARJETAS RESUMEN -->
 
             <div class="summary-grid">
-
                 <div class="summary-card">
-
                     <span class="summary-dot blue"></span>
-
-                    <strong>1,248</strong>
-
+                    <strong>{{ total }}</strong>
                     <p>Total solicitudes</p>
-
                 </div>
-
                 <div class="summary-card">
-
                     <span class="summary-dot green"></span>
-
-                    <strong>71.5%</strong>
-
+                    <strong>{{ tasa }}%</strong>
                     <p>Tasa de aprobación</p>
-
                 </div>
-
                 <div class="summary-card">
-
                     <span class="summary-dot yellow"></span>
-
-                    <strong>4.2 días</strong>
-
-                    <p>Tiempo prom. evaluación</p>
-
+                    <strong>{{ evaluaciones }}</strong>
+                    <p>Evaluaciones registradas</p>
                 </div>
-
                 <div class="summary-card">
-
                     <span class="summary-dot purple"></span>
-
-                    <strong>892</strong>
-
-                    <p>Becas activas</p>
-
+                    <strong>{{ convocatorias_abiertas }}</strong>
+                    <p>Convocatorias abiertas</p>
                 </div>
-
             </div>
 
             <!-- GRÁFICOS -->
@@ -156,96 +135,18 @@
 
                     <h3>Solicitudes por mes</h3>
 
-                    <p class="subtitle">Mar – Ago 2026</p>
-
+                    <p class="subtitle">{{ meses_rango }}</p>
                     <div class="monthly-chart">
-
+                        {% for m in meses %}
                         <div class="month-item">
-
-                            <strong>180</strong>
-
+                            <strong>{{ m.n }}</strong>
                             <div class="month-bar">
-
-                                <div style="height:42%;"></div>
-
+                                <div style="height:{{ m.alto }}%;"></div>
                             </div>
-
-                            <span>Mar</span>
-
+                            <span>{{ m.etiqueta }}</span>
                         </div>
-
-                        <div class="month-item">
-
-                            <strong>240</strong>
-
-                            <div class="month-bar">
-
-                                <div style="height:57%;"></div>
-
-                            </div>
-
-                            <span>Abr</span>
-
-                        </div>
-
-                        <div class="month-item">
-
-                            <strong>310</strong>
-
-                            <div class="month-bar">
-
-                                <div style="height:74%;"></div>
-
-                            </div>
-
-                            <span>May</span>
-
-                        </div>
-
-                        <div class="month-item">
-
-                            <strong>275</strong>
-
-                            <div class="month-bar">
-
-                                <div style="height:65%;"></div>
-
-                            </div>
-
-                            <span>Jun</span>
-
-                        </div>
-
-                        <div class="month-item">
-
-                            <strong>420</strong>
-
-                            <div class="month-bar">
-
-                                <div style="height:100%;"></div>
-
-                            </div>
-
-                            <span>Jul</span>
-
-                        </div>
-
-                        <div class="month-item">
-
-                            <strong>390</strong>
-
-                            <div class="month-bar">
-
-                                <div style="height:93%;"></div>
-
-                            </div>
-
-                            <span>Ago</span>
-
-                        </div>
-
+                        {% endfor %}
                     </div>
-
                 </section>
 
                 <!-- DISTRIBUCIÓN -->
@@ -254,80 +155,21 @@
 
                     <h3>Distribución por nivel educativo</h3>
 
-                    <p class="subtitle">Ciclo 2026</p>
-
+                    <p class="subtitle">Según el nivel del estudiante</p>
+                    {% for n in niveles %}
                     <div class="distribution-item">
-
                         <div class="distribution-header">
-
-                            <span>Nivel Medio</span>
-
+                            <span>{{ n.etiqueta }}</span>
                             <strong>
-
-                                634
-
-                                <small>(51%)</small>
-
+                                {{ n.n }}
+                                <small>({{ n.pct }}%)</small>
                             </strong>
-
                         </div>
-
                         <div class="distribution-track">
-
-                            <div class="distribution-fill blue-fill" style="width:51%;"></div>
-
+                            <div class="distribution-fill {{ n.color }}" style="width:{{ n.pct }}%;"></div>
                         </div>
-
                     </div>
-
-                    <div class="distribution-item">
-
-                        <div class="distribution-header">
-
-                            <span>Universitario</span>
-
-                            <strong>
-
-                                469
-
-                                <small>(38%)</small>
-
-                            </strong>
-
-                        </div>
-
-                        <div class="distribution-track">
-
-                            <div class="distribution-fill green-fill" style="width:38%;"></div>
-
-                        </div>
-
-                    </div>
-
-                    <div class="distribution-item">
-
-                        <div class="distribution-header">
-
-                            <span>Posgrado</span>
-
-                            <strong>
-
-                                145
-
-                                <small>(12%)</small>
-
-                            </strong>
-
-                        </div>
-
-                        <div class="distribution-track">
-
-                            <div class="distribution-fill yellow-fill" style="width:12%;"></div>
-
-                        </div>
-
-                    </div>
-
+                    {% endfor %}
                 </section>
 
             </div>
@@ -363,167 +205,18 @@
                         </thead>
 
                         <tbody id="reportTableBody">
-
+                            {% for c in por_conv %}
                             <tr>
-
-                                <td class="conv-name">
-
-                                    Excelencia Académica
-
-                                </td>
-
-                                <td>
-
-                                    412
-
-                                </td>
-
-                                <td class="approved">
-
-                                    210
-
-                                </td>
-
-                                <td class="rejected">
-
-                                    80
-
-                                </td>
-
-                                <td class="pending">
-
-                                    122
-
-                                </td>
-
-                                <td class="approval">
-
-                                    72%
-
-                                </td>
-
+                                <td class="conv-name">{{ c.nombre }}</td>
+                                <td>{{ c.n }}</td>
+                                <td class="approved">{{ c.aprobadas }}</td>
+                                <td class="rejected">{{ c.rechazadas }}</td>
+                                <td class="pending">{{ c.pendientes }}</td>
+                                <td class="approval">{{ c.pct }}%</td>
                             </tr>
-
-                            <tr>
-
-                                <td class="conv-name">
-
-                                    Posgrado Internacional CONCYT
-
-                                </td>
-
-                                <td>
-
-                                    88
-
-                                </td>
-
-                                <td class="approved">
-
-                                    62
-
-                                </td>
-
-                                <td class="rejected">
-
-                                    11
-
-                                </td>
-
-                                <td class="pending">
-
-                                    15
-
-                                </td>
-
-                                <td class="approval">
-
-                                    70%
-
-                                </td>
-
-                            </tr>
-
-                            <tr>
-
-                                <td class="conv-name">
-
-                                    Becas Técnicas y Vocacionales
-
-                                </td>
-
-                                <td>
-
-                                    634
-
-                                </td>
-
-                                <td class="approved">
-
-                                    512
-
-                                </td>
-
-                                <td class="rejected">
-
-                                    47
-
-                                </td>
-
-                                <td class="pending">
-
-                                    75
-
-                                </td>
-
-                                <td class="approval">
-
-                                    81%
-
-                                </td>
-
-                            </tr>
-
-                            <tr>
-
-                                <td class="conv-name">
-
-                                    Mujer en Ciencia y Tecnología
-
-                                </td>
-
-                                <td>
-
-                                    114
-
-                                </td>
-
-                                <td class="approved">
-
-                                    108
-
-                                </td>
-
-                                <td class="rejected">
-
-                                    6
-
-                                </td>
-
-                                <td class="pending">
-
-                                    0
-
-                                </td>
-
-                                <td class="approval">
-
-                                    95%
-
-                                </td>
-
-                            </tr>
-
+                            {% empty %}
+                            <tr><td colspan="6" class="sin-convocatorias">Todavía no hay convocatorias.</td></tr>
+                            {% endfor %}
                         </tbody>
 
                     </table>
