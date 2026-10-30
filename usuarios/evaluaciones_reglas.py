@@ -2,24 +2,30 @@
 import unicodedata
 
 ESTADOS = {"pendiente": ("Pendiente", "PENDIENTE"),
-           "progreso": ("En progreso", "EN PROGRESO"),
+           "progreso": ("En progreso", "EN_PROCESO"),
            "completada": ("Completada", "COMPLETADA")}
 PRIORIDADES = {"high": "● Prioridad Alta", "medium": "● Prioridad Media",
                "low": "● Prioridad Baja"}
 PUNTAJE_MIN, PUNTAJE_MAX = 0, 100
+# Con los datos del equipo: las aprobadas van de 70 a 92 y las rechazadas de 30 a 60.
+PUNTAJE_APROBATORIO = 70
+
+
+def resultado(puntaje):
+    return "APROBADA" if puntaje >= PUNTAJE_APROBATORIO else "RECHAZADA"
 
 
 def _normal(texto):
     t = unicodedata.normalize("NFD", texto or "")
     t = "".join(c for c in t if unicodedata.category(c) != "Mn")
-    return " ".join(t.upper().split())
+    return " ".join(t.upper().replace("_", " ").split())
 
 
 def estado_clave(valor_db):
     n = _normal(valor_db)
     if n.startswith("COMPLET") or n.startswith("FINAL") or n.startswith("TERMIN"):
         return "completada"
-    if "PROG" in n or n.startswith("EN "):
+    if "PROG" in n or "PROCES" in n or n.startswith("EN "):
         return "progreso"
     return "pendiente"
 
