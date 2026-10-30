@@ -70,14 +70,14 @@ def login_view(request):
 
         if not correo or not contrasena:
             return render(request, "usuarios/login.html", {
-                "error": "Debe ingresar correo y contraseña."
+                "error": "Debe ingresar correo y contraseña.",
             })
 
         try:
             usuario = Usuario.objects.filter(correo__iexact=correo).first()
         except DatabaseError:
             return render(request, "usuarios/login.html", {
-                "error": "No se pudo conectar con la base de datos. Intentá de nuevo."
+                "error": "No se pudo conectar con la base de datos. Intentá de nuevo.",
             })
 
         if usuario and secrets.compare_digest(
@@ -89,7 +89,7 @@ def login_view(request):
             return redirect("panel")
 
         return render(request, "usuarios/login.html", {
-            "error": "Correo o contraseña incorrectos."
+            "error": "Correo o contraseña incorrectos.",
         })
 
     return render(request, "usuarios/login.html")
@@ -130,9 +130,11 @@ def registro_view(request):
 
     nombre = " ".join(request.POST.get("nombre", "").split())
     correo = request.POST.get("correo", "").strip()
-    rol = request.POST.get("rol", "")
+    rol = request.POST.get("rol", "").strip().upper()
     contrasena = request.POST.get("contrasena", "")
     confirmar = request.POST.get("confirmar", "")
+
+    print("ROL RECIBIDO DEL FORMULARIO:", repr(rol))
 
     def volver(error):
         return render(request, "usuarios/login.html", {

@@ -1,7 +1,6 @@
 from django.urls import path
 from django.db import DatabaseError
-from . import views
-
+from . import views, convocatorias
 
 urlpatterns = [
     path("", views.login_view, name="login"),
@@ -12,10 +11,20 @@ urlpatterns = [
 
     path("registro/", views.registro_view, name="registro"),
 
+    path("convocatorias/", convocatorias.lista, name="convocatorias"),
+    
+    path("convocatorias/<int:pk>/aplicar/", convocatorias.aplicar, name="convocatoria_aplicar"),
+
     path(
-        "convocatorias/",
-        views.convocatorias_view,
-        name="convocatorias"
+        "convocatorias/crear/",
+        convocatorias.crear,
+        name="convocatoria_crear"
+    ),
+
+    path(
+        "convocatorias/<int:pk>/editar/",
+        convocatorias.editar,
+        name="convocatoria_editar"
     ),
 
     path(

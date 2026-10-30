@@ -34,6 +34,6 @@ def sesion(request):
         "rol_etiqueta": ETIQUETAS_ROL.get(rol, ""),
         "usuario_nombre": nombre,
         "iniciales": nombre[:2].upper(),
-        # Si la vista pasa este mismo dato, el de la vista manda.
+        # Si la vista (por ejemplo panel_view) pasa este mismo dato, el de la vista manda.
         "evaluaciones_pendientes": _evaluaciones_pendientes,
     }

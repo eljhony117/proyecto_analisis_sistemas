@@ -53,7 +53,7 @@
             var insignia = card.querySelector(".status");
             if (insignia && estado === "cerrada") {
                 insignia.className = "status cerrada";
-                insignia.textContent = "Cerrada";
+                insignia.textContent = card.dataset.etiqueta || "Cerrada";
             }
             card.classList.toggle("convocatoria-cerrada", estado === "cerrada");
 
@@ -120,15 +120,6 @@
                     c.style.display = c.dataset.status === "cerrada" ? "block" : "none";
                 });
             });
-        }
-
-        // "Cerrada" tambien como opcion al gestionar (solo existe para el administrador)
-        var sel = document.getElementById("gestionarEstado");
-        if (sel && !sel.querySelector('option[value="cerrada"]')) {
-            var op = document.createElement("option");
-            op.value = "cerrada";
-            op.textContent = "Cerrada";
-            sel.appendChild(op);
         }
 
         actualizarTodas();

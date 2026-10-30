@@ -70,3 +70,43 @@ body[data-rol="EVALUADOR"] #openNewSolicitudModal {
 .aviso-toast.error {
     background: #c73343;
 }
+
+.form-error {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border: 1px solid #f0b4bb;
+    border-radius: 8px;
+    background: #fdecee;
+    color: #a12634;
+    font-size: 13px;
+}
+
+.form-error[hidden] {
+    display: none;
+}
+
+.institucion-nombre {
+    display: block;
+    margin-bottom: 4px;
+    color: #5b6b82;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.sin-convocatorias {
+    padding: 28px;
+    text-align: center;
+    color: #5b6b82;
+}
+
+.sin-descripcion {
+    color: #8a9bb0;
+    font-style: italic;
+}
+
+.form-ayuda {
+    display: block;
+    margin-top: 4px;
+    color: #5b6b82;
+    font-size: 12px;
+}

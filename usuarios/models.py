@@ -121,6 +121,8 @@ class Convocatoria(models.Model):
     fecha_finalizacion = models.DateField()
     estado = models.CharField(max_length=20)
     id_institucion = models.ForeignKey('Institucion', models.DO_NOTHING, db_column='id_institucion', blank=True, null=True)
+    descripcion = models.CharField(max_length=500, blank=True, null=True)
+    cupos = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -318,6 +320,7 @@ class Usuario(models.Model):
     contrasena = models.CharField(max_length=100)
     correo = models.CharField(unique=True, max_length=100)
     rol = models.CharField(max_length=20)
+    id_estudiante = models.OneToOneField('Estudiante', models.DO_NOTHING, db_column='id_estudiante', blank=True, null=True)
 
     class Meta:
         managed = False
