@@ -504,7 +504,7 @@
 
             <div class="evaluaciones-list">
 {% for e in evaluaciones %}
-<article class="evaluacion-card" data-status="{{ e.estado }}" data-priority="{{ e.prioridad }}" data-solicitud="{{ e.solicitud }}" data-eval="{{ e.eval }}">
+<article class="evaluacion-card" data-status="{{ e.estado }}" data-priority="{{ e.prioridad }}" data-solicitud="{{ e.solicitud }}" data-eval="{{ e.eval }}" data-observations="{{ e.observaciones }}">
     <div class="evaluation-info">
         <div class="evaluation-meta">
             <span class="evaluation-id">#{{ e.solicitud }}</span>

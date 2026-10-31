@@ -27,9 +27,8 @@
             sel.appendChild(op);
         });
 
-        // La base no guarda observaciones: se oculta ese campo.
         var obs = $("evaluationObservations");
-        if (obs) { obs.closest(".form-field").hidden = true; }
+        if (obs) { obs.maxLength = 500; }
 
         // Cajas de error dentro de cada formulario
         ["assignForm", "evaluationForm"].forEach(function (id) {
@@ -101,7 +100,8 @@
                 enviar(form, urlEvaluar,
                        { evaluacion: tarjeta.dataset.eval || "",
                          puntaje: $("evaluationScore").value,
-                         estado: $("evaluationStatus").value },
+                         estado: $("evaluationStatus").value,
+                         observaciones: $("evaluationObservations").value },
                        "evaluationFormError");
             }
         }, true);
