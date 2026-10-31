@@ -236,6 +236,7 @@ class Evaluacion(models.Model):
     calificacion = models.FloatField()
     estado = models.CharField(max_length=20)
     resultado = models.CharField(max_length=20, blank=True, null=True)
+    observaciones = models.CharField(max_length=500, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -322,6 +323,7 @@ class Usuario(models.Model):
     correo = models.CharField(unique=True, max_length=100)
     rol = models.CharField(max_length=20)
     id_estudiante = models.OneToOneField('Estudiante', models.DO_NOTHING, db_column='id_estudiante', blank=True, null=True)
+    id_docente = models.OneToOneField('Docente', models.DO_NOTHING, db_column='id_docente', blank=True, null=True)
 
     class Meta:
         managed = False
