@@ -10,6 +10,7 @@ import logging
 from datetime import date
 from functools import wraps
 
+from django.core.exceptions import FieldDoesNotExist
 from django.db import DatabaseError, IntegrityError, connection, transaction
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -18,12 +19,23 @@ from django.views.decorators.http import require_POST
 from . import evaluaciones_reglas as reglas
 from . import solicitudes_reglas as sol_reglas
 from .convocatorias import _solo_admin_json
-from .models import Evaluacion, MiembroComite, SolicitudBecas
+from .models import Evaluacion, MiembroComite, SolicitudBecas, Usuario
 from .views import rol_requerido
 
 log = logging.getLogger(__name__)
 
 SIN_ASIGNAR = "Sin asignar"
+
+
+def _id_docente(request):
+    """ID_DOCENTE del usuario evaluador que inicio sesion (None si no esta
+    enlazado o si la columna todavia no existe en models.py)."""
+    try:
+        Usuario._meta.get_field("id_docente")
+    except FieldDoesNotExist:
+        return None
+    return (Usuario.objects.filter(pk=request.session.get("usuario_id"))
+            .values_list("id_docente_id", flat=True).first())
 
 
 def _evaluadores():
@@ -51,6 +63,11 @@ def lista(request):
              .select_related("id_docente", "id_solicitud__id_estudiante",
                              "id_solicitud__id_convocatoria")
              .order_by("-id_solicitud_id", "-id_evaluacion"))
+    # Un evaluador enlazado a un docente solo ve sus propias evaluaciones.
+    propio = (_id_docente(request)
+              if request.session.get("usuario_rol") == "EVALUADOR" else None)
+    if propio:
+        evals = evals.filter(id_docente_id=propio)
     for e in evals:
         s = e.id_solicitud
         clave = reglas.estado_clave(e.estado)
@@ -73,7 +90,7 @@ def lista(request):
                 .filter(evaluacion__isnull=True)
                 .select_related("id_estudiante", "id_convocatoria")
                 .order_by("-id_solicitud"))
-    for s in sin_eval:
+    for s in ([] if propio else sin_eval):
         if sol_reglas.estado_visible(s.estado_solicitud)[0] not in sol_reglas.RESOLUBLES:
             continue
         tarjetas.append({
@@ -183,6 +200,11 @@ def evaluar(request):
     ev = Evaluacion.objects.filter(pk=id_eval).first()
     if ev is None:
         return JsonResponse({"ok": False, "error": "La evaluación no existe."}, status=404)
+    if request.session.get("usuario_rol") == "EVALUADOR":
+        propio = _id_docente(request)
+        if propio and ev.id_docente_id != propio:
+            return JsonResponse({"ok": False, "error":
+                "Esta evaluación está asignada a otro evaluador."}, status=403)
     if reglas.estado_clave(ev.estado) == "completada":
         return JsonResponse({"ok": False, "error": "Esta evaluación ya está completada."},
                             status=409)
