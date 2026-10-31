@@ -63,6 +63,7 @@ def lista(request):
             "evaluador": f"{e.id_docente.nombre} {e.id_docente.apellido}",
             "estado": clave, "estado_texto": reglas.ESTADOS[clave][0],
             "puntaje": reglas.puntaje_texto(puntaje) if tiene else "—", "tiene_puntaje": tiene,
+            "observaciones": e.observaciones or "",
             "prioridad": ("low" if clave == "completada" else
                           reglas.prioridad(s.id_convocatoria.fecha_finalizacion, hoy)),
         })
@@ -81,7 +82,7 @@ def lista(request):
             "convocatoria": s.id_convocatoria.nombre,
             "evaluador": SIN_ASIGNAR, "estado": "pendiente",
             "estado_texto": reglas.ESTADOS["pendiente"][0],
-            "puntaje": "—", "tiene_puntaje": False,
+            "puntaje": "—", "tiene_puntaje": False, "observaciones": "",
             "prioridad": reglas.prioridad(s.id_convocatoria.fecha_finalizacion, hoy),
         })
 
@@ -190,15 +191,21 @@ def evaluar(request):
     destino = (request.POST.get("estado") or "").strip().lower()
     if error is None and destino not in ("progreso", "completada"):
         error = "Estado no válido."
-    if error:
-        return JsonResponse({"ok": False, "errores": {"puntaje": error}}, status=400)
+    obs, error_obs = reglas.validar_observaciones(request.POST.get("observaciones"))
+    if error or error_obs:
+        return JsonResponse({"ok": False, "errores": {"puntaje": error or error_obs}},
+                            status=400)
 
     try:
         with transaction.atomic():
-            Evaluacion.objects.filter(pk=id_eval).update(
+            campos = dict(
+                observaciones=obs or None,
                 calificacion=puntaje,
                 estado=reglas.valor_estado(destino, _estados_existentes()),
                 fecha=date.today())
+            if destino == "completada":
+                campos["resultado"] = reglas.resultado(puntaje)
+            Evaluacion.objects.filter(pk=id_eval).update(**campos)
     except DatabaseError as exc:
         return JsonResponse({"ok": False, "error": _mensaje(exc)}, status=500)
     return JsonResponse({"ok": True, "mensaje": "Evaluación guardada."})

@@ -63,5 +63,16 @@ def validar_puntaje(texto):
     return round(n, 2), None
 
 
+MAX_OBSERVACIONES = 500
+
+
+def validar_observaciones(texto):
+    """(texto_limpio, error). Las observaciones son opcionales."""
+    t = (texto or "").strip()
+    if len(t) > MAX_OBSERVACIONES:
+        return None, f"Las observaciones no pueden pasar de {MAX_OBSERVACIONES} caracteres."
+    return t, None
+
+
 def puntaje_texto(n):
     return str(int(n)) if float(n).is_integer() else f"{n:.1f}"
