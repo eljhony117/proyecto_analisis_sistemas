@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BecasMVP | Plataforma de cursos para acceder a becas</title>
+  <meta name="description" content="Plataforma de cursos que te prepara para obtener becas universitarias, de carrera y de idiomas. Aprende, practica y postula con confianza.">
+  <meta property="og:title" content="BecasMVP | Cursos para acceder a becas">
+  <meta property="og:description" content="Prepárate para becas universitarias, de carrera e idiomas con cursos guiados paso a paso.">
+  <meta property="og:type" content="website">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg fixed-top bg-white shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="#inicio">
+        <img src="img/favicon.svg" alt="" width="32" height="32">
+        <span>Becas<span class="text-accent">MVP</span></span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu"
+              aria-controls="menu" aria-expanded="false" aria-label="Abrir menú">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="#categorias">Tipos de becas</a></li>
+          <li class="nav-item"><a class="nav-link" href="#galeria">Galería</a></li>
+          <li class="nav-item"><a class="nav-link" href="#como-funciona">Cómo funciona</a></li>
+          <li class="nav-item"><a class="nav-link" href="#beneficios">Beneficios</a></li>
+          <li class="nav-item"><a class="nav-link" href="#faq">Preguntas frecuentes</a></li>
+        </ul>
+        <!-- data-login: la URL real se define en js/config.js -->
+        <a class="btn btn-brand" data-login href="https://tu-plataforma.example.com/login">
+          <i class="bi bi-box-arrow-in-right me-1"></i> Iniciar sesión
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <!-- HERO -->
+    <section id="inicio" class="hero d-flex align-items-center">
+      <div class="container">
+        <div class="row align-items-center gy-4 gx-lg-5">
+          <div class="col-lg-6">
+            <span class="badge rounded-pill badge-soft mb-3"><i class="bi bi-mortarboard-fill me-1"></i> Cursos para acceder a becas</span>
+            <h1 class="display-4 fw-bold mb-3">Tu próxima beca empieza con <span class="text-accent">buena preparación</span></h1>
+            <p class="lead text-muted mb-4">
+              Una plataforma de cursos que te guía para postular a becas universitarias,
+              becas de carrera y becas de idiomas: desde elegir la beca correcta hasta enviar una solicitud sólida.
+            </p>
+            <div class="d-flex flex-wrap gap-3">
+              <a class="btn btn-brand btn-lg" data-login href="https://tu-plataforma.example.com/login">
+                <i class="bi bi-box-arrow-in-right me-1"></i> Iniciar sesión
+              </a>
+              <a class="btn btn-outline-brand btn-lg" href="#como-funciona">Ver cómo funciona</a>
+            </div>
+            <ul class="list-inline mt-4 mb-0 text-muted small">
+              <li class="list-inline-item me-3"><i class="bi bi-check-circle-fill text-accent me-1"></i>Aprende a tu ritmo</li>
+              <li class="list-inline-item me-3"><i class="bi bi-check-circle-fill text-accent me-1"></i>Contenido práctico</li>
+              <li class="list-inline-item"><i class="bi bi-check-circle-fill text-accent me-1"></i>Para estudiantes</li>
+            </ul>
+          </div>
+          <div class="col-lg-6">
+            <div class="hero-card">
+              <div class="hero-card-header d-flex align-items-center gap-2">
+                <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                <small class="ms-2 text-muted">Tu ruta hacia la beca</small>
+              </div>
+              <div class="p-4">
+                <div class="route-step done"><i class="bi bi-check-lg"></i><div><strong>Descubre</strong><small>Encuentra becas que encajan contigo</small></div></div>
+                <div class="route-step done"><i class="bi bi-check-lg"></i><div><strong>Prepárate</strong><small>Cursos, guías y ejercicios</small></div></div>
+                <div class="route-step active"><i class="bi bi-pencil-fill"></i><div><strong>Postula</strong><small>Ensayo, carta y documentos</small></div></div>
+                <div class="route-step"><i class="bi bi-trophy-fill"></i><div><strong>Obtén tu beca</strong><small>Da el siguiente paso en tu carrera</small></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CIFRAS (EDITAR con datos reales del proyecto) -->
+    <section class="stats py-4">
+      <div class="container">
+        <div class="row text-center g-4">
+          <div class="col-6 col-md-3"><div class="stat-number">3</div><div class="stat-label">Áreas de becas</div></div>
+          <div class="col-6 col-md-3"><div class="stat-number">100%</div><div class="stat-label">Online y a tu ritmo</div></div>
+          <div class="col-6 col-md-3"><div class="stat-number">24/7</div><div class="stat-label">Acceso a los cursos</div></div>
+          <div class="col-6 col-md-3"><div class="stat-number">1</div><div class="stat-label">Cuenta para todo</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CATEGORÍAS -->
+    <section id="categorias" class="py-6">
+      <div class="container">
+        <div class="text-center mb-5">
+          <h2 class="fw-bold">Cursos para cada tipo de beca</h2>
+          <p class="text-muted mx-auto section-lead">Elige el camino que se ajusta a tu momento académico y a tus metas.</p>
+        </div>
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-4">
+            <div class="card feature-card h-100">
+              <div class="card-body p-4">
+                <div class="icon-box"><i class="bi bi-building"></i></div>
+                <h3 class="h5 fw-bold">Becas universitarias</h3>
+                <p class="text-muted mb-0">Ingreso y continuidad en la universidad: requisitos, promedio, documentos y cómo presentar tu perfil.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="card feature-card h-100">
+              <div class="card-body p-4">
+                <div class="icon-box"><i class="bi bi-journal-bookmark-fill"></i></div>
+                <h3 class="h5 fw-bold">Becas por carrera</h3>
+                <p class="text-muted mb-0">Oportunidades específicas para tu área de estudio: ingeniería, salud, negocios, educación y más.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="card feature-card h-100">
+              <div class="card-body p-4">
+                <div class="icon-box"><i class="bi bi-translate"></i></div>
+                <h3 class="h5 fw-bold">Becas de idiomas</h3>
+                <p class="text-muted mb-0">Aprende inglés u otros idiomas y prepárate para certificaciones y programas de intercambio.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="card feature-card h-100">
+              <div class="card-body p-4">
+                <div class="icon-box"><i class="bi bi-file-earmark-text-fill"></i></div>
+                <h3 class="h5 fw-bold">Ensayos y cartas</h3>
+                <p class="text-muted mb-0">Redacta cartas de motivación y ensayos que cuenten tu historia con claridad y fuerza.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="card feature-card h-100">
+              <div class="card-body p-4">
+                <div class="icon-box"><i class="bi bi-chat-square-quote-fill"></i></div>
+                <h3 class="h5 fw-bold">Entrevistas</h3>
+                <p class="text-muted mb-0">Practica las preguntas más comunes y aprende a comunicar tus logros con seguridad.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="card feature-card h-100">
+              <div class="card-body p-4">
+                <div class="icon-box"><i class="bi bi-calendar-check-fill"></i></div>
+                <h3 class="h5 fw-bold">Plazos y organización</h3>
+                <p class="text-muted mb-0">Planifica tus postulaciones y no pierdas ninguna fecha límite importante.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALERÍA -->
+    <section id="galeria" class="py-6">
+      <div class="container">
+        <div class="text-center mb-5">
+          <h2 class="fw-bold">Así se vive la experiencia universitaria</h2>
+          <p class="text-muted mx-auto section-lead">Bibliotecas, campus y clases: el entorno para el que te preparamos.</p>
+        </div>
+        <div class="row g-3">
+          <div class="col-lg-4">
+            <figure class="gallery-item gallery-tall m-0">
+              <img src="img/galeria-biblioteca.jpg" alt="Estudiantes estudiando juntos en la biblioteca" loading="lazy" width="1400" height="2100">
+              <figcaption>Espacios de estudio</figcaption>
+            </figure>
+          </div>
+          <div class="col-lg-4">
+            <div class="row g-3">
+              <div class="col-12">
+                <figure class="gallery-item m-0">
+                  <img src="img/galeria-campus-1.jpg" alt="Edificio universitario con jardines" loading="lazy" width="1400" height="933">
+                  <figcaption>Vida en el campus</figcaption>
+                </figure>
+              </div>
+              <div class="col-12">
+                <figure class="gallery-item m-0">
+                  <img src="img/galeria-campus-2.jpg" alt="Fachada de un edificio universitario al atardecer" loading="lazy" width="1400" height="789">
+                  <figcaption>Instalaciones académicas</figcaption>
+                </figure>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="row g-3">
+              <div class="col-12">
+                <figure class="gallery-item m-0">
+                  <img src="img/galeria-campus-3.jpg" alt="Edificio universitario con amplios jardines" loading="lazy" width="1400" height="916">
+                  <figcaption>Campus y áreas verdes</figcaption>
+                </figure>
+              </div>
+              <div class="col-12">
+                <figure class="gallery-item m-0">
+                  <img src="img/galeria-auditorio.jpg" alt="Auditorio universitario lleno de estudiantes" loading="lazy" width="1400" height="1050">
+                  <figcaption>Clases y conferencias</figcaption>
+                </figure>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CÓMO FUNCIONA -->
+    <section id="como-funciona" class="py-6 bg-soft">
+      <div class="container">
+        <div class="text-center mb-5">
+          <h2 class="fw-bold">Cómo funciona</h2>
+          <p class="text-muted mx-auto section-lead">Cuatro pasos sencillos para empezar a prepararte hoy.</p>
+        </div>
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-3 text-center">
+            <div class="step-number">1</div>
+            <h3 class="h5 fw-bold">Inicia sesión</h3>
+            <p class="text-muted">Accede con tu cuenta a la plataforma de cursos.</p>
+          </div>
+          <div class="col-md-6 col-lg-3 text-center">
+            <div class="step-number">2</div>
+            <h3 class="h5 fw-bold">Elige tu ruta</h3>
+            <p class="text-muted">Selecciona el tipo de beca que quieres alcanzar.</p>
+          </div>
+          <div class="col-md-6 col-lg-3 text-center">
+            <div class="step-number">3</div>
+            <h3 class="h5 fw-bold">Aprende y practica</h3>
+            <p class="text-muted">Completa lecciones, actividades y ejercicios prácticos.</p>
+          </div>
+          <div class="col-md-6 col-lg-3 text-center">
+            <div class="step-number">4</div>
+            <h3 class="h5 fw-bold">Postula con confianza</h3>
+            <p class="text-muted">Envía tu solicitud con documentos y ensayo bien preparados.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BENEFICIOS -->
+    <section id="beneficios" class="py-6">
+      <div class="container">
+        <div class="row align-items-center gy-4 gx-lg-5">
+          <div class="col-lg-5">
+            <h2 class="fw-bold mb-3">Por qué estudiar en la plataforma</h2>
+            <p class="text-muted">Pensada por y para estudiantes universitarios que quieren aprovechar cada oportunidad de financiamiento y crecimiento.</p>
+            <a class="btn btn-brand mt-2" data-login href="https://tu-plataforma.example.com/login">Comenzar ahora</a>
+          </div>
+          <div class="col-lg-7">
+            <div class="row g-3">
+              <div class="col-sm-6"><div class="benefit"><i class="bi bi-laptop"></i><div><strong>100% en línea</strong><p>Estudia desde tu computadora o celular.</p></div></div></div>
+              <div class="col-sm-6"><div class="benefit"><i class="bi bi-clock-history"></i><div><strong>A tu propio ritmo</strong><p>Sin horarios fijos, tú decides cuándo avanzar.</p></div></div></div>
+              <div class="col-sm-6"><div class="benefit"><i class="bi bi-lightbulb-fill"></i><div><strong>Contenido práctico</strong><p>Ejemplos, plantillas y actividades reales.</p></div></div></div>
+              <div class="col-sm-6"><div class="benefit"><i class="bi bi-graph-up-arrow"></i><div><strong>Seguimiento de progreso</strong><p>Visualiza tu avance en cada curso.</p></div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="py-6 bg-soft">
+      <div class="container">
+        <div class="text-center mb-5">
+          <h2 class="fw-bold">Preguntas frecuentes</h2>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="accordion" id="faqAcordeon">
+              <div class="accordion-item">
+                <h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#f1">¿Quién puede usar la plataforma?</button></h3>
+                <div id="f1" class="accordion-collapse collapse show" data-bs-parent="#faqAcordeon"><div class="accordion-body">Estudiantes universitarios, de carrera o de idiomas que quieran prepararse para postular a becas.</div></div>
+              </div>
+              <div class="accordion-item">
+                <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f2">¿Cómo accedo a los cursos?</button></h3>
+                <div id="f2" class="accordion-collapse collapse" data-bs-parent="#faqAcordeon"><div class="accordion-body">Presiona el botón <strong>Iniciar sesión</strong> y entra con tu cuenta. Serás redirigido a la plataforma donde están los cursos.</div></div>
+              </div>
+              <div class="accordion-item">
+                <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f3">¿Los cursos garantizan una beca?</button></h3>
+                <div id="f3" class="accordion-collapse collapse" data-bs-parent="#faqAcordeon"><div class="accordion-body">No. La plataforma te prepara y mejora tu solicitud, pero la decisión final siempre depende de la entidad que otorga la beca.</div></div>
+              </div>
+              <div class="accordion-item">
+                <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f4">¿Puedo estudiar desde el celular?</button></h3>
+                <div id="f4" class="accordion-collapse collapse" data-bs-parent="#faqAcordeon"><div class="accordion-body">Sí, la plataforma se adapta a computadoras, tabletas y teléfonos.</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="cta py-6 text-center text-white">
+      <div class="container">
+        <h2 class="fw-bold mb-3">Da el primer paso hacia tu beca</h2>
+        <p class="lead mb-4">Entra a la plataforma y empieza tu preparación hoy.</p>
+        <a class="btn btn-light btn-lg fw-semibold text-accent" data-login href="https://tu-plataforma.example.com/login">
+          <i class="bi bi-box-arrow-in-right me-1"></i> Iniciar sesión
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="py-4 bg-dark text-white-50">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+      <small>&copy; <span id="anio"></span> BecaPlus · Proyecto universitario</small>
+      <small>Universidad Mariano Gálvez de Guatemala</small>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

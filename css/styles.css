@@ -1,0 +1,92 @@
+:root {
+  --brand: #1d4ed8;
+  --brand-dark: #1e3a8a;
+  --accent: #0ea5a4;
+  --soft: #f3f6fb;
+  --ink: #0f172a;
+}
+
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+body { font-family: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--ink); padding-top: 72px; }
+
+.text-accent { color: var(--accent) !important; }
+.bg-soft { background: var(--soft); }
+.py-6 { padding-top: 5rem; padding-bottom: 5rem; }
+.section-lead { max-width: 560px; }
+
+/* Botones */
+.btn-brand { background: var(--brand); border-color: var(--brand); color: #fff; font-weight: 600; }
+.btn-brand:hover, .btn-brand:focus { background: var(--brand-dark); border-color: var(--brand-dark); color: #fff; }
+.btn-outline-brand { border: 2px solid var(--brand); color: var(--brand); font-weight: 600; }
+.btn-outline-brand:hover { background: var(--brand); color: #fff; }
+.badge-soft { background: #e0ebff; color: var(--brand); font-weight: 600; padding: .55rem .9rem; }
+
+.navbar.scrolled { box-shadow: 0 4px 16px rgba(15, 23, 42, .1) !important; }
+.navbar .nav-link { font-weight: 500; }
+.navbar .nav-link:hover { color: var(--brand); }
+
+/* Hero */
+.hero {
+  min-height: calc(100vh - 72px);
+  padding: 3rem 0;
+  background: radial-gradient(circle at 85% 15%, #dbeafe 0, transparent 45%),
+              radial-gradient(circle at 5% 90%, #ccfbf1 0, transparent 40%), #fff;
+}
+.hero-card { background: #fff; border-radius: 1.25rem; box-shadow: 0 25px 60px rgba(30, 58, 138, .18); overflow: hidden; }
+.hero-card-header { background: var(--soft); padding: .85rem 1.25rem; }
+.hero-card-header .dot { width: 11px; height: 11px; border-radius: 50%; background: #cbd5e1; display: inline-block; }
+.route-step { display: flex; align-items: center; gap: 1rem; padding: .9rem 0; position: relative; }
+.route-step > i { width: 40px; height: 40px; flex: 0 0 40px; border-radius: 50%; display: grid; place-items: center; background: #e2e8f0; color: #64748b; }
+.route-step small { display: block; color: #64748b; }
+.route-step.done > i { background: var(--accent); color: #fff; }
+.route-step.active > i { background: var(--brand); color: #fff; box-shadow: 0 0 0 6px #dbeafe; }
+
+/* Cifras */
+.stats { background: var(--brand-dark); color: #fff; }
+.stat-number { font-size: 2rem; font-weight: 700; }
+.stat-label { opacity: .8; font-size: .9rem; }
+
+/* Tarjetas */
+.feature-card { border: 1px solid #e5eaf3; border-radius: 1rem; transition: transform .2s, box-shadow .2s; }
+.feature-card:hover { transform: translateY(-6px); box-shadow: 0 16px 36px rgba(15, 23, 42, .1); }
+.icon-box { width: 56px; height: 56px; border-radius: 14px; display: grid; place-items: center; font-size: 1.5rem; background: #e0ebff; color: var(--brand); margin-bottom: 1rem; }
+
+/* Pasos */
+.step-number { width: 60px; height: 60px; margin: 0 auto 1rem; border-radius: 50%; background: var(--brand); color: #fff; font-size: 1.5rem; font-weight: 700; display: grid; place-items: center; }
+
+/* Beneficios */
+.benefit { display: flex; gap: 1rem; padding: 1.1rem; background: #fff; border: 1px solid #e5eaf3; border-radius: 1rem; height: 100%; }
+.benefit > i { font-size: 1.6rem; color: var(--accent); }
+.benefit p { margin: 0; color: #64748b; font-size: .92rem; }
+
+/* Galería */
+.gallery-item { position: relative; display: block; border-radius: 1rem; overflow: hidden; box-shadow: 0 10px 28px rgba(15, 23, 42, .1); aspect-ratio: 16 / 10; }
+.gallery-item.gallery-tall { aspect-ratio: 3 / 4; height: 100%; }
+.gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s ease; }
+.gallery-item:hover img { transform: scale(1.06); }
+.gallery-item figcaption {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: .9rem 1rem .7rem;
+  background: linear-gradient(0deg, rgba(15, 23, 42, .78) 0%, rgba(15, 23, 42, 0) 100%);
+  color: #fff; font-weight: 600; font-size: .9rem; letter-spacing: .01em;
+}
+
+@media (max-width: 991.98px) {
+  .gallery-item.gallery-tall { aspect-ratio: 16 / 10; }
+}
+
+/* FAQ */
+.accordion-button:not(.collapsed) { background: #e0ebff; color: var(--brand-dark); }
+.accordion-button:focus { box-shadow: 0 0 0 .2rem rgba(29, 78, 216, .2); }
+
+/* CTA */
+.cta { background: linear-gradient(135deg, var(--brand) 0, var(--accent) 100%); }
+
+@media (max-width: 575.98px) {
+  .py-6 { padding-top: 3.5rem; padding-bottom: 3.5rem; }
+  .display-4 { font-size: 2.2rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .feature-card { transition: none; }
+}
